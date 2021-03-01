@@ -24,7 +24,8 @@ define(
     "gui/DragButton",
     "gui/SaveButton",
     "gui/LoadButton",
-    "d3"
+    "d3",
+    "jquery"
   ],
   function(
     World,
@@ -34,7 +35,7 @@ define(
     Storage, Toolbar,
     CraftingSideTab, StorageSideTab,
     DragButton, SaveButton, LoadButton,
-    d3
+    d3, $
   ) {
     return class Player {
       constructor() {
@@ -52,7 +53,7 @@ define(
         this.recipeRegistry = new PlantRecipeRegistry()
 
         this.recipeRegistry.add(new PlantRecipe(
-          "Grass Crop",
+          "GrassCrop",
           [new GrassSeedItem(), new GrassBladeItem()]
         ))
 
@@ -71,11 +72,10 @@ define(
         this.world.addBlock(new ExpansionBlock(this, {x: -1, y: 0}))
         this.world.addBlock(new ExpansionBlock(this, {x: 1, y: 0}))
 
-
         this.inventoryTab = new StorageSideTab(
-          this.inventory,
           {width: this.width, height: this.height}
         )
+        this.inventoryTab.setStorage(this.inventory)
         this.craftingTab = new CraftingSideTab(
           {width: this.width, height: this.height}
         )
@@ -136,9 +136,21 @@ define(
         @description creates a player out of json data
       */
       fromJSON(json) {
+        this.world.delete()
         this.world.fromJSON(this, json.world)
+
+        this.inventory.delete()
         this.inventory.fromJSON(json.inventory)
+        this.inventoryTab.setStorage(this.inventory)
+
+        this.toolbar.delete()
         this.toolbar.fromJSON(json.toolbar)
+        this.toolbar.moveTo({
+          x: this.width / 2 - this.toolbar.getWidth() / 2,
+          y: this.height - 50
+        })
+
+        this.addGraphics()
       }
 
 
@@ -170,6 +182,7 @@ define(
           data: JSON.stringify({username: "gregv21v"}),
           success: function(response) {
             self.fromJSON(response)
+            console.log("Loaded");
           },
           dataType: "json"
         })

@@ -72,6 +72,16 @@ define(
       }
 
       /**
+        delete()
+        @description deletes this block
+      */
+      delete() {
+        for (var svg of Object.values(this.svg)) {
+          svg.remove()
+        }  
+      }
+
+      /**
         clone()
         @description make a copy of this crop
       */

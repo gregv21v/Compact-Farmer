@@ -11,7 +11,7 @@ define(
       */
       constructor(position = {x: 0, y: 0}) {
         super(position)
-        this.name = "Seeds"
+        this.name = "SeedItem"
         this.seedColor = "white"
       }
 

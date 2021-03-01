@@ -2,8 +2,8 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["game/World", "blocks/Block", "blocks/FarmBlock", "d3"],
-  function(World, Block, FarmBlock, d3) {
+  ["blocks/Block", "blocks/FarmBlock", "d3"],
+  function(Block, FarmBlock, d3) {
     return class WaterBlock extends Block {
 
 
@@ -48,8 +48,7 @@ define(
         }
         for (var x = 0; x < 5; x++) {
           for (var y = 0; y < 5; y++) {
-
-            var coordinateAsString = World.getCoordinateAsString({
+            var coordinateAsString = Block.getCoordinateAsString({
               x: start.x + x,
               y: start.y + y
             })

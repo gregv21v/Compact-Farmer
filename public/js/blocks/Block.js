@@ -2,19 +2,24 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  [
-    "d3"],
+  [ "d3"],
   function(d3) {
     return class Block {
 
       static size = 50
+      /**
+        getCoordinateAsString()
+        @description get the coordinate of this block as a string
+      */
+      static getCoordinateAsString(coordinate) {
+        return "x_" + coordinate.x + "y_" + coordinate.y;
+      }
 
       /**
         constructor()
         @description constructs the block
       */
       constructor(player, coordinate) {
-
         this.name = "Block"
         this.player = player;
         this.coordinate = coordinate;
@@ -23,11 +28,10 @@ define(
         this.svg = {}
         this.svg.background = this.player.world.svgGroup.append("rect")
 
-        this.graphicsGroup = this.player.world.svgGroup.append("g")
-        this.createGraphic(this.graphicsGroup);
+        this.svg.graphicsGroup = this.player.world.svgGroup.append("g")
+        this.createGraphic(this.svg.graphicsGroup);
 
         this.svg.clickArea = this.player.world.svgGroup.append("rect")
-
       }
 
       /**
@@ -58,6 +62,16 @@ define(
       */
       createGraphic(group) {
         // make your graphics here add add them to the this.svg object
+      }
+
+      /**
+        delete()
+        @description deletes this block
+      */
+      delete() {
+        this.svg.background.remove()
+        this.svg.graphicsGroup.remove()
+        this.svg.clickArea.remove()
       }
 
 

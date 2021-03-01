@@ -2,8 +2,14 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["d3"],
-  function(d3) {
+  [
+    "items/GrassSeedItem",
+    "items/GrassBladeItem",
+    "items/HoeItem",
+    "items/SeedItem",
+    "items/Item",
+    "d3"],
+  function(GrassSeedItem, GrassBladeItem, HoeItem, SeedItem, Item, d3) {
     return class Slot {
       /**
         constructor()
@@ -37,6 +43,28 @@ define(
       }
 
       /**
+        fromJSON()
+        @description converts json to a slot object
+      */
+      static fromJSON(storage, json, position) {
+        var slot = new Slot(storage, position)
+        if(json.item !== null) {
+          if(json.item.name === "GrassBladeItem") {
+            slot.addItem(new GrassBladeItem())
+          } else if(json.item.name === "GrassSeedItem") {
+            slot.addItem(new GrassSeedItem())
+          } else if(json.item.name === "SeedItem") {
+            slot.addItem(new SeedItem())
+          } else if(json.item.name === "HoeItem") {
+            slot.addItem(new HoeItem())
+          }
+        }
+
+        slot.initSVG()
+        return slot;
+      }
+
+      /**
         initSVG()
         @description initialize the values for the svg
       */
@@ -51,6 +79,7 @@ define(
           .attr("height", this.size)
           .style("fill", "grey")
           .style("stroke", "black")
+          .style("stroke-width", 3)
 
         this.svg.clickArea
           .attr("x", this.position.x)
@@ -59,7 +88,8 @@ define(
           .attr("height", this.size)
           .style("fill-opacity", 0)
           .on("click", function() {self.onClick()})
-          .on("mousedown", function() {self.onMouseDown()})
+          .on("mouseover", function() {self.onMouseEnter()})
+          .on("mouseout", function() {self.onMouseLeave()})
       }
 
 
@@ -76,6 +106,7 @@ define(
             y: this.position.y + 5
           })
 
+          this.item.initSVG();
           this.svg.itemGroup.append(() => this.item.getGraphic().node());
         }
       }
@@ -168,15 +199,24 @@ define(
         this.storage.deselectAll()
         this.storage.select(this)
         this.select()
-        this.item.onClick()
       }
 
       /**
-        onMouseDown()
-        @description called when the mouse is pressed down
+        onMouseEnter()
+        @description the function called when the mouse enters the button area
       */
-      onMouseDown() {
+      onMouseEnter() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 0.5)
+      }
 
+      /**
+        onMouseLeave()
+        @description the function called when the mouse enters the button area
+      */
+      onMouseLeave() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 1)
       }
 
       /**
@@ -186,5 +226,7 @@ define(
       getGraphic() {
         return this.svg.group;
       }
+
+
     }
   })

@@ -3,20 +3,13 @@ define([
     "blocks/ExpansionBlock",
     "blocks/FarmBlock",
     "blocks/WaterBlock",
-    "d3",
-    "jquery"
+    "d3"
   ],
   function(
     Block, ExpansionBlock, FarmBlock, WaterBlock,
-    d3, $) {
+    d3) {
     return class World {
-      /**
-        getCoordinateAsString()
-        @description get the coordinate of this block as a string
-      */
-      static getCoordinateAsString(coordinate) {
-        return "x_" + coordinate.x + "y_" + coordinate.y;
-      }
+
 
       constructor(player, position) {
         this.position = position
@@ -30,7 +23,7 @@ define([
       /**
         toJSON()
         @description converts this world to its json representation
-
+      */
       toJSON() {
         let blocksAsJSON = {}
         for (var key of Object.keys(this.blocks)) {
@@ -38,12 +31,12 @@ define([
         }
         return blocksAsJSON;
       }
-      */
+
 
       /**
         fromJSON()
         @description converts a json object into this world
-
+      */
       fromJSON(player, json) {
         for (var key of Object.keys(json)) {
           var block = null;
@@ -57,12 +50,20 @@ define([
             block = Block.fromJSON(player, json[key]);
           }
 
-          console.log(block);
-          this.blocks[key] = Block.fromJSON(player, json[key])
+          this.blocks[key] = block
         }
       }
-      */
 
+      /**
+        delete()
+        @description delete all the blocks in the world
+      */
+      delete() {
+        for (var key of Object.keys(this.blocks)) {
+          this.blocks[key].delete()
+          delete this.blocks[key]
+        }
+      }
 
 
       /**
@@ -106,6 +107,7 @@ define([
         @param block the block to be replaced with the coordinates to place it at
       */
       replaceBlock(block) {
+
         var coordAsString = block.getCoordinateAsString()
         if(coordAsString in this.blocks) {
           // remove it
@@ -152,6 +154,7 @@ define([
           this.blocks[leftExp.getCoordinateAsString()] = leftExp;
           leftExp.render();
         }
+
 
         // right
         var rightExp = new ExpansionBlock(this.player, {

@@ -51,6 +51,38 @@ define(["items/Slot", "d3"],
         return storageAsJSON;
       }
 
+      /**
+        fromJSON()
+        @description convert a json object to a storage object
+      */
+      fromJSON(json) {
+        this.slots = []
+        for (var x = 0; x < this.columns; x++) {
+          var newRow = []
+          for (var y = 0; y < this.rows; y++) {
+            var newSlot = Slot.fromJSON(
+              this,
+              json.slots[x][y],
+              {
+                x: this.position.x + this.slotSize * x,
+                y: this.position.y + this.slotSize * y
+              }
+            )
+            newRow.push(newSlot);
+          }
+          this.slots.push(newRow);
+        }
+        console.log(this.slots);
+      }
+
+      /**
+        delete()
+        @description delete the svg for this storage
+      */
+      delete() {
+        this.svg.group.remove()
+      }
+
 
       /**
         add()

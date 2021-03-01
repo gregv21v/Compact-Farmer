@@ -55,15 +55,27 @@ define(
       static fromJSON(player, json) {
         var newFarmBlock = new FarmBlock(player, json.coordinate)
         newFarmBlock.crop = null;
-        if(json.name === "GrassCrop") {
-          newFarmBlock.crop = GrassCrop.fromJSON(json)
-        } else {
-          newFarmBlock.crop = Crop.fromJSON(json)
+        if(json.crop !== null) {
+          if(json.crop.name === "GrassCrop") {
+            newFarmBlock.crop = GrassCrop.fromJSON(json)
+          } else {
+            newFarmBlock.crop = Crop.fromJSON(json)
+          }
         }
         newFarmBlock.isCropFullyGrown = json.isCropFullyGrown;
         newFarmBlock.isHydrated = json.isHydrated;
         newFarmBlock.isPlowed = json.isPlowed;
         return newFarmBlock;
+      }
+
+      /**
+        delete()
+        @description deletes this block
+      */
+      delete() {
+        super.delete()
+        if(this.crop !== null)
+          this.crop.delete()
       }
 
       /**

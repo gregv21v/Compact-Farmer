@@ -19,15 +19,29 @@ app.post('/save', function(request, response){
     var playerCollection = client.db("playerData").collection("players")
 
     // save the player data to the collection
-    playerCollection.insert(
-      {
-        username: "gregv21v",
-        data: request.body
-      },
-      function(err, result) {
-        if (err) throw err;
+    playerCollection.findOne({
+      username: "gregv21v"
+    }).then(function(result) {
+      if(result === null) {
+        playerCollection.insertOne(
+          {
+            username: "gregv21v",
+            data: request.body
+          }
+        )
+      } else {
+        playerCollection.replaceOne(
+          {
+            username: "gregv21v"
+          },
+          {
+            username: "gregv21v",
+            data: request.body
+          }
+        )
       }
-    )
+    })
+
   })
   response.send(request.body);    // echo the result back
 });

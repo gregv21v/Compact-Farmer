@@ -74,6 +74,7 @@ define(
           .attr("width", this.width)
           .attr("height", this.height)
           .style("fill", "orange")
+          .style("stroke", "black")
 
         var textPos = {
           x: this.position.x + this.getWidth()/2,
@@ -95,7 +96,11 @@ define(
           .attr("width", this.width)
           .attr("height", this.height)
           .style("fill-opacity", 0)
-          .on("click", function() {self.onClick()});
+          .on("click", function() {self.onClick()})
+          .on("mousedown", function() {self.onMouseDown()})
+          .on("mouseup", function() {self.onMouseUp()})
+          .on("mouseenter", function() {self.onMouseEnter()})
+          .on("mouseleave", function() {self.onMouseLeave()})
       }
 
 
@@ -137,11 +142,47 @@ define(
 
       /**
         onClick()
-        @description the function called when this block is clicked
+        @description the function called when this button is clicked
       */
       onClick() {
         // do something ...
         console.log(this.name);
+      }
+
+      /**
+        onMouseEnter()
+        @description the function called when the mouse enters the button area
+      */
+      onMouseEnter() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 0.5)
+      }
+
+      /**
+        onMouseLeave()
+        @description the function called when the mouse enters the button area
+      */
+      onMouseLeave() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 1)
+      }
+
+      /**
+        onMousePress()
+        @description the function called when the button is pressed
+      */
+      onMouseDown() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 0.4)
+      }
+
+      /**
+        onRelease()
+        @description the function called when the button is released
+      */
+      onMouseUp() {
+        // do something ...
+        this.svg.background.style("fill-opacity", 1)
       }
 
 

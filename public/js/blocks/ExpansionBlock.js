@@ -3,11 +3,12 @@
 */
 define(
   [
+    "game/World",
     "blocks/Block",
     "blocks/FarmBlock",
     "d3"
   ],
-  function(Block, FarmBlock, d3) {
+  function(World, Block, FarmBlock, d3) {
     return class ExpansionBlock extends Block {
 
       /**
@@ -16,6 +17,7 @@ define(
       */
       constructor(player, coordinate) {
         super(player, coordinate)
+
 
         this.name = "ExpansionBlock"
       }
@@ -40,6 +42,8 @@ define(
         this.svg.rectHorizontal = group.append("rect"),
         this.svg.rectVertical = group.append("rect")
       }
+
+
 
       /**
         render()
@@ -69,6 +73,8 @@ define(
           .style("fill", "green")
 
       }
+
+      
 
       /**
         onClick()

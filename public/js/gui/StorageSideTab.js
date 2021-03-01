@@ -16,7 +16,7 @@ define(
         @param windowDims the dimensions of the window that the tab will
           be on
       */
-      constructor(storage, windowDims) {
+      constructor(windowDims) {
         super(
           {x: windowDims.width - 30, y: 0},
           {width: 30, height: 100}, // button dimensions
@@ -24,15 +24,8 @@ define(
           windowDims, // window dimensions
           "Inventory"
         )
-
-        this.storage = storage
-        this.storage.moveTo({
-          x: this.position.x + this.buttonDims.width,
-          y: this.position.y + 30
-        })
-
-        this.storage.addGraphicsTo(this.svg.contentAreaGroup)
       }
+
 
 
 
@@ -40,8 +33,14 @@ define(
         setStorage()
         @description sets the storage of this tab
       */
-      setStorage() {
+      setStorage(storage) {
+        this.storage = storage
+        this.storage.moveTo({
+          x: this.position.x + this.buttonDims.width,
+          y: this.position.y + 30
+        })
 
+        this.storage.addGraphicsTo(this.svg.contentAreaGroup)
       }
 
       /**
