@@ -10,7 +10,6 @@ define([
     d3) {
     return class World {
 
-
       constructor(player, position) {
         this.position = position
         this.blocks = {};
@@ -18,6 +17,12 @@ define([
 
         var mainSVG = d3.select("body").select("svg")
         this.svgGroup = mainSVG.append("g")
+
+        this.addBlock(new WaterBlock(this.player, this, {x: 0, y: 0}))// origin block
+        this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: 1}))
+        this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: -1}))
+        this.addBlock(new ExpansionBlock(this.player, this, {x: -1, y: 0}))
+        this.addBlock(new ExpansionBlock(this.player, this, {x: 1, y: 0}))
       }
 
       /**
@@ -37,17 +42,17 @@ define([
         fromJSON()
         @description converts a json object into this world
       */
-      fromJSON(player, json) {
+      fromJSON(player, world, json) {
         for (var key of Object.keys(json)) {
           var block = null;
           if(json[key].name === "ExpansionBlock") {
-            block = ExpansionBlock.fromJSON(player, json[key])
+            block = ExpansionBlock.fromJSON(player, world, json[key])
           } else if(json[key].name === "FarmBlock") {
-            block = FarmBlock.fromJSON(player, json[key])
+            block = FarmBlock.fromJSON(player, world, json[key])
           } else if(json[key].name === "WaterBlock") {
-            block = WaterBlock.fromJSON(player, json[key])
+            block = WaterBlock.fromJSON(player, world, json[key])
           } else {
-            block = Block.fromJSON(player, json[key]);
+            block = Block.fromJSON(player, world, json[key]);
           }
 
           this.blocks[key] = block
@@ -146,7 +151,7 @@ define([
         // block unless there are blocks already there
 
         // left
-        var leftExp = new ExpansionBlock(this.player, {
+        var leftExp = new ExpansionBlock(this.player, this, {
           x: block.coordinate.x - 1,
           y: block.coordinate.y
         })
@@ -157,7 +162,7 @@ define([
 
 
         // right
-        var rightExp = new ExpansionBlock(this.player, {
+        var rightExp = new ExpansionBlock(this.player, this, {
           x: block.coordinate.x + 1,
           y: block.coordinate.y
         })
@@ -167,7 +172,7 @@ define([
         }
 
         // top
-        var topExp = new ExpansionBlock(this.player, {
+        var topExp = new ExpansionBlock(this.player, this, {
           x: block.coordinate.x,
           y: block.coordinate.y - 1
         })
@@ -177,7 +182,7 @@ define([
         }
 
         // bottom
-        var bottomExp = new ExpansionBlock(this.player, {
+        var bottomExp = new ExpansionBlock(this.player, this, {
           x: block.coordinate.x,
           y: block.coordinate.y + 1
         })

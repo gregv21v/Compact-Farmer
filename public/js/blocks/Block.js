@@ -19,19 +19,20 @@ define(
         constructor()
         @description constructs the block
       */
-      constructor(player, coordinate) {
+      constructor(player, world, coordinate) {
         this.name = "Block"
         this.player = player;
+        this.world = world;
         this.coordinate = coordinate;
 
         // the resources needed to craft this item
         this.svg = {}
-        this.svg.background = this.player.world.svgGroup.append("rect")
+        this.svg.background = this.world.svgGroup.append("rect")
 
-        this.svg.graphicsGroup = this.player.world.svgGroup.append("g")
+        this.svg.graphicsGroup = this.world.svgGroup.append("g")
         this.createGraphic(this.svg.graphicsGroup);
 
-        this.svg.clickArea = this.player.world.svgGroup.append("rect")
+        this.svg.clickArea = this.world.svgGroup.append("rect")
       }
 
       /**
@@ -49,8 +50,8 @@ define(
         fromJSON()
         @description converts a json object into this world
       */
-      static fromJSON(player, json) {
-        return new Block(player, json.coordinate);
+      static fromJSON(player, world, json) {
+        return new Block(player, world, json.coordinate);
       }
 
       /**
@@ -135,7 +136,7 @@ define(
         @description gets the position of the block in the world
       */
       getWorldPosition() {
-        return this.player.world.coordinateToPosition(this.coordinate)
+        return this.world.coordinateToPosition(this.coordinate)
       }
 
       /**

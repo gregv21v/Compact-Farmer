@@ -11,8 +11,8 @@ define(
         constructor()
         @description constructs the item
       */
-      constructor(player, coordinate) {
-        super(player, coordinate)
+      constructor(player, world, coordinate) {
+        super(player, world, coordinate)
 
         this.name = "WaterBlock"
       }
@@ -21,8 +21,8 @@ define(
         fromJSON()
         @description converts a json object into this world
       */
-      static fromJSON(player, json) {
-        return new WaterBlock(player, json.coordinate);
+      static fromJSON(player, world, json) {
+        return new WaterBlock(player, world, json.coordinate);
       }
 
       /**

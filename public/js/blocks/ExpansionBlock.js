@@ -15,8 +15,8 @@ define(
         constructor()
         @description constructs the item
       */
-      constructor(player, coordinate) {
-        super(player, coordinate)
+      constructor(player, world, coordinate) {
+        super(player, world, coordinate)
 
 
         this.name = "ExpansionBlock"
@@ -26,8 +26,8 @@ define(
         fromJSON()
         @description converts a json object into this world
       */
-      static fromJSON(player, json) {
-        return new ExpansionBlock(player, json.coordinate);
+      static fromJSON(player, world, json) {
+        return new ExpansionBlock(player, world, json.coordinate);
       }
 
       /**
@@ -53,7 +53,7 @@ define(
       render() {
         super.render()
 
-        var worldPosition = this.player.world.coordinateToPosition(this.coordinate);
+        var worldPosition = this.world.coordinateToPosition(this.coordinate);
         var size = Block.size;
         var crossWidth = size / 4;
 
@@ -74,14 +74,14 @@ define(
 
       }
 
-      
+
 
       /**
         onClick()
         @description the function called when this block is clicked
       */
       onClick() {
-        this.player.world.expand(new FarmBlock(this.player, this.coordinate))
+        this.world.expand(new FarmBlock(this.player, this.world, this.coordinate))
       }
 
       /**

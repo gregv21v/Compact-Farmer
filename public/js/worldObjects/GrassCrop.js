@@ -46,7 +46,7 @@ define(
         @description get the time it takes to grow the crop in miliseconds
       */
       getGrowTime() {
-        return 100;
+        return 500;
       }
     }
   })

@@ -7,17 +7,18 @@ define(
     "items/HoeItem",
     "blocks/Block",
     "worldObjects/Crop",
+    "worldObjects/GrassCrop",
     "d3"
   ],
-  function(SeedItem, HoeItem, Block, Crop, d3) {
+  function(SeedItem, HoeItem, Block, Crop, GrassCrop, d3) {
     return class FarmBlock extends Block {
 
       /**
         constructor()
         @description constructs the item
       */
-      constructor(player, coordinate) {
-        super(player, coordinate)
+      constructor(player, world, coordinate) {
+        super(player, world, coordinate)
 
         this.name = "FarmBlock"
         this.crop = null;
@@ -52,8 +53,8 @@ define(
         fromJSON()
         @description converts a json object into this world
       */
-      static fromJSON(player, json) {
-        var newFarmBlock = new FarmBlock(player, json.coordinate)
+      static fromJSON(player, world, json) {
+        var newFarmBlock = new FarmBlock(player, world, json.coordinate)
         newFarmBlock.crop = null;
         if(json.crop !== null) {
           if(json.crop.name === "GrassCrop") {
@@ -61,6 +62,7 @@ define(
           } else {
             newFarmBlock.crop = Crop.fromJSON(json)
           }
+          newFarmBlock.crop.setBlock(newFarmBlock);
         }
         newFarmBlock.isCropFullyGrown = json.isCropFullyGrown;
         newFarmBlock.isHydrated = json.isHydrated;
@@ -111,7 +113,7 @@ define(
           this.crop.render()
         }
 
-        var worldPosition = this.player.world.coordinateToPosition(this.coordinate);
+        var worldPosition = this.world.coordinateToPosition(this.coordinate);
         // render the background
         if(this.isHydrated)
           this.svg.background.style("fill", "#42240a")
@@ -216,7 +218,7 @@ define(
 
       */
       plow() {
-        var worldPosition = this.player.world.coordinateToPosition(this.coordinate);
+        var worldPosition = this.world.coordinateToPosition(this.coordinate);
 
         for (var i = 0; i < this.rows; i++) {
           this.svg.rows[i]

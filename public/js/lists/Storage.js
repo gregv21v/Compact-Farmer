@@ -25,6 +25,11 @@ define(["items/Slot", "d3"],
         this.rows = rows;
         this.columns = columns
         this.selectedSlot = null;
+
+        // determines if you can move objects
+        // from one slot to another in the inventory
+        this.itemsMovable = false;
+
         this.svg = {
           group: d3.create("svg:g")
         }
@@ -61,7 +66,7 @@ define(["items/Slot", "d3"],
           var newRow = []
           for (var y = 0; y < this.rows; y++) {
             var newSlot = Slot.fromJSON(
-              this,
+              this.player, this,
               json.slots[x][y],
               {
                 x: this.position.x + this.slotSize * x,

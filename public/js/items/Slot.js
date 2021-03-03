@@ -17,7 +17,8 @@ define(
       */
       constructor(storage, position) {
         this.item = null;
-        this.storage = storage
+        this.storage = storage;
+        //this.player = player;
         this.position = position;
         this.size = 50;
         this.svg = {}
@@ -46,8 +47,9 @@ define(
         fromJSON()
         @description converts json to a slot object
       */
-      static fromJSON(storage, json, position) {
+      static fromJSON(player, storage, json, position) {
         var slot = new Slot(storage, position)
+        console.log(json);
         if(json.item !== null) {
           if(json.item.name === "GrassBladeItem") {
             slot.addItem(new GrassBladeItem())
@@ -199,6 +201,7 @@ define(
         this.storage.deselectAll()
         this.storage.select(this)
         this.select()
+
       }
 
       /**

@@ -1,4 +1,4 @@
-define(["game/Player"], function(Player) {
-  var player = new Player();
-  player.addGraphics()
+define(["game/Game"], function(Game) {
+  var game = new Game();
+  game.addGraphics()
 })
