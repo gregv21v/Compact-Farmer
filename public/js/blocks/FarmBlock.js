@@ -25,6 +25,7 @@ define(
         this.isCropFullyGrown = false; // there are two stages, start and complete
         this.isHydrated = false;
         this.isPlowed = false;
+        this.growthProgress = 0;
       }
 
 
@@ -45,7 +46,8 @@ define(
           crop: crop,
           isCropFullyGrown: this.isCropFullyGrown,
           isHydrated: this.isHydrated,
-          isPlowed: this.isPlowed
+          isPlowed: this.isPlowed,
+          growthProgress: this.growthProgress
         }
       }
 
@@ -55,6 +57,7 @@ define(
       */
       static fromJSON(player, world, json) {
         var newFarmBlock = new FarmBlock(player, world, json.coordinate)
+        newFarmBlock.growthProgress = json.growthProgress;
         newFarmBlock.crop = null;
         if(json.crop !== null) {
           if(json.crop.name === "GrassCrop") {
@@ -63,10 +66,12 @@ define(
             newFarmBlock.crop = Crop.fromJSON(json)
           }
           newFarmBlock.crop.setBlock(newFarmBlock);
+          newFarmBlock.setGrowthTimer()
         }
         newFarmBlock.isCropFullyGrown = json.isCropFullyGrown;
         newFarmBlock.isHydrated = json.isHydrated;
         newFarmBlock.isPlowed = json.isPlowed;
+
         return newFarmBlock;
       }
 
@@ -168,6 +173,7 @@ define(
           if(this.crop === null && this.isHydrated && this.isPlowed) {
             var crop = selectedItem.getCrop();
             crop.setBlock(this);
+            this.player.toolbar.useSelectedSlot()
             this.plantCrop(crop);
           }
         } else if(selectedItem instanceof HoeItem) {
@@ -194,17 +200,24 @@ define(
       plantCrop(crop) {
         this.crop = crop
         this.crop.render()
+        this.growthProgress = 0;
+        this.setGrowthTimer()
+      }
 
+      /**
+        growthFrame()
+        @description the frame of the growth of the plant
+      */
+      setGrowthTimer() {
         var self = this;
-        var width = 0;
-        var id = setInterval(frame, crop.getGrowTime());
+        var id = setInterval(frame, this.crop.getGrowTime());
         function frame() {
-          if (width >= Block.size) {
+          if (self.growthProgress >= Block.size) {
             self.isCropFullyGrown = true;
             clearInterval(id);
           } else {
-            width++;
-            self.svg.progressBar.attr("width", width)
+            self.growthProgress++;
+            self.svg.progressBar.attr("width", self.growthProgress)
           }
         }
       }

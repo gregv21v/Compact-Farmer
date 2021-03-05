@@ -5,6 +5,8 @@ define(
       /**
         constructor()
         @description constructs the recipe
+        @param cropName the name of the input crop
+        @param outputs an array of item PlantOutput objects
       */
       constructor(cropName, outputs) {
         this.input = cropName;
@@ -18,9 +20,9 @@ define(
       getProducts() {
         var products = []
         for (var output of this.outputs) {
-          products.push(output.clone())
+          products.push(output.getOutput())
         }
-        return products
+        return products;
       }
     }
   }

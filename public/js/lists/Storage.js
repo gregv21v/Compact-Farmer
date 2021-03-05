@@ -35,6 +35,10 @@ define(["items/Slot", "d3"],
         }
       }
 
+
+      /********************************************************
+                        JSON Function
+      *********************************************************/
       /**
         toJSON()
         @description converts this storage to its json representation
@@ -106,6 +110,14 @@ define(["items/Slot", "d3"],
             }
           }
         }
+      }
+
+      /**
+        useSelectedItem()
+        @description use the selected item
+      */
+      useSelectedSlot() {
+        this.selectedSlot.useSlot();
       }
 
       /**

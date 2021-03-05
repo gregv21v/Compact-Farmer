@@ -4,16 +4,12 @@ define([
   "gui/DragButton",
   "gui/SaveButton",
   "gui/LoadButton",
-
-  "items/GrassSeedItem",
-  "items/GrassBladeItem",
-  "items/HoeItem",
+  
   "d3"
 
 ], function(
   StorageSideTab, CraftingSideTab,
   DragButton, SaveButton, LoadButton,
-  GrassSeedItem, GrassBladeItem, HoeItem,
   d3
 ) {
   return class HUD {
@@ -28,18 +24,6 @@ define([
       this.inventoryTab.setStorage(this.player.inventory)
       this.craftingTab = new CraftingSideTab(
         {width: this.width, height: this.height}
-      )
-
-      this.player.toolbar.add(
-        new GrassBladeItem()
-      )
-
-      this.player.toolbar.add(
-        new GrassSeedItem()
-      )
-
-      this.player.toolbar.add(
-        new HoeItem()
       )
 
       this.player.toolbar.moveTo({

@@ -25,8 +25,10 @@ define(
         this.svg = {}
         this.svg.group = d3.create("svg:g")
         this.svg.background = this.svg.group.append("rect")
-        this.svg.label = this.svg.group.append("text")
+
         this.svg.graphicGroup = this.svg.group.append("g")
+        this.svg.label = this.svg.group.append("text")
+        this.svg.count = this.svg.group.append("text")
         this.createGraphic(this.svg.graphicGroup)
         this.svg.clickArea = this.svg.group.append("rect")
       }
@@ -68,21 +70,25 @@ define(
           .style("fill", "grey")
           .style("stroke", "black")
 
-        var textPos = {
-          x: this.position.x + this.size/2,
-          y: this.position.y + this.size - 5
-        }
-
         this.svg.label
-          .attr("x", textPos.x)
-          .attr("y", textPos.y)
+          .attr("x", this.position.x + this.size/2)
+          .attr("y", this.position.y + this.size - 5)
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "central")
           .style("stroke", "black")
           .style("font-size", "10px")
           .text(this.name)
 
+        this.svg.count
+          .attr("x", this.position.x + this.size - 5)
+          .attr("y", this.position.y + 5)
+          .attr("text-anchor", "center")
+          .attr("dominant-baseline", "central")
+          .style("stroke", "black")
+          .style("font-size", "10px")
+          .text(this.quantity)
 
+        var self = this;
 
         this.svg.clickArea
           .attr("x", this.position.x)
@@ -132,6 +138,11 @@ define(
           .attr("x", textPos.x)
           .attr("y", textPos.y)
 
+        this.svg.count
+          .attr("x", this.position.x + this.size - 5)
+          .attr("y", this.position.y + 5)
+
+
         this.svg.clickArea
           .attr("x", this.position.x)
           .attr("y", this.position.y)
@@ -162,7 +173,7 @@ define(
           the item
       */
       onMouseDown() {
-
+        //
       }
 
       /**

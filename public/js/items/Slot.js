@@ -26,6 +26,27 @@ define(
         this.svg.background = this.svg.group.append("rect")
         this.svg.itemGroup = this.svg.group.append("g")
         this.svg.clickArea = this.svg.group.append("rect")
+
+        var self = this;
+        var dragHandler = d3.drag()
+          .on("start", function(event) {
+            if(self.item !== null) {
+              self.item.setPosition({
+                x: event.x - self.size/2,
+                y: event.y - self.size/2
+              })
+            }
+          })
+          .on("drag", function(event) {
+            if(self.item !== null) {
+              self.item.setPosition({
+                x: event.x - self.size/2,
+                y: event.y - self.size/2
+              })
+            }
+          })
+
+          dragHandler(this.svg.group)
       }
 
       /**
@@ -92,6 +113,7 @@ define(
           .on("click", function() {self.onClick()})
           .on("mouseover", function() {self.onMouseEnter()})
           .on("mouseout", function() {self.onMouseLeave()})
+          .on("mousedown", function() {self.onMouseDown()})
       }
 
 
@@ -110,6 +132,29 @@ define(
 
           this.item.initSVG();
           this.svg.itemGroup.append(() => this.item.getGraphic().node());
+        }
+      }
+
+      /**
+        removeItem()
+        @description removes the item from this slot
+      */
+      removeItem() {
+        if(this.item !== null) {
+          this.svg.itemGroup.selectAll("*").remove()
+          this.item = null;
+        }
+      }
+
+      /**
+        useSlot()
+        @description use the item in this slot
+      */
+      useSlot() {
+        if(this.item.quantity - 1 > 0) {
+          this.item.quantity -= 1;
+        } else {
+          this.removeItem();
         }
       }
 
@@ -202,6 +247,15 @@ define(
         this.storage.select(this)
         this.select()
 
+      }
+
+
+      /**
+        onMouseDown()
+        @description the function called when the mouse is pressed down on the slot
+      */
+      onMouseDown() {
+        //this.player.hand =
       }
 
       /**
