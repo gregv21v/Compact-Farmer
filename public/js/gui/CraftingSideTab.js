@@ -5,15 +5,14 @@ define(
   [
     "gui/SideTab",
     "gui/Button",
-    "lists/Storage",
+    "inventories/Inventory",
     "d3"
   ],
-  function(SideTab, Button, Storage, d3) {
+  function(SideTab, Button, Inventory, d3) {
     return class CraftingSideTab extends SideTab {
       /**
         constructor()
         @description constructs the InventorySideTab
-        @param storage the inventory to display in this tab
         @param windowDims the dimensions of the window that the tab will
           be on
       */
@@ -26,20 +25,12 @@ define(
           "Craft"
         )
 
-        this.storage = new Storage(3, 3)
-        this.storage.moveTo({
-          x: this.position.x + this.buttonDims.width,
-          y: this.position.y + 30
-        })
-
-        this.storage.addGraphicsTo(this.svg.contentAreaGroup)
-
         var craftButtonWidth = 100;
         var craftButtonHeight = 40
         this.craftButton = new Button(
           {
             x: this.position.x + this.contentDims.width,
-            y: this.position.y + this.storage.getHeight() + 30
+            y: this.position.y + 150 + 30
           },
           craftButtonWidth, craftButtonHeight,
           "Craft"
@@ -50,6 +41,28 @@ define(
       }
 
 
+      /**
+        set inventory
+        @description sets the crafting inventory of this tab
+      */
+      set inventory(inventory) {
+        this._inventory = inventory
+        this._inventory.moveTo({
+          x: this.position.x + this.buttonDims.width,
+          y: this.position.y + 30
+        })
+        this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
+      }
+
+      /**
+        set inventoryManager
+        @description sets the inventory manager of this inventory tab
+        @param value the inventory manager to be set
+      */
+      set inventoryManager(value) {
+        this._inventoryManager = value;
+      }
+
 
       /**
         open()
@@ -58,12 +71,12 @@ define(
       open() {
         super.open();
 
-        this.storage.moveTo({
+        this._inventory.moveTo({
           x: this.position.x +
               this.buttonDims.width -
               this.contentDims.width +
               this.contentDims.width / 2 -
-              this.storage.getWidth() / 2,
+              this._inventory.getWidth() / 2,
           y: this.position.y + 30
         })
 
@@ -73,9 +86,11 @@ define(
               this.contentDims.width +
               this.contentDims.width / 2 -
               this.craftButton.getWidth() / 2,
-          y: this.position.y + this.storage.getHeight() + 40
+          y: this.position.y + this._inventory.getHeight() + 40
         })
 
+        this._inventory.activate()
+        this._inventoryManager.allowItemMovement();
       }
 
       /**
@@ -85,7 +100,7 @@ define(
       close() {
         super.close()
 
-        this.storage.moveTo({
+        this._inventory.moveTo({
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 30
         })
@@ -94,6 +109,9 @@ define(
           x: this.position.x + this.buttonDims.width + this.craftButton.getWidth(),
           y: this.position.y + 30
         })
+
+        this._inventory.deactivate()
+        this._inventoryManager.disallowItemMovement();
 
       }
 

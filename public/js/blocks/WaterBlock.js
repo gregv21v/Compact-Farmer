@@ -2,8 +2,8 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["blocks/Block", "blocks/FarmBlock", "d3"],
-  function(Block, FarmBlock, d3) {
+  ["items/SieveItem", "blocks/Block", "blocks/FarmBlock", "d3"],
+  function(SieveItem, Block, FarmBlock, d3) {
     return class WaterBlock extends Block {
 
 
@@ -60,11 +60,16 @@ define(
       }
 
       /**
-        plow()
-        @description prepares this plot of land for planting
-
+        onClick()
+        @description the function called when this block is clicked
       */
-      plow() {
+      onClick() {
+        var selectedItem = this.player.toolbar.currentlySelected.item
+
+        if(selectedItem instanceof SieveItem) {
+          // sieve
+          this.sieve()
+        }
 
       }
 
@@ -72,8 +77,14 @@ define(
         harvest()
         @description harvest the crop from this plot of land
       */
-      harvest() {
-
+      sieve() {
+        var recipe = this.player.recipeRegistry.lookup("GrassSieve")
+        var products = recipe.getProducts();
+        console.log(products);
+        for (var product of products) {
+          this.player.inventory.add(product)
+        }
+        console.log("Sieved");
       }
 
     }

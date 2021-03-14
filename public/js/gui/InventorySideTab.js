@@ -4,11 +4,10 @@
 define(
   [
     "gui/SideTab",
-    "lists/Storage",
     "d3"
   ],
-  function(SideTab, Storage, d3) {
-    return class StorageSideTab extends SideTab {
+  function(SideTab, d3) {
+    return class InventorySideTab extends SideTab {
       /**
         constructor()
         @description constructs the InventorySideTab
@@ -28,19 +27,29 @@ define(
 
 
 
-
       /**
-        setStorage()
-        @description sets the storage of this tab
+        set inventory
+        @description sets the inventory of this tab
+        @param inventory the inventory to set this inventory to
       */
-      setStorage(storage) {
-        this.storage = storage
-        this.storage.moveTo({
+      set inventory(inventory) {
+        this._inventory = inventory
+        this._inventory.moveTo({
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 30
         })
 
-        this.storage.addGraphicsTo(this.svg.contentAreaGroup)
+        this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
+      }
+
+
+      /**
+        set inventoryManager
+        @description sets the inventory manager of this inventory tab
+        @param value the inventory manager to be set
+      */
+      set inventoryManager(value) {
+        this._inventoryManager = value;
       }
 
       /**
@@ -50,15 +59,18 @@ define(
       open() {
         super.open();
 
-        this.storage.moveTo({
+        this._inventory.moveTo({
           x: this.position.x +
               this.buttonDims.width -
               this.contentDims.width +
               this.contentDims.width / 2 -
-              this.storage.getWidth() / 2,
+              this._inventory.width / 2,
           y: this.position.y + 30
         })
 
+        // Allow all active inventories to move items
+        this._inventory.activate()
+        this._inventoryManager.allowItemMovement();
       }
 
       /**
@@ -68,11 +80,13 @@ define(
       close() {
         super.close()
 
-        this.storage.moveTo({
+        this._inventory.moveTo({
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 30
         })
 
+        this._inventory.deactivate()
+        this._inventoryManager.disallowItemMovement();
       }
 
     }

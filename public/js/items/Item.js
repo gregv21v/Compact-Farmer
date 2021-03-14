@@ -11,9 +11,9 @@ define(
       */
       constructor(position = {x: 0, y: 0}) {
         this.name = "Item"
-        this.position = position;
+        this._position = position;
         this.size = 40
-        this.quantity = 1;
+        this._quantity = 1;
 
         // tooltip dimensions
         this.tooltip = {
@@ -25,7 +25,6 @@ define(
         this.svg = {}
         this.svg.group = d3.create("svg:g")
         this.svg.background = this.svg.group.append("rect")
-
         this.svg.graphicGroup = this.svg.group.append("g")
         this.svg.label = this.svg.group.append("text")
         this.svg.count = this.svg.group.append("text")
@@ -40,7 +39,7 @@ define(
       toJSON() {
         return {
           name: this.name,
-          quantity: this.quantity
+          quantity: this._quantity
         }
       }
 
@@ -49,8 +48,8 @@ define(
         @description make a copy of this crop
       */
       clone() {
-        var clone = new Item(this.position);
-        clone.quantity = this.quantity;
+        var clone = new Item(this._position);
+        clone.quantity = this._quantity;
 
         clone.initSVG()
         return clone
@@ -61,18 +60,20 @@ define(
         @description initialize the values for the svg
       */
       initSVG() {
+        this.svg.group.attr("class", "item")
+
         // render the background
         this.svg.background
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
           .style("fill", "grey")
           .style("stroke", "black")
 
         this.svg.label
-          .attr("x", this.position.x + this.size/2)
-          .attr("y", this.position.y + this.size - 5)
+          .attr("x", this._position.x + this.size/2)
+          .attr("y", this._position.y + this.size - 5)
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "central")
           .style("stroke", "black")
@@ -80,19 +81,19 @@ define(
           .text(this.name)
 
         this.svg.count
-          .attr("x", this.position.x + this.size - 5)
-          .attr("y", this.position.y + 5)
+          .attr("x", this._position.x + this.size - 5)
+          .attr("y", this._position.y + 5)
           .attr("text-anchor", "center")
           .attr("dominant-baseline", "central")
           .style("stroke", "black")
           .style("font-size", "10px")
-          .text(this.quantity)
+          .text(this._quantity)
 
         var self = this;
 
         this.svg.clickArea
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
           .style("fill-opacity", 0)
@@ -116,22 +117,40 @@ define(
         this.svg.tooltipRect = this.svg.tooltip.append("rect")
       }
 
+      /**
+        set quantity
+        @description sets the quantity of this item
+        @param value the value to set the quantity to
+      */
+      set quantity(value) {
+        this._quantity = value
+        this.svg.count.text(value)
+      }
+
+      /**
+        get quantity
+        @description sets the quantity of this item
+        @param value the value to set the quantity to
+      */
+      get quantity() {
+        return this._quantity;  
+      }
 
       /**
         setPosition()
         @description sets the position of this item
         @param position the new position of this item
       */
-      setPosition(position) {
-        this.position = position
+      set position(position) {
+        this._position = position
 
         this.svg.background
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
 
         var textPos = {
-          x: this.position.x + this.size/2,
-          y: this.position.y + this.size - 5
+          x: this._position.x + this.size/2,
+          y: this._position.y + this.size - 5
         }
 
         this.svg.label
@@ -139,22 +158,29 @@ define(
           .attr("y", textPos.y)
 
         this.svg.count
-          .attr("x", this.position.x + this.size - 5)
-          .attr("y", this.position.y + 5)
+          .attr("x", this._position.x + this.size - 5)
+          .attr("y", this._position.y + 5)
 
 
         this.svg.clickArea
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
       }
 
       /**
-        getGraphic()
-        @description gets the svg graphic representing
-          this item
+        get position
+        @description gets the position of the item
       */
-      getGraphic() {
-        return this.svg.group;
+      get position() {
+        return this._position;
+      }
+
+      /**
+        addGraphicsTo()
+        @description adds the graphics to the parent svg
+      */
+      addGraphicsTo(parent) {
+        parent.append(() => this.svg.group.node())
       }
 
 
@@ -183,9 +209,6 @@ define(
       */
       onMouseOver() {
         // display the tooltip
-
-
-
       }
 
       /**

@@ -2,16 +2,16 @@
   Item
 */
 define(
-  ["worldObjects/Crop", "items/Item", "d3"],
-  function(Crop, Item, d3) {
-    return class GrassBladeItem extends Item {
+  ["items/SieveItem", "d3"],
+  function(SieveItem, d3) {
+    return class GrassSieveItem extends SieveItem {
       /**
         constructor()
         @description constructs the block
       */
       constructor(position = {x: 0, y: 0}) {
         super(position)
-        this.name = "GrassBladeItem"
+        this.name = "GrassSieveItem"
       }
 
 
@@ -40,7 +40,7 @@ define(
           .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
-          .attr("href", "images/grass.png")
+          .attr("href", "images/grass-sieve.png")
       }
 
 
@@ -72,7 +72,7 @@ define(
         @description make a copy of this crop
       */
       clone() {
-        var clone = new GrassBladeItem(this._position);
+        var clone = new GrassSieveItem(this._position);
         clone.quantity = this.quantity;
 
         clone.initSVG()

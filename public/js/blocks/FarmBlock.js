@@ -166,7 +166,8 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-        var selectedItem = this.player.toolbar.getCurrentlySelected().item
+        var selectedItem = this.player.toolbar.currentlySelected.item
+        console.log("Farm Block Clicked");
 
         if(selectedItem instanceof SeedItem) {
           // plant seeds

@@ -1,15 +1,20 @@
 define(
   [
-    "lists/Storage", "lists/Toolbar",
+    "inventories/Inventory", "inventories/Toolbar", "inventories/InventoryManager",
     "recipes/PlantOutput", "recipes/PlantRecipe", "recipes/PlantRecipeRegistry",
-    "items/HoeItem", "items/GrassBladeItem", "items/GrassSeedItem",
+    "items/HoeItem",
+    "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
+    "items/SpinachSeedItem",
+    "items/ItemRegistry",
     "d3"
   ],
   function(
-    Storage, Toolbar,
+    Inventory, Toolbar, InventoryManager,
     PlantOutput, PlantRecipe, PlantRecipeRegistry,
     HoeItem,
-    GrassBladeItem, GrassSeedItem,
+    GrassBladeItem, GrassSeedItem, GrassSieveItem,
+    SpinachSeedItem,
+    ItemRegistry,
     d3
   ) {
     return class Player {
@@ -17,8 +22,14 @@ define(
         var self = this;
 
         this.hand = null; // an item/object that follows the curser movement
-        this.inventory = new Storage(6, 5)
-        this.toolbar = new Toolbar()
+        this.inventoryManager = new InventoryManager()
+        this.inventory = new Inventory(this.inventoryManager, 6, 5)
+        this.craftingInventory = new Inventory(this.inventoryManager, 3, 3)
+        this.toolbar = new Toolbar(this.inventoryManager)
+
+        this.inventoryManager.addInventory(this.inventory);
+        this.inventoryManager.addInventory(this.toolbar);
+        this.inventoryManager.addInventory(this.craftingInventory);
 
         this.toolbar.add(
           new GrassSeedItem()
@@ -28,7 +39,12 @@ define(
           new HoeItem()
         )
 
+        this.toolbar.add(
+          new GrassSieveItem()
+        )
+
         this.registerRecipes();
+        this.registerItems()
 
         var mainSVG = d3.select("body").select("svg")
         mainSVG.on("mousemove", function() { self.onMouseMove() })
@@ -41,6 +57,21 @@ define(
       */
       onMouseMove() {
         //this.hand.setPosition(d3.mouse)
+      }
+
+
+      /**
+        registerItems()
+        @description register items
+      */
+      registerItems() {
+        this.itemRegistry = new ItemRegistry();
+
+        this.itemRegistry.registerItem(new GrassSeedItem())
+        this.itemRegistry.registerItem(new SpinachSeedItem())
+        this.itemRegistry.registerItem(new GrassBladeItem())
+        this.itemRegistry.registerItem(new GrassSieveItem())
+        this.itemRegistry.registerItem(new HoeItem())
       }
 
       /**
@@ -61,6 +92,18 @@ define(
               new PlantOutput(
                 new GrassBladeItem(),
                 1, 2
+              )
+            ]
+          )
+        )
+
+        this.recipeRegistry.add(
+          new PlantRecipe(
+            "GrassSieve",
+            [
+              new PlantOutput(
+                new SpinachSeedItem(),
+                1, 3
               )
             ]
           )

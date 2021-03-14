@@ -1,14 +1,14 @@
 define([
-  "gui/StorageSideTab",
+  "gui/InventorySideTab",
   "gui/CraftingSideTab",
   "gui/DragButton",
   "gui/SaveButton",
   "gui/LoadButton",
-  
+
   "d3"
 
 ], function(
-  StorageSideTab, CraftingSideTab,
+  InventorySideTab, CraftingSideTab,
   DragButton, SaveButton, LoadButton,
   d3
 ) {
@@ -18,16 +18,19 @@ define([
       this.height = window.innerHeight
       this.player = player;
       this.world = world;
-      this.inventoryTab = new StorageSideTab(
+      this.inventoryTab = new InventorySideTab(
         {width: this.width, height: this.height}
       )
-      this.inventoryTab.setStorage(this.player.inventory)
+      this.inventoryTab.inventory = this.player.inventory
+      this.inventoryTab.inventoryManager = this.player.inventoryManager;
       this.craftingTab = new CraftingSideTab(
         {width: this.width, height: this.height}
       )
+      this.craftingTab.inventory = this.player.craftingInventory
+      this.craftingTab.inventoryManager = this.player.inventoryManager;
 
       this.player.toolbar.moveTo({
-        x: this.width / 2 - this.player.toolbar.getWidth() / 2,
+        x: this.width / 2 - this.player.toolbar.width / 2,
         y: this.height - 50
       })
 
@@ -51,14 +54,16 @@ define([
     }
 
     addGraphics() {
-      var svgMain = d3.select("body").select("svg")
-      this.player.toolbar.addGraphicsTo(svgMain)
+      var svgMain = d3.select("body").select("svg").append("g")
 
       this.inventoryTab.initSVG()
       this.inventoryTab.addGraphicsTo(svgMain)
 
       this.craftingTab.initSVG()
       this.craftingTab.addGraphicsTo(svgMain)
+
+      this.player.toolbar.initSVG()
+      this.player.toolbar.addGraphicsTo(svgMain)
 
       this.dragBtn.initSVG()
       this.dragBtn.addGraphicsTo(svgMain)

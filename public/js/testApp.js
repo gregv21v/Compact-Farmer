@@ -7,6 +7,7 @@ requirejs.config({
     baseUrl: 'lib',
     paths: {
         game: "../js",
+        tests: "../js/tests",
         gui: "../js/gui",
         recipes: "../js/recipes",
         worldObjects: "../js/worldObjects",
@@ -20,4 +21,4 @@ requirejs.config({
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs(['game/main']);
+requirejs(['game/testMain']);

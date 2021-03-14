@@ -2,17 +2,17 @@
   Item
 */
 define(
-  ["worldObjects/Crop", "items/Item", "d3"],
-  function(Crop, Item, d3) {
-    return class SeedItem extends Item {
+  ["worldObjects/Crop", "items/SeedItem", "d3"],
+  function(Crop, SeedItem, d3) {
+    return class SpinachSeedItem extends SeedItem {
       /**
         constructor()
         @description constructs the block
       */
       constructor(position = {x: 0, y: 0}) {
         super(position)
-        this.name = "SeedItem"
-        this.seedColor = "white"
+        this.name = "SpinachSeedItem"
+        this.seedColor = "#1d4016"
       }
 
       /**
@@ -119,6 +119,18 @@ define(
       onClick() {
         // do something ...
         console.log(this.name);
+      }
+
+      /**
+        clone()
+        @description make a copy of this crop
+      */
+      clone() {
+        var clone = new SpinachSeedItem(this.position);
+        clone.quantity = this.quantity;
+
+        clone.initSVG()
+        return clone
       }
     }
   })

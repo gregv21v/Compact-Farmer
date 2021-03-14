@@ -36,35 +36,44 @@ define(
         super.initSVG();
 
         this.svg.image
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
-          .attr("href", "images/stick.png")
+          .attr("href", "images/hoe.png")
       }
 
 
 
 
       /**
-        setPosition()
+        set position
         @description sets the position of this item
         @param position the new position of this item
       */
-      setPosition(position) {
-        super.setPosition(position);
+      set position(position) {
+        super.position = position;
 
         this.svg.image
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
       }
+
+      /**
+        get position
+        @description gets the position of the item
+      */
+      get position() {
+        return super.position;
+      }
+
 
       /**
         clone()
         @description make a copy of this crop
       */
       clone() {
-        var clone = new GrassBladeItem(this.position);
+        var clone = new GrassBladeItem(this._position);
         clone.quantity = this.quantity;
 
         clone.initSVG()
@@ -76,8 +85,7 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-        // do something ...
-        console.log(this.name);
+
       }
     }
   })

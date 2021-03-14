@@ -6,7 +6,8 @@ define([
 ], function(
     Player, World, HUD,
     PlantRecipe, PlantRecipeRegistry,
-    GrassSeedItem, GrassBladeItem, d3, $
+    GrassSeedItem, GrassBladeItem,
+    d3, $
   ) {
   return class Game {
     constructor() {
@@ -20,7 +21,6 @@ define([
         .select("svg")
         .attr("width", this.width)
         .attr("height", this.height)
-
 
     }
 
@@ -48,12 +48,12 @@ define([
 
       this.player.inventory.delete()
       this.player.inventory.fromJSON(json.inventory)
-      this.hud.inventoryTab.setStorage(this.player.inventory)
+      this.hud.inventoryTab.inventory = this.player.inventory
 
       this.player.toolbar.delete()
       this.player.toolbar.fromJSON(json.toolbar)
       this.player.toolbar.moveTo({
-        x: this.width / 2 - this.player.toolbar.getWidth() / 2,
+        x: this.width / 2 - this.player.toolbar.width / 2,
         y: this.height - 50
       })
 
