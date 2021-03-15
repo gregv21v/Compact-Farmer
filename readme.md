@@ -17,5 +17,5 @@ Screenshot:
 
 ## Running the game
 
-In order to run the game, you download the repository. Then in the command line type ```npm run dev``` in the projects working directory. From there you can open your browser and navigate to localhost:3000.
+In order to run the game, you download the repository. Then in the command line type ```npm install``` in the projects working directory. Next run the command ```npm run dev```. From there you can open your browser and navigate to localhost:3000.
 
