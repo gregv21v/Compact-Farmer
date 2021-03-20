@@ -27,11 +27,6 @@ define([
       this.inventoryTab.inventoryManager = this.player.inventoryManager;
       this._sideTabManager.addTab(this.inventoryTab, game)
 
-      //this.inventoryTab2 = new InventorySideTab()
-      //this.inventoryTab2.inventory = this.player.inventory
-      //this.inventoryTab2.inventoryManager = this.player.inventoryManager;
-      //this._sideTabManager.addTab(this.inventoryTab2, game)
-
       this.player.toolbar.moveTo({
         x: game.height / 2 - this.player.toolbar.width / 2,
         y: this.game.height - 50
