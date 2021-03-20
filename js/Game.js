@@ -11,8 +11,6 @@ define([
   ) {
   return class Game {
     constructor() {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
       this.player = new Player()
       this.world = new World(this.player, {x: this.width/2, y: this.height/2})
       this.hud = new HUD(this, this.player, this.world)
@@ -22,9 +20,35 @@ define([
         .attr("width", this.width)
         .attr("height", this.height)
 
+      var self = this;
+
+      window.addEventListener("resize", function() {
+        svgMain
+          .attr("width", self.width)
+          .attr("height", self.height)
+
+        self.hud.resize()
+      })
     }
 
 
+    /**
+      get height
+      @description gets the height of the game window
+    */
+    get height() {
+      console.log("Height: " + window.innerHeight);
+      return window.innerHeight
+    }
+
+    /**
+      get width
+      @description gets the width of the game window
+    */
+    get width() {
+      console.log("Width: " + window.innerWidth);
+      return window.innerWidth;
+    }
 
     /**
       toJSON()

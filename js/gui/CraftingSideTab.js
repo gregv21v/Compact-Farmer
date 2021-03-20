@@ -4,33 +4,45 @@
 define(
   [
     "gui/SideTab",
+    "gui/Button",
+    "inventories/Inventory",
     "d3"
   ],
-  function(SideTab, d3) {
-    return class InventorySideTab extends SideTab {
+  function(SideTab, Button, Inventory, d3) {
+    return class CraftingSideTab extends SideTab {
       /**
         constructor()
         @description constructs the InventorySideTab
-        @param storage the inventory to display in this tab
         @param windowDims the dimensions of the window that the tab will
           be on
       */
       constructor(windowDims) {
         super(
-          {x: windowDims.width - 30, y: 0},
+          {x: 30, y: 100},
           {width: 30, height: 100}, // button dimensions
           {width: windowDims.width/2, height: windowDims.height - 50}, // content area dimensions
-          windowDims, // window dimensions
-          "Inventory"
+          "Craft"
         )
-      }
 
+        var craftButtonWidth = 100;
+        var craftButtonHeight = 40
+        this.craftButton = new Button(
+          {
+            x: this.position.x + this.contentDims.width,
+            y: this.position.y + 150 + 30
+          },
+          craftButtonWidth, craftButtonHeight,
+          "Craft"
+        )
+
+        this.craftButton.initSVG()
+        this.craftButton.addGraphicsTo(this.svg.contentAreaGroup)
+      }
 
 
       /**
         set inventory
-        @description sets the inventory of this tab
-        @param inventory the inventory to set this inventory to
+        @description sets the crafting inventory of this tab
       */
       set inventory(inventory) {
         this._inventory = inventory
@@ -38,10 +50,8 @@ define(
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 30
         })
-
         this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
       }
-
 
       /**
         set inventoryManager
@@ -51,6 +61,7 @@ define(
       set inventoryManager(value) {
         this._inventoryManager = value;
       }
+
 
       /**
         open()
@@ -64,11 +75,19 @@ define(
               this.buttonDims.width -
               this.contentDims.width +
               this.contentDims.width / 2 -
-              this._inventory.width / 2,
+              this._inventory.getWidth() / 2,
           y: this.position.y + 30
         })
 
-        // Allow all active inventories to move items
+        this.craftButton.moveTo({
+          x: this.position.x +
+              this.buttonDims.width -
+              this.contentDims.width +
+              this.contentDims.width / 2 -
+              this.craftButton.getWidth() / 2,
+          y: this.position.y + this._inventory.getHeight() + 40
+        })
+
         this._inventory.activate()
         this._inventoryManager.allowItemMovement();
       }
@@ -85,8 +104,14 @@ define(
           y: this.position.y + 30
         })
 
+        this.craftButton.moveTo({
+          x: this.position.x + this.buttonDims.width + this.craftButton.getWidth(),
+          y: this.position.y + 30
+        })
+
         this._inventory.deactivate()
         this._inventoryManager.disallowItemMovement();
+
       }
 
     }

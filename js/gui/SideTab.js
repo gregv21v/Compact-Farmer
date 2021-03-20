@@ -12,17 +12,13 @@ define(
         @param buttonDims the dimensions of the tab button
         @param contentDims the dimensions of the area that contains the
           contents of the tab
-        @param windowDims the dimensions of the window that the tab will
-          be on
         @param name the name of the tab
       */
-      constructor(position, buttonDims, contentDims, windowDims, name) {
-
+      constructor(position, name) {
         this.name = name;
-        this.buttonDims = buttonDims;
-        this.contentDims = contentDims;
-        this.windowDims = windowDims;
-        this.position = position;
+        this.buttonDims = {width: 0, height: 0}
+        this.contentDims = {width: 0, height: 0};
+        this._position = position;
         this.isClosed = true;
 
         this.svg = {
@@ -39,6 +35,22 @@ define(
           fill: "grey",
           textColor: "black"
         }
+      }
+
+      /**
+        onWindowResize()
+        @description fired when the window resizes
+      */
+      onWindowResize(game) {
+        this.position = {
+          x: game.width - 30,
+          y: this.position.y
+        }
+        this.contentDims = {
+          width: game.width / 2,
+          height: game.height - 50
+        }
+        this.initSVG()
       }
 
       /**
@@ -75,13 +87,13 @@ define(
       */
       open() {
         var textPos = {
-          x: this.position.x + this.buttonDims.width/2 - 5 - this.contentDims.width,
-          y: this.position.y + this.buttonDims.height/2 - (this.name.length*6)/2
+          x: this._position.x + this.buttonDims.width/2 - 5 - this.contentDims.width,
+          y: this._position.y + this.buttonDims.height/2 - (this.name.length*6)/2
         }
 
         // render the background
         this.svg.buttonBackground
-          .attr("x", this.position.x - this.contentDims.width)
+          .attr("x", this._position.x - this.contentDims.width)
 
         this.svg.label
           .attr(
@@ -89,10 +101,10 @@ define(
             "translate(" + textPos.x + "," + textPos.y + ")rotate(90)")
 
         this.svg.contentArea
-          .attr("x", this.position.x + this.buttonDims.width - this.contentDims.width)
+          .attr("x", this._position.x + this.buttonDims.width - this.contentDims.width)
 
         this.svg.buttonClickArea
-          .attr("x", this.position.x - this.contentDims.width)
+          .attr("x", this._position.x - this.contentDims.width)
       }
 
       /**
@@ -101,13 +113,13 @@ define(
       */
       close() {
         var textPos = {
-          x: this.position.x + this.buttonDims.width/2 - 5,
-          y: this.position.y + this.buttonDims.height/2 - (this.name.length*6)/2
+          x: this._position.x + this.buttonDims.width/2 - 5,
+          y: this._position.y + this.buttonDims.height/2 - (this.name.length*6)/2
         }
 
         // render the background
         this.svg.buttonBackground
-          .attr("x", this.position.x)
+          .attr("x", this._position.x)
 
         this.svg.label
           .attr(
@@ -115,10 +127,10 @@ define(
             "translate(" + textPos.x + "," + textPos.y + ")rotate(90)")
 
         this.svg.contentArea
-          .attr("x", this.position.x + this.buttonDims.width)
+          .attr("x", this._position.x + this.buttonDims.width)
 
         this.svg.buttonClickArea
-          .attr("x", this.position.x)
+          .attr("x", this._position.x)
       }
 
 
@@ -129,8 +141,8 @@ define(
       initSVG() {
         // initialzies svg
         this.svg.buttonBackground
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
           .attr("width", this.buttonDims.width)
           .attr("height", this.buttonDims.height)
           .style("fill", this.styles.fill)
@@ -141,8 +153,8 @@ define(
 
 
         var textPos = {
-          x: this.position.x + this.buttonDims.width/2 - 5,
-          y: this.position.y + this.buttonDims.height/2 - (this.name.length*6)/2
+          x: this._position.x + this.buttonDims.width/2 - 5,
+          y: this._position.y + this.buttonDims.height/2 - (this.name.length*6)/2
         }
 
         this.svg.label
@@ -153,15 +165,15 @@ define(
           .text(this.name)
 
         this.svg.contentArea
-          .attr("x", this.position.x + this.buttonDims.width)
+          .attr("x", this._position.x + this.buttonDims.width)
           .attr("y", 0)
           .attr("width", this.contentDims.width)
           .attr("height", this.contentDims.height)
           .style("fill", this.styles.fill)
 
         this.svg.buttonClickArea
-          .attr("x", this.position.x)
-          .attr("y", this.position.y)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
           .attr("width", this.buttonDims.width)
           .attr("height", this.buttonDims.height)
           .style("fill-opacity", 0)
@@ -176,6 +188,51 @@ define(
         for (var svg of Object.keys(this.svg)) {
           this.svg[svg].remove();
         }
+      }
+
+
+      /**
+        get position()
+        @description get the position of the tab
+      */
+      get position() {
+        return this._position
+      }
+
+      /**
+        set position()
+        @description set the position of the tab
+        @param position new position of tab
+      */
+      set position(position) {
+        this._position = position;
+
+        // initialzies svg
+        this.svg.buttonBackground
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
+
+        var self = this;
+        // render the background
+
+
+        var textPos = {
+          x: this._position.x + this.buttonDims.width/2 - 5,
+          y: this._position.y + this.buttonDims.height/2 - (this.name.length*6)/2
+        }
+
+        this.svg.label
+          .attr(
+            "transform",
+            "translate(" + textPos.x + "," + textPos.y + ")rotate(90)")
+
+        this.svg.contentArea
+          .attr("x", this._position.x + this.buttonDims.width)
+          .attr("y", 0)
+
+        this.svg.buttonClickArea
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
       }
 
       /**

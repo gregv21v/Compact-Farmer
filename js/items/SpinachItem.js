@@ -2,16 +2,16 @@
   Item
 */
 define(
-  ["worldObjects/Crop", "items/Item", "d3"],
+  ["crops/Crop", "items/Item", "d3"],
   function(Crop, Item, d3) {
-    return class GrassBladeItem extends Item {
+    return class SpinachItem extends Item {
       /**
         constructor()
         @description constructs the block
       */
       constructor(position = {x: 0, y: 0}) {
         super(position)
-        this.name = "HoeItem"
+        this.name = "SpinachItem"
       }
 
 
@@ -40,14 +40,14 @@ define(
           .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
-          .attr("href", "images/hoe.png")
+          .attr("href", "images/spinach.png")
       }
 
 
 
 
       /**
-        set position
+        setPosition()
         @description sets the position of this item
         @param position the new position of this item
       */
@@ -67,13 +67,12 @@ define(
         return super.position;
       }
 
-
       /**
         clone()
         @description make a copy of this crop
       */
       clone() {
-        var clone = new GrassBladeItem(this._position);
+        var clone = new SpinachItem(this._position);
         clone.quantity = this.quantity;
 
         clone.initSVG()
@@ -85,7 +84,8 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-
+        // do something ...
+        console.log(this.name);
       }
     }
   })

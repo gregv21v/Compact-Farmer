@@ -4,7 +4,7 @@ define(
     "recipes/PlantOutput", "recipes/PlantRecipe", "recipes/PlantRecipeRegistry",
     "items/HoeItem",
     "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
-    "items/SpinachSeedItem",
+    "items/SpinachItem", "items/SpinachSeedItem",
     "items/ItemRegistry",
     "d3"
   ],
@@ -13,7 +13,7 @@ define(
     PlantOutput, PlantRecipe, PlantRecipeRegistry,
     HoeItem,
     GrassBladeItem, GrassSeedItem, GrassSieveItem,
-    SpinachSeedItem,
+    SpinachItem, SpinachSeedItem,
     ItemRegistry,
     d3
   ) {
@@ -32,7 +32,7 @@ define(
         this.inventoryManager.addInventory(this.craftingInventory);
 
         this.toolbar.add(
-          new GrassSeedItem()
+          new SpinachSeedItem()
         )
 
         this.toolbar.add(
@@ -91,6 +91,22 @@ define(
               ),
               new PlantOutput(
                 new GrassBladeItem(),
+                1, 2
+              )
+            ]
+          )
+        )
+
+        this.recipeRegistry.add(
+          new PlantRecipe(
+            "SpinachCrop",
+            [
+              new PlantOutput(
+                new SpinachSeedItem(),
+                1, 1
+              ),
+              new PlantOutput(
+                new SpinachItem(),
                 1, 2
               )
             ]

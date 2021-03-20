@@ -2,7 +2,7 @@
   Item
 */
 define(
-  ["worldObjects/GrassCrop", "items/SeedItem", "d3"],
+  ["crops/GrassCrop", "items/SeedItem", "d3"],
   function(GrassCrop, SeedItem, d3) {
     return class GrassSeedItem extends SeedItem {
       /**

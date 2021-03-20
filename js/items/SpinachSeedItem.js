@@ -2,8 +2,8 @@
   Item
 */
 define(
-  ["worldObjects/Crop", "items/SeedItem", "d3"],
-  function(Crop, SeedItem, d3) {
+  ["crops/SpinachCrop", "crops/Crop", "items/SeedItem", "d3"],
+  function(SpinachCrop, Crop, SeedItem, d3) {
     return class SpinachSeedItem extends SeedItem {
       /**
         constructor()
@@ -20,7 +20,7 @@ define(
         @description get a new instance of a crop for this seed
       */
       getCrop() {
-        return new Crop(this.seedColor);
+        return new SpinachCrop(this.seedColor);
       }
 
       /**

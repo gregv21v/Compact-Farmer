@@ -6,8 +6,8 @@ define(
     "items/SeedItem",
     "items/HoeItem",
     "blocks/Block",
-    "worldObjects/Crop",
-    "worldObjects/GrassCrop",
+    "crops/Crop",
+    "crops/GrassCrop",
     "d3"
   ],
   function(SeedItem, HoeItem, Block, Crop, GrassCrop, d3) {

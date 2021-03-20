@@ -5,8 +5,8 @@ define(
   [
     "items/GrassBladeItem",
     "items/GrassSeedItem",
-
-    "worldObjects/Crop",
+    
+    "crops/Crop",
     "blocks/Block",
     "d3"
   ],
