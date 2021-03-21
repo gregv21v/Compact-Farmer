@@ -35,7 +35,7 @@ define(
       set inventory(inventory) {
         this._inventory = inventory
         this._inventory.moveTo({
-          x: this.position.x + this.buttonDims.width,
+          x: this.position.x + this.buttonDims.width + 100,
           y: this.position.y + 30
         })
 
@@ -83,7 +83,7 @@ define(
         super.close()
 
         this._inventory.moveTo({
-          x: this.position.x + this.buttonDims.width,
+          x: this.position.x + this.buttonDims.width + 100,
           y: this.position.y + 30
         })
 
@@ -109,7 +109,7 @@ define(
 
         if(this.isClosed) {
           this._inventory.moveTo({
-            x: this.position.x + this.buttonDims.width,
+            x: this.position.x + this.buttonDims.width + 100,
             y: this.position.y + 30
           })
         } else {

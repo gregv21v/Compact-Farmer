@@ -90,14 +90,16 @@ define([
       @description save the player data to the server
     */
     save() {
-      $.ajax({
+      /*$.ajax({
         type: "POST",
         url: "/save",
         contentType: 'application/json',
         data: JSON.stringify(this.toJSON()),
         success: function(response) { console.log(response);},
         dataType: "json"
-      })
+      })*/
+
+      window.api.save("gregv21v", JSON.stringify(this.toJSON()));
     }
 
     /**
@@ -105,7 +107,9 @@ define([
       @description load the player data from the server
     */
     load() {
+
       var self = this;
+      /*
       $.ajax({
         type: "POST",
         url: "/load",
@@ -116,6 +120,10 @@ define([
           console.log("Loaded");
         },
         dataType: "json"
+      })*/
+      window.api.load("gregv21v").then(function(user) {
+        console.log(JSON.parse(user.data));
+        self.fromJSON(JSON.parse(user.data))
       })
     }
 

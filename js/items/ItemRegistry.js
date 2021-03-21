@@ -2,14 +2,7 @@ define(
   [],
   function() {
     return class ItemRegistry {
-
-      /**
-        constructor()
-        @description constructs the item registry
-      */
-      constructor() {
-        this.items = {};
-      }
+      static items = {}
 
 
       /**
@@ -17,7 +10,7 @@ define(
         @description registers a item by name
         @param item the item to register
       */
-      registerItem(item) {
+      static registerItem(item) {
         this.items[item.name] = item;
       }
 
@@ -27,7 +20,7 @@ define(
         @description look up a item by name
         @param name the name of the item
       */
-      lookup(name) {
+      static lookup(name) {
         return this.items[name];
       }
 
@@ -36,15 +29,15 @@ define(
         @description converts a item from json
         @param item the item to convert
       */
-      itemFromJSON(json) {
+      static itemFromJSON(json) {
         var resultItem = null;
-        for (var item of Object.keys(this.items)) {
-          if(json.name === item.name) {
-            item = item.clone()
-            item.quantity = jsonItem.quantity
+        for (var key of Object.keys(this.items)) {
+          if(json.name === key) {
+            resultItem = this.items[key].clone()
+            resultItem.quantity = json.quantity
           }
         }
-        return item
+        return resultItem
       }
 
     }

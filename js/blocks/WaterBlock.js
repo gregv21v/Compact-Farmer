@@ -26,13 +26,63 @@ define(
       }
 
       /**
+        createGraphic()
+        @description override this function to draw the graphics for the
+          block.
+          Each svg should be added to this.svg
+        @param group the svg group to create the graphics on
+      */
+      createGraphic(group) {
+        // make your graphics here add add them to the this.svg object
+        this.svg.waves = []
+        this.waveCount = 5;
+
+        for (var i = 0; i < this.waveCount; i++) {
+          this.svg.waves.push(group.append("path"))
+        }
+      }
+
+      /**
         render()
         @description renders the item to the SVG canvas
       */
       render() {
         super.render()
         // render the background
+        var worldPosition = this.getWorldPosition();
         this.svg.background.style("fill", "blue")
+
+        for (var i = 0; i < this.waveCount; i++) {
+          var path = d3.path()
+          var count = 6
+          var startX = worldPosition.x
+          var startY = worldPosition.y + (i+1) * Block.size/count
+          path.moveTo(startX, startY)
+
+          for (var j = 0; j < count; j++) {
+            var nextX = (j+1) * Block.size/count
+            if(j%2 === 0) {
+             path.quadraticCurveTo(
+               startX + nextX - Block.size/count/2,
+               startY + Block.size/count,
+               startX + nextX,
+               startY
+             )
+            } else {
+             path.quadraticCurveTo(
+               startX + nextX - Block.size/count/2,
+               startY - Block.size/count,
+               startX + nextX,
+               startY
+             )
+            }
+          }
+          this.svg.waves[i]
+            .style("fill", "none")
+            .style("stroke", "#131354")
+            .attr("d", path)
+        }
+
       }
 
       /**
@@ -64,12 +114,16 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-        var selectedItem = this.player.toolbar.currentlySelected.item
-
-        if(selectedItem instanceof SieveItem) {
-          // sieve
-          this.sieve()
+        var selected = this.player.toolbar.currentlySelected
+        if(selected !== null) {
+          var selectedItem = selected.item
+          if(selectedItem instanceof SieveItem) {
+            // sieve
+            this.sieve()
+          }
         }
+
+
 
       }
 

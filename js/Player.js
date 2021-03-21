@@ -65,13 +65,11 @@ define(
         @description register items
       */
       registerItems() {
-        this.itemRegistry = new ItemRegistry();
-
-        this.itemRegistry.registerItem(new GrassSeedItem())
-        this.itemRegistry.registerItem(new SpinachSeedItem())
-        this.itemRegistry.registerItem(new GrassBladeItem())
-        this.itemRegistry.registerItem(new GrassSieveItem())
-        this.itemRegistry.registerItem(new HoeItem())
+        ItemRegistry.registerItem(new GrassSeedItem())
+        ItemRegistry.registerItem(new SpinachSeedItem())
+        ItemRegistry.registerItem(new GrassBladeItem())
+        ItemRegistry.registerItem(new GrassSieveItem())
+        ItemRegistry.registerItem(new HoeItem())
       }
 
       /**

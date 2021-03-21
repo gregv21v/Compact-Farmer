@@ -1,4 +1,5 @@
 define([
+  "items/ItemRegistry",
   "items/GrassSeedItem",
   "items/GrassBladeItem",
   "items/HoeItem",
@@ -6,6 +7,7 @@ define([
   "items/Item",
   "items/Slot", "d3"],
   function(
+    ItemRegistry,
     GrassSeedItem, GrassBladeItem, HoeItem, SeedItem, Item,
     Slot, d3) {
     return class Inventory {
@@ -102,7 +104,7 @@ define([
             var jsonItem = json.slots[x][y].item;
             if(jsonItem !== null) {
               this._slots[x][y].addItem(
-                this.player.itemRegistry.itemFromJSON(jsonItem), this._svg.layers.items
+                ItemRegistry.itemFromJSON(jsonItem), this._svg.layers.items
               )
             }
           }
