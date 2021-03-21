@@ -37,7 +37,7 @@ define([
       @description gets the height of the game window
     */
     get height() {
-      console.log("Height: " + window.innerHeight);
+      //console.log("Height: " + window.innerHeight);
       return window.innerHeight
     }
 
@@ -46,7 +46,7 @@ define([
       @description gets the width of the game window
     */
     get width() {
-      console.log("Width: " + window.innerWidth);
+      //console.log("Width: " + window.innerWidth);
       return window.innerWidth;
     }
 

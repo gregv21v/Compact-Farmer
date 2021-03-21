@@ -52,7 +52,7 @@ define(
           this.tabs.push(tab)
         }
 
-        console.log(this.tabs);
+        //console.log(this.tabs);
       }
 
 
