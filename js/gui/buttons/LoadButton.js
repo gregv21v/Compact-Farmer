@@ -2,7 +2,7 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["gui/Button", "d3"],
+  ["gui/buttons/Button", "d3"],
   function(Button, d3) {
     return class SaveButton extends Button {
       /**
@@ -10,7 +10,7 @@ define(
         @description constructs the item
       */
       constructor(player, position, width, height) {
-        super(position, width, height, "Save")
+        super(position, width, height, "Load")
 
         this.player = player;
       }
@@ -21,7 +21,7 @@ define(
         @description the function called when this button is clicked
       */
       onClick() {
-        this.player.save()
+        this.player.load()
       }
 
     }

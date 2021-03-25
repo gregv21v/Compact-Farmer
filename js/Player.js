@@ -24,12 +24,12 @@ define(
         this.hand = null; // an item/object that follows the curser movement
         this.inventoryManager = new InventoryManager()
         this.inventory = new Inventory(this.inventoryManager, 6, 5)
-        this.craftingInventory = new Inventory(this.inventoryManager, 3, 3)
+        this.craftingGrid = new Inventory(this.inventoryManager, 3, 3)
         this.toolbar = new Toolbar(this.inventoryManager)
 
         this.inventoryManager.addInventory(this.inventory);
         this.inventoryManager.addInventory(this.toolbar);
-        this.inventoryManager.addInventory(this.craftingInventory);
+        this.inventoryManager.addInventory(this.craftingGrid);
 
         this.toolbar.add(
           new SpinachSeedItem()

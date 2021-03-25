@@ -2,7 +2,7 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["gui/Button", "d3"],
+  ["gui/buttons/Button", "d3"],
   function(Button, d3) {
     return class DragButton extends Button {
       /**
@@ -61,7 +61,7 @@ define(
       */
       initSVG() {
         super.initSVG()
-        this.svg.background
+        this._svg.background
           .style("fill", "green")
           .style("stroke", "black")
       }
@@ -73,10 +73,10 @@ define(
       onClick() {
         if(this.dragActive) {
           this.dragActive = false;
-          this.svg.background.style("fill", "red")
+          this._svg.background.style("fill", "red")
         } else {
           this.dragActive = true
-          this.svg.background.style("fill", "green")
+          this._svg.background.style("fill", "green")
         }
       }
 

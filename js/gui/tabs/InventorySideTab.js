@@ -3,7 +3,7 @@
 */
 define(
   [
-    "gui/SideTab",
+    "gui/tabs/SideTab",
     "d3"
   ],
   function(SideTab, d3) {

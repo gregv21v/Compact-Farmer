@@ -1,10 +1,10 @@
 define([
-  "gui/SideTabManager",
-  "gui/InventorySideTab",
-  "gui/CraftingSideTab",
-  "gui/DragButton",
-  "gui/SaveButton",
-  "gui/LoadButton",
+  "gui/tabs/SideTabManager",
+  "gui/tabs/InventorySideTab",
+  "gui/tabs/CraftingSideTab",
+  "gui/buttons/DragButton",
+  "gui/buttons/SaveButton",
+  "gui/buttons/LoadButton",
 
   "d3"
 
@@ -21,11 +21,17 @@ define([
       this.world = world;
       this._sideTabManager = new SideTabManager()
 
-
       this.inventoryTab = new InventorySideTab()
       this.inventoryTab.inventory = this.player.inventory
       this.inventoryTab.inventoryManager = this.player.inventoryManager;
+
+      this.craftingTab = new CraftingSideTab()
+      this.craftingTab.inventory = this.player.inventory
+      this.craftingTab.craftingGrid = this.player.craftingGrid
+      this.craftingTab.inventoryManager = this.player.inventoryManager
+
       this._sideTabManager.addTab(this.inventoryTab, game)
+      this._sideTabManager.addTab(this.craftingTab, game)
 
       this.player.toolbar.moveTo({
         x: game.height / 2 - this.player.toolbar.width / 2,

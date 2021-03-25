@@ -2,7 +2,7 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["d3", "gui/Button"],
+  ["d3", "gui/buttons/Button"],
   function(d3, Button) {
     return class SideButton extends Button {
 
