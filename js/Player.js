@@ -36,6 +36,10 @@ define(
         )
 
         this.toolbar.add(
+          new GrassSeedItem()
+        )
+
+        this.toolbar.add(
           new HoeItem()
         )
 

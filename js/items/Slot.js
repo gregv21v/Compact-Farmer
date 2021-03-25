@@ -279,8 +279,9 @@ define(
       onDragEnd(event) {
         if(this._inventory.itemsMovable) {
           console.log("Drag");
-          this._inventoryManager.snapToClosestSlot(this._item)
+          var tempItem = this._item;
           this.removeItem()
+          this._inventoryManager.snapToClosestSlot(tempItem)
         }
       }
 
