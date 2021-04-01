@@ -6,9 +6,10 @@ define(
     "gui/tabs/SideTab",
     "gui/buttons/CraftButton",
     "inventories/Inventory",
+    "items/Slot",
     "d3"
   ],
-  function(SideTab, CraftButton, Inventory, d3) {
+  function(SideTab, CraftButton, Inventory, Slot, d3) {
     return class CraftingSideTab extends SideTab {
       /**
         constructor()
@@ -36,35 +37,24 @@ define(
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 10
         })
+
+        this._inventory.initSVG();
         this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
       }
 
       /**
-        set craftingGrid
-        @description sets the crafting inventory of this tab
+        set crafter
+        @description sets the crafter of the tab
       */
-      set craftingGrid(craftingGrid) {
-        this._craftingGrid = craftingGrid
-        this._craftingGrid.moveTo({
+      set crafter(crafter) {
+        this._crafter = crafter
+        this._crafter.moveTo({
           x: this.position.x + this.buttonDims.width,
           y: this.position.y + 30
         })
-        this._craftingGrid.addGraphicsTo(this.svg.contentAreaGroup)
 
-        // Add the craft button below the crafting grid
-        var craftButtonWidth = 100;
-        var craftButtonHeight = 40
-        this.craftButton = new CraftButton(
-          {
-            x: this.position.x + this.contentDims.width,
-            y: this.position.y + 150 + 30
-          },
-          craftButtonWidth, craftButtonHeight,
-          "Craft"
-        )
-
-        this.craftButton.initSVG()
-        this.craftButton.addGraphicsTo(this.svg.contentAreaGroup)
+        this._crafter.initSVG()
+        this._crafter.addGraphicsTo(this.svg.contentAreaGroup)
       }
 
       /**
@@ -84,26 +74,14 @@ define(
       open() {
         super.open();
 
-        // show the inventory
-
-
-        this._craftingGrid.moveTo({
+        // show the crafter
+        this._crafter.moveTo({
           x: this.position.x +
               this.buttonDims.width -
               this.contentDims.width +
               this.contentDims.width / 2 -
-              this._craftingGrid.width / 2,
+              this._crafter.width / 2,
           y: this.position.y
-        })
-
-        this.craftButton.moveTo({
-          x: this.position.x +
-              this.buttonDims.width -
-              this.contentDims.width +
-              this.contentDims.width / 2 -
-              this.craftButton.width / 2,
-          y: this.position.y +
-              this._craftingGrid.height + 15
         })
 
         this._inventory.moveTo({
@@ -113,8 +91,7 @@ define(
               this.contentDims.width / 2 -
               this._inventory.width / 2,
           y: this.position.y +
-              this._craftingGrid.height +
-              this.craftButton.height + 30
+              this._crafter.height + Slot.size
         })
 
         this._inventory.activate()
@@ -133,14 +110,9 @@ define(
           y: this.position.y
         })
 
-        this._craftingGrid.moveTo({
+        this._crafter.moveTo({
           x: this.position.x + this.buttonDims.width + 100,
-          y: this.position.y + this._craftingGrid.height + 30
-        })
-
-        this.craftButton.moveTo({
-          x: this.position.x + this.buttonDims.width + this.craftButton.width,
-          y: this.position.y + 30
+          y: this.position.y + this._crafter.height + 30
         })
 
         this._inventory.deactivate()

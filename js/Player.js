@@ -1,19 +1,26 @@
 define(
   [
-    "inventories/Inventory", "inventories/Toolbar", "inventories/InventoryManager",
+    "inventories/Inventory", "inventories/Toolbar",
+    "inventories/InventoryManager",
     "recipes/PlantOutput", "recipes/PlantRecipe", "recipes/PlantRecipeRegistry",
+    "crafting/CraftingInput",
+    "crafting/CraftingRecipe", "crafting/CraftingRegistry",
+    "crafting/Crafter",
     "items/HoeItem",
     "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
-    "items/SpinachItem", "items/SpinachSeedItem",
+    "items/SpinachItem", "items/SpinachSeedItem", "items/EmptyItem",
     "items/ItemRegistry",
     "d3"
   ],
   function(
     Inventory, Toolbar, InventoryManager,
     PlantOutput, PlantRecipe, PlantRecipeRegistry,
+    CraftingInput,
+    CraftingRecipe, CraftingRegistry,
+    Crafter,
     HoeItem,
     GrassBladeItem, GrassSeedItem, GrassSieveItem,
-    SpinachItem, SpinachSeedItem,
+    SpinachItem, SpinachSeedItem, EmptyItem,
     ItemRegistry,
     d3
   ) {
@@ -24,12 +31,12 @@ define(
         this.hand = null; // an item/object that follows the curser movement
         this.inventoryManager = new InventoryManager()
         this.inventory = new Inventory(this.inventoryManager, 6, 5)
-        this.craftingGrid = new Inventory(this.inventoryManager, 3, 3)
+        this.crafter = new Crafter(this.inventoryManager, {x: 0, y: 0})
+
         this.toolbar = new Toolbar(this.inventoryManager)
 
         this.inventoryManager.addInventory(this.inventory);
         this.inventoryManager.addInventory(this.toolbar);
-        this.inventoryManager.addInventory(this.craftingGrid);
 
         this.toolbar.add(
           new SpinachSeedItem()
@@ -47,7 +54,8 @@ define(
           new GrassSieveItem()
         )
 
-        this.registerRecipes();
+        this.registerPlantRecipes();
+        this.registerCraftingRecipes();
         this.registerItems()
 
         var mainSVG = d3.select("body").select("svg")
@@ -77,13 +85,28 @@ define(
       }
 
       /**
-        registerRecipes()
+        registerCraftingRecipes()
         @description register recipes
       */
-      registerRecipes() {
-        this.recipeRegistry = new PlantRecipeRegistry()
+      registerCraftingRecipes() {
+        CraftingRegistry.register(new CraftingRecipe(
+          new CraftingInput(
+            [
+              [new GrassBladeItem(), new GrassBladeItem(), new EmptyItem()],
+              [new GrassBladeItem(), new GrassBladeItem(), new EmptyItem()],
+              [new EmptyItem(), new EmptyItem(), new EmptyItem()]
+            ]
+          ),
+          new GrassSieveItem()
+        ))
+      }
 
-        this.recipeRegistry.add(
+      /**
+        registerPlantRecipes()
+        @description register recipes
+      */
+      registerPlantRecipes() {
+        PlantRecipeRegistry.add(
           new PlantRecipe(
             "GrassCrop",
             [
@@ -99,7 +122,7 @@ define(
           )
         )
 
-        this.recipeRegistry.add(
+        PlantRecipeRegistry.add(
           new PlantRecipe(
             "SpinachCrop",
             [
@@ -115,7 +138,7 @@ define(
           )
         )
 
-        this.recipeRegistry.add(
+        PlantRecipeRegistry.add(
           new PlantRecipe(
             "GrassSieve",
             [

@@ -74,6 +74,8 @@ define([
       this.player.inventory.fromJSON(json.inventory)
       this.hud.inventoryTab.inventory = this.player.inventory
 
+      this.hub.craftingTab.inventory = this.player.inventory
+
       this.player.toolbar.delete()
       this.player.toolbar.fromJSON(json.toolbar)
       this.player.toolbar.moveTo({

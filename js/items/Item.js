@@ -133,7 +133,7 @@ define(
         @param value the value to set the quantity to
       */
       get quantity() {
-        return this._quantity;  
+        return this._quantity;
       }
 
       /**

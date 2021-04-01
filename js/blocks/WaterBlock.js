@@ -2,8 +2,8 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["items/SieveItem", "blocks/Block", "blocks/FarmBlock", "d3"],
-  function(SieveItem, Block, FarmBlock, d3) {
+  ["recipes/PlantRecipeRegistry", "items/SieveItem", "blocks/Block", "blocks/FarmBlock", "d3"],
+  function(PlantRecipeRegistry, SieveItem, Block, FarmBlock, d3) {
     return class WaterBlock extends Block {
 
 
@@ -132,7 +132,7 @@ define(
         @description harvest the crop from this plot of land
       */
       sieve() {
-        var recipe = this.player.recipeRegistry.lookup("GrassSieve")
+        var recipe = PlantRecipeRegistry.lookup("GrassSieve")
         var products = recipe.getProducts();
         console.log(products);
         for (var product of products) {

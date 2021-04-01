@@ -27,7 +27,7 @@ define([
 
       this.craftingTab = new CraftingSideTab()
       this.craftingTab.inventory = this.player.inventory
-      this.craftingTab.craftingGrid = this.player.craftingGrid
+      this.craftingTab.crafter = this.player.crafter
       this.craftingTab.inventoryManager = this.player.inventoryManager
 
       this._sideTabManager.addTab(this.inventoryTab, game)
@@ -94,6 +94,7 @@ define([
 
       this.loadBtn.initSVG()
       this.loadBtn.addGraphicsTo(svgMain)
+
     }
   }
 })

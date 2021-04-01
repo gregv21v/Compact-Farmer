@@ -9,6 +9,7 @@ requirejs.config({
         game: "../js",
         gui: "../js/gui",
         recipes: "../js/recipes",
+        crafting: "../js/crafting",
         crops: "../js/crops",
         items: "../js/items",
         blocks: "../js/blocks",

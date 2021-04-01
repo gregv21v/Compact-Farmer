@@ -8,9 +8,14 @@ define(
     "blocks/Block",
     "crops/Crop",
     "crops/GrassCrop",
+    "recipes/PlantRecipeRegistry",
     "d3"
   ],
-  function(SeedItem, HoeItem, Block, Crop, GrassCrop, d3) {
+  function(
+    SeedItem, HoeItem, Block,
+    Crop, GrassCrop,
+    PlantRecipeRegistry,
+    d3) {
     return class FarmBlock extends Block {
 
       /**
@@ -252,7 +257,7 @@ define(
       harvest() {
         // harvest the crop
         if(this.isCropFullyGrown) {
-          var recipe = this.player.recipeRegistry.lookup(this.crop.name)
+          var recipe = PlantRecipeRegistry.lookup(this.crop.name)
           var products = recipe.getProducts();
           for (var product of products) {
             this.player.inventory.add(product)

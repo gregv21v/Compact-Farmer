@@ -25,8 +25,6 @@ define(
       }
 
 
-
-
       /**
         set inventory
         @description sets the inventory of this tab
@@ -40,6 +38,21 @@ define(
         })
 
         this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
+      }
+
+      /**
+        set crafter
+        @description sets the crafter
+        @param crafter the crafter to set this crafter to
+      */
+      set crafter(crafter) {
+        this._crafter = crafter
+        this._crafter.moveTo({
+          x: this.position.x + this.buttonDims.width + 100,
+          y: this.position.y + 30
+        })
+
+        this._crafter.addGraphicsTo(this.svg.contentAreaGroup)
       }
 
 

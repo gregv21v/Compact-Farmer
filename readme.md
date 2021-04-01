@@ -22,4 +22,4 @@ Screenshot:
 In order to run the game, you download the repository. Then in the command line type ```npm install``` in the projects working directory. Next run the command ```npm run start```.
 
 If you get an error that says that there is something wrong with electron then
-install electron with the command ```npm i --save-dev electron```
+install electron with the command ```npm i --save-dev electron```.

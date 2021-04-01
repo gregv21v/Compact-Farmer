@@ -27,6 +27,7 @@ define(
         this._svg.group = d3.create("svg:g")
         this._svg.background = this._svg.group.append("rect")
         this._svg.itemGroup = this._svg.group.append("g")
+        this._svg.rightClickMenu = this._inventory.contextMenuSVG.append("g");
         this._svg.clickArea = this._svg.group.append("rect")
       }
 
@@ -107,13 +108,13 @@ define(
         @param _position the new _position of this slot
       */
       set position(position) {
+        this._position = position
         if(this._item !== null) {
           this._item.position = {
             x: position.x + 5,
             y: position.y + 5
           }
         }
-        this._position = position
 
         this._svg.clickArea
           .attr("x", this._position.x)
@@ -174,7 +175,7 @@ define(
           var self = this
           var dragHandler = d3.drag()
             .on("start", function(event) {
-              self.onDrag(event)
+              self.onDragStart(event)
             })
             .on("drag", function(event) {
               self.onDrag(event)
@@ -187,6 +188,10 @@ define(
 
           this._item.svg.clickArea.on("click", function() {
             self.onClick()
+          })
+
+          this._item.svg.clickArea.on("contextmenu.allowRightDrag", function(event) {
+            self.onRightClick(event)
           })
         } else {
           this._item.quantity += item.quantity;
@@ -291,12 +296,21 @@ define(
           unit
       */
       onDrag(event) {
-        if(this._item !== null && this._inventory.itemsMovable) {
-          this._item.position = {
+        if(this._inventoryManager.onMouse !== null && this._inventory.itemsMovable) {
+          this._inventoryManager.onMouse.position = {
             x: event.x - Slot.size/2,
             y: event.y - Slot.size/2
           }
         }
+      }
+
+      /**
+        onDrag()
+        @description the function that is called when you are dragging a
+          unit
+      */
+      onDragStart(event) {
+        this._inventoryManager.onMouse = this._item;
       }
 
       /**
@@ -330,6 +344,59 @@ define(
       */
       onMouseLeave() {
         this._svg.background.style("fill-opacity", 1)
+      }
+
+
+      /**
+       * drawContextMenu()
+       * @description draw context menu
+       * @param position position to draw the context menu at
+       */
+      drawContextMenu(parent, position) {
+        let menuItemWidth = 90;
+        let menuItemHeight = 30;
+        let self = this;
+
+        this._svg.rightClickMenu
+          .append("rect")
+            .attr("x", position.x)
+            .attr("y", position.y)
+            .attr("width", menuItemWidth)
+            .attr("height", menuItemHeight)
+            .style("fill", "white")
+
+        this._svg.rightClickMenu
+          .append("text")
+            .attr("x", position.x + menuItemWidth/2)
+            .attr("y", position.y + menuItemHeight/2)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "central")
+            .text("Split")
+            .on("mousedown", function() {
+              self._svg.rightClickMenu.selectAll("*").remove();
+            })
+      }
+
+      /**
+        onRightClick()
+        @description the function called on right click which is normally the
+          creation of a context menu
+      */
+      onRightClick(event) {
+        console.log("Right Click");
+        event.preventDefault();
+
+        //this.drawContextMenu(null,  {x: event.x, y: event.y})
+        if(this._item !== null) {
+          if(this._item.quantity > 1) {
+            this._inventoryManager.onMouse = this._item.clone()
+            this._inventoryManager.onMouse.quantity /= 2;
+          } else {
+            this._inventoryManager.onMouse = this._item;
+          }
+        }
+
+
       }
 
 

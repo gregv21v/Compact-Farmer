@@ -13,6 +13,7 @@ define(
       */
       constructor() {
         this._inventories = []
+        this._onMouse = null; // the item that is currently on the mouse
         //this._itemsMovable = false;
       }
 
@@ -100,6 +101,23 @@ define(
       snapToClosestSlot(item) {
         var closest = this.getClosestSlot(item)
         this._inventories[closest.inventory].addItemToSlot(closest.slot, item);
+      }
+
+
+      /**
+       * get onMouse
+       * @description gets the current item on the mouse
+       */
+      get onMouse() {
+        return this._onMouse;
+      }
+
+      /**
+       * set onMouse
+       * @description sets the current item on the mouse
+       */
+      set onMouse(value) {
+        this._onMouse = value;
       }
     }
   }

@@ -38,7 +38,8 @@ define([
         }
         this._svg.layers = {
           slots: this._svg.group.append("g"),
-          items: this._svg.group.append("g")
+          items: this._svg.group.append("g"),
+          contextMenus: this._svg.group.append("g")
         }
 
         this._svg.group.attr("class", "inventory")
@@ -178,6 +179,15 @@ define([
       deactivate() {
         this._active = false;
       }
+
+      /**
+       * get contextMenuSVG
+       * @description gets the contextMenuSVG
+       */
+      get contextMenuSVG() {
+        return this._svg.layers.contextMenus
+      }
+
 
 
 
