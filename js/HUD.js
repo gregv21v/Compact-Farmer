@@ -34,40 +34,40 @@ define([
       this._sideTabManager.addTab(this.craftingTab, game)
 
       this.player.toolbar.moveTo({
-        x: game.height / 2 - this.player.toolbar.width / 2,
+        x: game.width / 2 - this.player.toolbar.width / 2,
         y: this.game.height - 50
       })
 
       this.dragBtn = new DragButton(
         this.world,
-        {x: 100, y: this.game.height - 50},
+        {x: 0, y: this.game.height - 50},
         50, 50 // width, height
       )
 
-      this.saveBtn = new SaveButton(
+      /*this.saveBtn = new SaveButton(
         game,
         {x: 0, y: this.game.height - 50}, // position
         50, 50 // width, height
-      )
+      )*/
 
-      this.loadBtn = new LoadButton(
+      /*this.loadBtn = new LoadButton(
         game,
         {x: 50, y: this.game.height - 50}, // position
         50, 50 // width, height
-      )
+      )*/
     }
 
     resize() {
       console.log("Resizing");
       this.dragBtn.moveTo(
-        {x: 100, y: this.game.height - 50}
+        {x: 0, y: this.game.height - 50}
       )
-      this.saveBtn.moveTo(
+      /*this.saveBtn.moveTo(
         {x: 0, y: this.game.height - 50}
       )
       this.loadBtn.moveTo(
         {x: 50, y: this.game.height - 50}
-      )
+      )*/
 
       this.player.toolbar.moveTo({
         x: this.game.width / 2 - this.player.toolbar.width / 2,
@@ -89,11 +89,11 @@ define([
       this.dragBtn.initSVG()
       this.dragBtn.addGraphicsTo(svgMain)
 
-      this.saveBtn.initSVG()
-      this.saveBtn.addGraphicsTo(svgMain)
+      //this.saveBtn.initSVG()
+      //this.saveBtn.addGraphicsTo(svgMain)
 
-      this.loadBtn.initSVG()
-      this.loadBtn.addGraphicsTo(svgMain)
+      //this.loadBtn.initSVG()
+      //this.loadBtn.addGraphicsTo(svgMain)
 
     }
   }
