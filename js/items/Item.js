@@ -56,6 +56,18 @@ define(
       }
 
       /**
+       * destroy()
+       * @description completely destroys the unit
+       */
+      destroy() {
+        this.svg.background.remove()
+        this.svg.label.remove()
+        this.svg.count.remove()
+        this.svg.graphicGroup.remove()
+        this.svg.clickArea.remove()
+      }
+
+      /**
         initSVG()
         @description initialize the values for the svg
       */

@@ -10,6 +10,7 @@ define(["inventories/Inventory", "items/Slot"],
         super(manager, 1, 10)
 
         this.selectedSlot = this._slots[0][0];
+        this._onRightClickEnabled = false;
       }
     }
 

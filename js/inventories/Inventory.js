@@ -27,10 +27,12 @@ define([
         this._selectedSlot = null;
         this._inventoryManager = manager;
 
+
         // determines if you can move objects
         // from one slot to another in the inventory
         this._itemsMovable = false;
         this._active = true;
+        this._onRightClickEnabled = true;
 
         this._svg = {
           group: d3.create("svg:g"),
@@ -61,7 +63,8 @@ define([
               {
                 x: this._position.x + Slot.size * x,
                 y: this._position.y + Slot.size * y
-              }
+              },
+              { x, y }
             )
             newRow.push(newSlot)
           }
@@ -102,10 +105,10 @@ define([
         for (var x = 0; x < this._columns; x++) {
           for (var y = 0; y < this._rows; y++) {
             this._slots[x][y].destroyItem()
-            var jsonItem = json.slots[x][y].item;
-            if(jsonItem !== null) {
+            var item = ItemRegistry.itemFromJSON(json.slots[x][y].item);
+            if(item !== null) {
               this._slots[x][y].addItem(
-                ItemRegistry.itemFromJSON(jsonItem), this._svg.layers.items
+                item, this._svg.layers.items
               )
             }
           }
@@ -115,6 +118,23 @@ define([
       /********************************************************
                         Getters and Setters
       *********************************************************/
+
+      /**
+       * get onRightClickEnabled
+       * @description get onRightClickEnabled
+       */
+      get onRightClickEnabled() {
+        return this._onRightClickEnabled;
+      }
+
+      /**
+       * set onRightClickEnabled
+       * @description set onRightClickEnabled
+       * @param value the value to set the onRightClickEnabled field to
+       */
+      set onRightClickEnabled(value) {
+        this._onRightClickEnabled = value;
+      }
 
       /**
         get width
@@ -180,13 +200,7 @@ define([
         this._active = false;
       }
 
-      /**
-       * get contextMenuSVG
-       * @description gets the contextMenuSVG
-       */
-      get contextMenuSVG() {
-        return this._svg.layers.contextMenus
-      }
+
 
 
 
@@ -225,6 +239,38 @@ define([
         }
       }
 
+
+      /**
+       * splitStack()
+       * @description splits the items in a given stack
+       * @param slot the slot that the item stack is in
+       */
+      splitStack(coordinate) {
+        // find the closest empty slot
+        var distance = Math.sqrt(
+          Math.pow(window.innerHeight, 2) + Math.pow(window.innerHeight, 2)
+        ); // size of the window across
+        var closestSlot = null;
+        var item = this._slots[coordinate.x][coordinate.y].item;
+        if(item !== null) {
+          for (var _x = 0; _x < this._columns; _x++) {
+            for (var _y = 0; _y < this._rows; _y++) {
+              var tempDistance = this._slots[_x][_y].distanceTo(item)
+              if((_x !== coordinate.x && _y !== coordinate.y) && tempDistance <= distance) {
+                distance = tempDistance;
+                closestSlot = this._slots[_x][_y];
+              }
+            }
+          }
+        }
+        var tempItem = item.clone()
+        tempItem.quantity = Math.floor(item.quantity/2)
+        item.quantity /= 2
+
+        console.log(tempItem);
+        this.addItemToSlot(closestSlot, tempItem)
+      }
+
       /**
         getClosestSlot()
         @description get the closest slot to the given unit
@@ -252,7 +298,7 @@ define([
       */
       snapToClosestSlot(item) {
         var closestSlot = this.getClosestSlot(item)
-        this.addUnitToSlot(closestSlot, item)
+        this.addItemToSlot(closestSlot, item)
       }
 
 

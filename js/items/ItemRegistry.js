@@ -32,7 +32,7 @@ define(
       static itemFromJSON(json) {
         var resultItem = null;
         for (var key of Object.keys(this.items)) {
-          if(json.name === key) {
+          if(json !== null && json.name === key) {
             resultItem = this.items[key].clone()
             resultItem.quantity = json.quantity
           }

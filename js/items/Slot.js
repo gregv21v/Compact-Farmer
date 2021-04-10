@@ -8,8 +8,12 @@ define(
     "items/HoeItem",
     "items/SeedItem",
     "items/Item",
+    "gui/ContextMenu",
     "d3"],
-  function(GrassSeedItem, GrassBladeItem, HoeItem, SeedItem, Item, d3) {
+  function(
+    GrassSeedItem, GrassBladeItem, HoeItem, SeedItem, Item,
+    ContextMenu,
+    d3) {
     return class Slot {
       static size = 50;
 
@@ -17,7 +21,8 @@ define(
         constructor()
         @description constructs the slot
       */
-      constructor(inventoryManager, inventory, position) {
+      constructor(inventoryManager, inventory, position, coordinate) {
+        this._coordinate = coordinate
         this._position = position;
         this._inventoryManager = inventoryManager;
         this._inventory = inventory;
@@ -27,7 +32,7 @@ define(
         this._svg.group = d3.create("svg:g")
         this._svg.background = this._svg.group.append("rect")
         this._svg.itemGroup = this._svg.group.append("g")
-        this._svg.rightClickMenu = this._inventory.contextMenuSVG.append("g");
+        this._svg.contextMenuGroup = this._svg.itemGroup.append("g")
         this._svg.clickArea = this._svg.group.append("rect")
       }
 
@@ -162,8 +167,8 @@ define(
           // update the item
           this._item = item;
           this._item.position = {
-            x: this._position.x + 5,
-            y: this._position.y + 5
+            x: this.position.x + 5,
+            y: this.position.y + 5
           }
 
           // initialize the unit and add it to the svg layer
@@ -190,11 +195,15 @@ define(
             self.onClick()
           })
 
-          this._item.svg.clickArea.on("contextmenu.allowRightDrag", function(event) {
-            self.onRightClick(event)
-          })
-        } else {
-          this._item.quantity += item.quantity;
+          if(this._inventory.onRightClickEnabled) {
+            this._item.svg.clickArea.on("contextmenu", function(event) {
+              self.onRightClick(event, layer)
+            })
+          }
+        } else if(this._item.constructor === item.constructor) {
+            console.log("Items stacked");
+            this._item.quantity += item.quantity;
+            item.destroy();
         }
       }
 
@@ -347,46 +356,27 @@ define(
       }
 
 
-      /**
-       * drawContextMenu()
-       * @description draw context menu
-       * @param position position to draw the context menu at
-       */
-      drawContextMenu(parent, position) {
-        let menuItemWidth = 90;
-        let menuItemHeight = 30;
-        let self = this;
 
-        this._svg.rightClickMenu
-          .append("rect")
-            .attr("x", position.x)
-            .attr("y", position.y)
-            .attr("width", menuItemWidth)
-            .attr("height", menuItemHeight)
-            .style("fill", "white")
 
-        this._svg.rightClickMenu
-          .append("text")
-            .attr("x", position.x + menuItemWidth/2)
-            .attr("y", position.y + menuItemHeight/2)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "central")
-            .text("Split")
-            .on("mousedown", function() {
-              self._svg.rightClickMenu.selectAll("*").remove();
-            })
-      }
+
 
       /**
         onRightClick()
         @description the function called on right click which is normally the
           creation of a context menu
       */
-      onRightClick(event) {
+      onRightClick(event, layer) {
         console.log("Right Click");
         event.preventDefault();
 
-        //this.drawContextMenu(null,  {x: event.x, y: event.y})
+        var self = this;
+        var contextMenu = new ContextMenu({x: event.x, y: event.y})
+        contextMenu.addMenuItem("Split", function() {
+          console.log("Split");
+          self._inventory.splitStack(self._coordinate)
+        })
+
+        contextMenu.addGraphicsTo(layer);
         if(this._item !== null) {
           if(this._item.quantity > 1) {
             this._inventoryManager.onMouse = this._item.clone()
