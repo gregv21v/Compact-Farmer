@@ -27,6 +27,7 @@ define(
         this._inventoryManager = inventoryManager;
         this._inventory = inventory;
         this._item = null;
+        this._contextMenu = null;
 
         this._svg = {}
         this._svg.group = d3.create("svg:g")
@@ -369,14 +370,14 @@ define(
         console.log("Right Click");
         event.preventDefault();
 
-        var self = this;
-        var contextMenu = new ContextMenu({x: event.x, y: event.y})
-        contextMenu.addMenuItem("Split", function() {
+        let self = this;
+        this._contextMenu = new ContextMenu({x: event.x, y: event.y})
+        this._contextMenu.addMenuItem("Split", function() {
           console.log("Split");
           self._inventory.splitStack(self._coordinate)
         })
 
-        contextMenu.addGraphicsTo(layer);
+        this._contextMenu.addGraphicsTo(layer);
         if(this._item !== null) {
           if(this._item.quantity > 1) {
             this._inventoryManager.onMouse = this._item.clone()

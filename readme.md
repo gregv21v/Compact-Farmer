@@ -23,3 +23,10 @@ In order to run the game, you download the repository. Then in the command line 
 
 If you get an error that says that there is something wrong with electron then
 install electron with the command ```npm i --save-dev electron```.
+
+
+## Crafting Recipes
+
+GrassBlade GrassBlade GrassBlade
+GrassBlade GrassBlade GrassBlade ===> DirtBlock
+GrassBlade GrassBlade GrassBlade

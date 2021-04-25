@@ -95,7 +95,7 @@ define(
          @param item the item to add to the output
        */
        outputItem(item) {
-         this._outputSlot.addUnit(0, 0, item)
+         this._outputSlot.addItem(0, 0, item)
        }
 
        /**
@@ -103,7 +103,7 @@ define(
         * @description consume all the items used in the crafting recipe
         */
       consumeItems() {
-        this._craftingGrid.consumeUnits()
+        this._craftingGrid.consumeItems()
       }
 
     }

@@ -9,7 +9,7 @@ define(
     "items/HoeItem",
     "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
     "items/SpinachItem", "items/SpinachSeedItem", "items/EmptyItem",
-    "items/ItemRegistry",
+    "items/DirtBlockItem", "items/ItemRegistry",
     "d3"
   ],
   function(
@@ -21,7 +21,7 @@ define(
     HoeItem,
     GrassBladeItem, GrassSeedItem, GrassSieveItem,
     SpinachItem, SpinachSeedItem, EmptyItem,
-    ItemRegistry,
+    DirtBlockItem, ItemRegistry,
     d3
   ) {
     return class Player {
@@ -37,6 +37,17 @@ define(
 
         this.inventoryManager.addInventory(this.inventory);
         this.inventoryManager.addInventory(this.toolbar);
+
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+
 
         this.toolbar.add(
           new SpinachSeedItem()
@@ -98,6 +109,17 @@ define(
             ]
           ),
           new GrassSieveItem()
+        ))
+
+        CraftingRegistry.register(new CraftingRecipe(
+          new CraftingInput(
+            [
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()],
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()],
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()]
+            ]
+          ),
+          new DirtBlockItem()
         ))
       }
 

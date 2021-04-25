@@ -265,7 +265,7 @@ define([
         }
         var tempItem = item.clone()
         tempItem.quantity = Math.floor(item.quantity/2)
-        item.quantity /= 2
+        item.quantity -= tempItem.quantity
 
         console.log(tempItem);
         this.addItemToSlot(closestSlot, tempItem)
