@@ -25,6 +25,9 @@ If you get an error that says that there is something wrong with electron then
 install electron with the command ```npm i --save-dev electron```.
 
 
+<<<<<<< HEAD
 ## Crafting Recipes
 
 9x GrassBlade ==> DirtBlock
+=======
+>>>>>>> e064246c26b006ca5a3a9ca6d9500bfd5ce94f7c
