@@ -1,12 +1,12 @@
 define([
     "blocks/Block",
     "blocks/ExpansionBlock",
-    "blocks/FarmBlock",
+    "blocks/DirtBlock",
     "blocks/WaterBlock",
     "d3"
   ],
   function(
-    Block, ExpansionBlock, FarmBlock, WaterBlock,
+    Block, ExpansionBlock, DirtBlock, WaterBlock,
     d3) {
     return class World {
 
@@ -47,8 +47,8 @@ define([
           var block = null;
           if(json[key].name === "ExpansionBlock") {
             block = ExpansionBlock.fromJSON(player, world, json[key])
-          } else if(json[key].name === "FarmBlock") {
-            block = FarmBlock.fromJSON(player, world, json[key])
+          } else if(json[key].name === "DirtBlock") {
+            block = DirtBlock.fromJSON(player, world, json[key])
           } else if(json[key].name === "WaterBlock") {
             block = WaterBlock.fromJSON(player, world, json[key])
           } else {

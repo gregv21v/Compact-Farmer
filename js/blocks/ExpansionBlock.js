@@ -5,10 +5,20 @@ define(
   [
     "game/World",
     "blocks/Block",
-    "blocks/FarmBlock",
+
+    "blocks/DirtBlock",
+    "items/DirtBlockItem",
+
+    "blocks/WaterBlock",
+    "items/FullLeafBucketItem",
     "d3"
   ],
-  function(World, Block, FarmBlock, d3) {
+  function(
+    World, Block,
+    DirtBlock, DirtBlockItem,
+    WaterBlock, FullLeafBucketItem,
+    d3
+  ) {
     return class ExpansionBlock extends Block {
 
       /**
@@ -17,7 +27,6 @@ define(
       */
       constructor(player, world, coordinate) {
         super(player, world, coordinate)
-
 
         this.name = "ExpansionBlock"
       }
@@ -81,7 +90,13 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-        this.world.expand(new FarmBlock(this.player, this.world, this.coordinate))
+        let selected = this.player.toolbar.currentlySelected.item
+        console.log(selected);
+        if(selected instanceof DirtBlockItem) {
+          this.world.expand(new DirtBlock(this.player, this.world, this.coordinate))
+        } else if(selected instanceof FullLeafBucketItem) {
+          this.world.expand(new WaterBlock(this.player, this.world, this.coordinate))
+        }
       }
 
       /**

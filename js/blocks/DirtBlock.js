@@ -16,7 +16,7 @@ define(
     Crop, GrassCrop,
     PlantRecipeRegistry,
     d3) {
-    return class FarmBlock extends Block {
+    return class DirtBlock extends Block {
 
       /**
         constructor()
@@ -25,12 +25,15 @@ define(
       constructor(player, world, coordinate) {
         super(player, world, coordinate)
 
-        this.name = "FarmBlock"
+        this.name = "DirtBlock"
         this.crop = null;
         this.isCropFullyGrown = false; // there are two stages, start and complete
         this.isHydrated = false;
         this.isPlowed = false;
         this.growthProgress = 0;
+
+        // elements in the soil that can be extracted by the planet
+        this.elements = []
       }
 
 
@@ -53,6 +56,7 @@ define(
           isHydrated: this.isHydrated,
           isPlowed: this.isPlowed,
           growthProgress: this.growthProgress
+          //elements: this.elements
         }
       }
 
@@ -61,23 +65,24 @@ define(
         @description converts a json object into this world
       */
       static fromJSON(player, world, json) {
-        var newFarmBlock = new FarmBlock(player, world, json.coordinate)
-        newFarmBlock.growthProgress = json.growthProgress;
-        newFarmBlock.crop = null;
+        var newDirtBlock = new DirtBlock(player, world, json.coordinate)
+        newDirtBlock.growthProgress = json.growthProgress;
+        newDirtBlock.crop = null;
         if(json.crop !== null) {
           if(json.crop.name === "GrassCrop") {
-            newFarmBlock.crop = GrassCrop.fromJSON(json)
+            newDirtBlock.crop = GrassCrop.fromJSON(json)
           } else {
-            newFarmBlock.crop = Crop.fromJSON(json)
+            newDirtBlock.crop = Crop.fromJSON(json)
           }
-          newFarmBlock.crop.setBlock(newFarmBlock);
-          newFarmBlock.setGrowthTimer()
+          newDirtBlock.crop.setBlock(newDirtBlock);
+          newDirtBlock.setGrowthTimer()
         }
-        newFarmBlock.isCropFullyGrown = json.isCropFullyGrown;
-        newFarmBlock.isHydrated = json.isHydrated;
-        newFarmBlock.isPlowed = json.isPlowed;
+        newDirtBlock.isCropFullyGrown = json.isCropFullyGrown;
+        newDirtBlock.isHydrated = json.isHydrated;
+        newDirtBlock.isPlowed = json.isPlowed;
+        //newDirtBlock.elements = json.elements;
 
-        return newFarmBlock;
+        return newDirtBlock;
       }
 
       /**
@@ -150,7 +155,7 @@ define(
 
       /**
         hydrate()
-        @description hydrates the farmBlock
+        @description hydrates the DirtBlock
       */
       hydrate() {
         this.isHydrated = true;
@@ -159,7 +164,7 @@ define(
 
       /**
         dehydrate()
-        @description hydrates the farmBlock
+        @description hydrates the DirtBlock
       */
       dehydrate() {
         this.isHydrated = false;

@@ -2,8 +2,8 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["recipes/PlantRecipeRegistry", "items/SieveItem", "blocks/Block", "blocks/FarmBlock", "d3"],
-  function(PlantRecipeRegistry, SieveItem, Block, FarmBlock, d3) {
+  ["recipes/PlantRecipeRegistry", "items/SieveItem", "blocks/Block", "blocks/DirtBlock", "d3"],
+  function(PlantRecipeRegistry, SieveItem, Block, DirtBlock, d3) {
     return class WaterBlock extends Block {
 
 
@@ -102,7 +102,7 @@ define(
               x: start.x + x,
               y: start.y + y
             })
-            if(world.blocks[coordinateAsString] instanceof FarmBlock) {
+            if(world.blocks[coordinateAsString] instanceof DirtBlock) {
               world.blocks[coordinateAsString].hydrate()
             }
           }
@@ -122,9 +122,6 @@ define(
             this.sieve()
           }
         }
-
-
-
       }
 
       /**

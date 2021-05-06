@@ -27,6 +27,4 @@ install electron with the command ```npm i --save-dev electron```.
 
 ## Crafting Recipes
 
-GrassBlade GrassBlade GrassBlade
-GrassBlade GrassBlade GrassBlade ===> DirtBlock
-GrassBlade GrassBlade GrassBlade
+9x GrassBlade ==> DirtBlock

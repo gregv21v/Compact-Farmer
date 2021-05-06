@@ -9,7 +9,8 @@ define(
     "items/HoeItem",
     "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
     "items/SpinachItem", "items/SpinachSeedItem", "items/EmptyItem",
-    "items/DirtBlockItem", "items/ItemRegistry",
+    "items/DirtBlockItem", "items/FullLeafBucketItem", "items/EmptyLeafBucketItem",
+    "items/ItemRegistry",
     "d3"
   ],
   function(
@@ -21,7 +22,8 @@ define(
     HoeItem,
     GrassBladeItem, GrassSeedItem, GrassSieveItem,
     SpinachItem, SpinachSeedItem, EmptyItem,
-    DirtBlockItem, ItemRegistry,
+    DirtBlockItem, FullLeafBucketItem, EmptyLeafBucketItem,
+    ItemRegistry,
     d3
   ) {
     return class Player {
@@ -59,6 +61,18 @@ define(
 
         this.toolbar.add(
           new HoeItem()
+        )
+
+        this.toolbar.add(
+          new FullLeafBucketItem()
+        )
+
+        this.toolbar.add(
+          new EmptyLeafBucketItem()
+        )
+
+        this.toolbar.add(
+          new DirtBlockItem()
         )
 
         this.toolbar.add(
