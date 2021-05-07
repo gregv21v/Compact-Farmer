@@ -12,6 +12,7 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "GrassSieveItem"
+        this.tooltip.text = "Grass Sieve: Used to collect seeds from water"
       }
 
 

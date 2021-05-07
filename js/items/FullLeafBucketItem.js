@@ -1,5 +1,5 @@
 /**
-  FullLeafBucketItem - a bucket made of leaves that only has one use 
+  FullLeafBucketItem - a bucket made of leaves that only has one use
 */
 define(
   ["items/Item", "d3"],
@@ -12,6 +12,7 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "FullLeafBucketItem"
+        this.tooltip.text = "Full Leaf Bucket: Placable"
       }
 
 

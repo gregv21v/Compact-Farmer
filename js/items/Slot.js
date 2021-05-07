@@ -157,12 +157,12 @@ define(
 
 
       /**
-        addUnit()
+        addItem()
         @description adds a unit for this slot
         @param item item to put in this slot
-        @param layer the graphics layer to add the unit to
+        @param layers the graphics layers
       */
-      addItem(item, layer) {
+      addItem(item, layers) {
         if(this._item === null) {
 
           // update the item
@@ -174,7 +174,8 @@ define(
 
           // initialize the unit and add it to the svg layer
           this._item.initSVG()
-          this._item.addGraphicsTo(layer)
+          this._item.addGraphicsTo(layers.items)
+          this._item.initTooltip(layers.tooltips)
 
           // setup the drag handler that allows you to drag
           // the unit around

@@ -13,6 +13,7 @@ define(
         super(position)
         this.name = "SpinachSeedItem"
         this.seedColor = "#1d4016"
+        this.tooltip.text = "Spinach Seed: Used for planting spinach"
       }
 
       /**
