@@ -165,7 +165,10 @@ define(
       set position(position) {
         this._position = position
 
-        this.tooltip.position = position
+        this.tooltip.position = {
+          x: this._position.x - this.size/2,
+          y: this._position.y - this.size/2
+        }
 
         this.svg.background
           .attr("x", this._position.x)
