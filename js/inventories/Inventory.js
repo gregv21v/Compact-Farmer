@@ -41,6 +41,7 @@ define([
         this._svg.layers = {
           slots: this._svg.group.append("g"),
           items: this._svg.group.append("g"),
+          tooltips: this._svg.group.append("g"),
           contextMenus: this._svg.group.append("g")
         }
 
@@ -232,7 +233,7 @@ define([
         for (var x = 0; x < this._slots.length; x++) {
           for (var y = 0; y < this._slots[x].length; y++) {
             if(this._slots[x][y].isEmpty() || this._slots[x][y].item.name === item.name) {
-              this._slots[x][y].addItem(item, this._svg.layers.items);
+              this._slots[x][y].addItem(item, this._svg.layers);
               return;
             }
           }
@@ -265,7 +266,7 @@ define([
         }
         var tempItem = item.clone()
         tempItem.quantity = Math.floor(item.quantity/2)
-        item.quantity /= 2
+        item.quantity -= tempItem.quantity
 
         console.log(tempItem);
         this.addItemToSlot(closestSlot, tempItem)
@@ -309,7 +310,7 @@ define([
         @param item the item to add
       */
       addItemToSlot(slot, item) {
-        slot.addItem(item, this._svg.layers.items);
+        slot.addItem(item, this._svg.layers);
       }
 
 

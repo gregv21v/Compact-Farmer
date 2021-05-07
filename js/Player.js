@@ -9,7 +9,8 @@ define(
     "items/HoeItem",
     "items/GrassBladeItem", "items/GrassSeedItem", "items/GrassSieveItem",
     "items/SpinachItem", "items/SpinachSeedItem", "items/EmptyItem",
-    "items/ItemRegistry",
+    "items/DirtBlockItem", "items/FullLeafBucketItem", "items/EmptyLeafBucketItem",
+    "items/ShovelItem", "items/ItemRegistry",
     "d3"
   ],
   function(
@@ -21,7 +22,8 @@ define(
     HoeItem,
     GrassBladeItem, GrassSeedItem, GrassSieveItem,
     SpinachItem, SpinachSeedItem, EmptyItem,
-    ItemRegistry,
+    DirtBlockItem, FullLeafBucketItem, EmptyLeafBucketItem,
+    ShovelItem, ItemRegistry,
     d3
   ) {
     return class Player {
@@ -38,6 +40,17 @@ define(
         this.inventoryManager.addInventory(this.inventory);
         this.inventoryManager.addInventory(this.toolbar);
 
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+        this.inventory.add(new GrassBladeItem())
+
+
         this.toolbar.add(
           new SpinachSeedItem()
         )
@@ -48,6 +61,22 @@ define(
 
         this.toolbar.add(
           new HoeItem()
+        )
+
+        this.toolbar.add(
+          new FullLeafBucketItem()
+        )
+
+        this.toolbar.add(
+          new EmptyLeafBucketItem()
+        )
+
+        this.toolbar.add(
+          new DirtBlockItem()
+        )
+
+        this.toolbar.add(
+          new ShovelItem()
         )
 
         this.toolbar.add(
@@ -98,6 +127,17 @@ define(
             ]
           ),
           new GrassSieveItem()
+        ))
+
+        CraftingRegistry.register(new CraftingRecipe(
+          new CraftingInput(
+            [
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()],
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()],
+              [new GrassBladeItem(), new GrassBladeItem(), new GrassBladeItem()]
+            ]
+          ),
+          new DirtBlockItem()
         ))
       }
 

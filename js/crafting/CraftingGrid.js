@@ -75,7 +75,7 @@ define(
         @param item the item to add
       */
       addItem(x, y, item) {
-        this._slots[x][y].addItem(item, this._svg.layers.items);
+        this._slots[x][y].addItem(item, this._svg.layers);
         // look up the current formation of items in the CraftingRegistry
         var recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
         if(recipe !== undefined) {
@@ -90,7 +90,7 @@ define(
         @param item the item to add
       */
       addItemToSlot(slot, item) {
-        slot.addItem(item, this._svg.layers.items);
+        slot.addItem(item, this._svg.layers);
 
         // look up the current formation of items in the CraftingRegistry
         var recipe = CraftingRegistry.lookup(this.convertToCraftingInput())

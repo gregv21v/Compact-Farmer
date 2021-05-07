@@ -2,8 +2,8 @@
   Item
 */
 define(
-  ["d3"],
-  function(d3) {
+  ["gui/Tooltip", "d3"],
+  function(Tooltip, d3) {
     return class Item {
       /**
         constructor()
@@ -15,11 +15,7 @@ define(
         this.size = 40
         this._quantity = 1;
 
-        // tooltip dimensions
-        this.tooltip = {
-          height: 50,
-          width: 50
-        }
+        this.tooltip = new Tooltip(this.name, this._position, 100, 50)
 
         // create the svg elements
         this.svg = {}
@@ -31,6 +27,16 @@ define(
         this.createGraphic(this.svg.graphicGroup)
         this.svg.clickArea = this.svg.group.append("rect")
       }
+
+      /**
+       * initTooltip()
+       * @description initializes the tooltip
+       * @param layer the graphics layer that the tooltips will be showed on
+       */
+       initTooltip(layer) {
+         this.tooltip.hide()
+         this.tooltip.addGraphicsTo(layer)
+       }
 
       /**
         toJSON()
@@ -83,14 +89,17 @@ define(
           .style("fill", "grey")
           .style("stroke", "black")
 
-        this.svg.label
+        this.tooltip.initSVG();
+        this.tooltip.hide()
+
+        /*this.svg.label
           .attr("x", this._position.x + this.size/2)
           .attr("y", this._position.y + this.size - 5)
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "central")
           .style("stroke", "black")
           .style("font-size", "10px")
-          .text(this.name)
+          .text(this.name)*/
 
         this.svg.count
           .attr("x", this._position.x + this.size - 5)
@@ -111,8 +120,8 @@ define(
           .style("fill-opacity", 0)
           .on("click", function() {self.onClick()})
           .on("mousedown", function() {self.onMouseDown()})
-          //.on("mouseover", function() {self.onMouseOver()})
-          //.on("mouseout", function() {self.onMouseOut()})
+          .on("mouseover", function() {self.onMouseOver()})
+          .on("mouseout", function() {self.onMouseOut()})
       }
 
       /**
@@ -155,6 +164,8 @@ define(
       */
       set position(position) {
         this._position = position
+
+        this.tooltip.position = position
 
         this.svg.background
           .attr("x", this._position.x)
@@ -220,7 +231,7 @@ define(
           this item
       */
       onMouseOver() {
-        // display the tooltip
+        this.tooltip.show()
       }
 
       /**
@@ -228,8 +239,8 @@ define(
         @description the function when the mouse leaves the
           area of the item
       */
-      onHover() {
-        // hide the tooltip
+      onMouseOut() {
+        this.tooltip.hide()
       }
     }
   })

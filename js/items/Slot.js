@@ -27,6 +27,7 @@ define(
         this._inventoryManager = inventoryManager;
         this._inventory = inventory;
         this._item = null;
+        this._contextMenu = null;
 
         this._svg = {}
         this._svg.group = d3.create("svg:g")
@@ -156,12 +157,12 @@ define(
 
 
       /**
-        addUnit()
+        addItem()
         @description adds a unit for this slot
         @param item item to put in this slot
-        @param layer the graphics layer to add the unit to
+        @param layers the graphics layers
       */
-      addItem(item, layer) {
+      addItem(item, layers) {
         if(this._item === null) {
 
           // update the item
@@ -173,7 +174,8 @@ define(
 
           // initialize the unit and add it to the svg layer
           this._item.initSVG()
-          this._item.addGraphicsTo(layer)
+          this._item.addGraphicsTo(layers.items)
+          this._item.initTooltip(layers.tooltips)
 
           // setup the drag handler that allows you to drag
           // the unit around
@@ -369,14 +371,14 @@ define(
         console.log("Right Click");
         event.preventDefault();
 
-        var self = this;
-        var contextMenu = new ContextMenu({x: event.x, y: event.y})
-        contextMenu.addMenuItem("Split", function() {
+        let self = this;
+        this._contextMenu = new ContextMenu({x: event.x, y: event.y})
+        this._contextMenu.addMenuItem("Split", function() {
           console.log("Split");
           self._inventory.splitStack(self._coordinate)
         })
 
-        contextMenu.addGraphicsTo(layer);
+        this._contextMenu.addGraphicsTo(layer);
         if(this._item !== null) {
           if(this._item.quantity > 1) {
             this._inventoryManager.onMouse = this._item.clone()

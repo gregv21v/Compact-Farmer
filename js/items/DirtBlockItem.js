@@ -1,19 +1,22 @@
 /**
-  Item
+  DirtBlockItem
 */
 define(
-  ["crops/Crop", "items/Item", "d3"],
-  function(Crop, Item, d3) {
-    return class GrassBladeItem extends Item {
+  ["items/Item", "d3"],
+  function(Item, d3) {
+    return class DirtBlockItem extends Item {
       /**
         constructor()
         @description constructs the block
       */
       constructor(position = {x: 0, y: 0}) {
         super(position)
-        this.name = "GrassBladeItem"
-        this.tooltip.text = "Grass Blade: Used for crafting"
+        this.name = "DirtBlockItem"
+
+        this.tooltip.text = "Dirt Block: Placable \non the plus marks"
       }
+
+
 
 
       /**
@@ -41,7 +44,7 @@ define(
           .attr("y", this._position.y)
           .attr("width", this.size)
           .attr("height", this.size)
-          .attr("href", "images/grass.png")
+          .attr("href", "images/dirtBlock.png")
       }
 
 
@@ -73,7 +76,7 @@ define(
         @description make a copy of this crop
       */
       clone() {
-        var clone = new GrassBladeItem(this._position);
+        var clone = new DirtBlockItem(this._position);
         clone.quantity = this.quantity;
 
         clone.initSVG()
