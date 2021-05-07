@@ -166,8 +166,8 @@ define(
         this._position = position
 
         this.tooltip.position = {
-          x: this._position.x - this.size/2,
-          y: this._position.y - this.size/2
+          x: this._position.x,
+          y: this._position.y - this.tooltip.height 
         }
 
         this.svg.background

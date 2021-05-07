@@ -69,6 +69,22 @@ define(
       }
 
       /**
+       * get height
+       * @description gets the height of the tooltip
+       */
+      get height() {
+        return this._height
+      }
+
+      /**
+       * get width
+       * @description gets the width of the tooltip
+       */
+      get width() {
+        return this._width
+      }
+
+      /**
        * set position
        * @description sets the position of the tooltip
        * @param pos the new position to set the tooltip to
