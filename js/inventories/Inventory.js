@@ -42,6 +42,7 @@ define([
           slots: this._svg.group.append("g"),
           items: this._svg.group.append("g"),
           tooltips: this._svg.group.append("g"),
+          clickAreas: this._svg.group.append("g"),
           contextMenus: this._svg.group.append("g")
         }
 
