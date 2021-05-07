@@ -2,8 +2,20 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  ["recipes/PlantRecipeRegistry", "items/SieveItem", "blocks/Block", "blocks/DirtBlock", "d3"],
-  function(PlantRecipeRegistry, SieveItem, Block, DirtBlock, d3) {
+  [
+    "recipes/PlantRecipeRegistry",
+    "items/SieveItem",
+    "items/FullLeafBucketItem",
+    "items/EmptyLeafBucketItem",
+    "blocks/Block",
+    "blocks/DirtBlock",
+    "d3"
+  ],
+  function(
+    PlantRecipeRegistry,
+    SieveItem, FullLeafBucketItem, EmptyLeafBucketItem,
+    Block, DirtBlock, d3
+  ) {
     return class WaterBlock extends Block {
 
 
@@ -120,6 +132,9 @@ define(
           if(selectedItem instanceof SieveItem) {
             // sieve
             this.sieve()
+          } else if (selectedItem instanceof EmptyLeafBucketItem) {
+            // replace emptyLeafBucket with a full one
+            selected.replaceItem(new FullLeafBucketItem());
           }
         }
       }

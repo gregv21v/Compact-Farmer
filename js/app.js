@@ -15,7 +15,8 @@ requirejs.config({
         blocks: "../js/blocks",
         inventories: "../js/inventories",
         jquery: "jquery-3.5.1",
-        d3: "d3.min"
+        d3: "d3.min",
+        d3plus: "d3plus.full"
     }
 });
 

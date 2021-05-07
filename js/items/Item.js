@@ -15,7 +15,7 @@ define(
         this.size = 40
         this._quantity = 1;
 
-        this.tooltip = new Tooltip(this.name, this._position, 100, 50)
+        this.tooltip = new Tooltip(this.name, this._position, 150, 20)
 
         // create the svg elements
         this.svg = {}
@@ -36,6 +36,19 @@ define(
        initTooltip(layer) {
          this.tooltip.hide()
          this.tooltip.addGraphicsTo(layer)
+       }
+
+
+       /**
+        * consumeOne()
+        * @description consumes one of this item
+        */
+       consumeOne(slot) {
+         if(this.quantity > 1) {
+           this.quantity -= 1;
+         } else {
+           slot.destroyItem()
+         }
        }
 
       /**
@@ -167,7 +180,7 @@ define(
 
         this.tooltip.position = {
           x: this._position.x,
-          y: this._position.y - this.tooltip.height 
+          y: this._position.y - this.tooltip.height
         }
 
         this.svg.background

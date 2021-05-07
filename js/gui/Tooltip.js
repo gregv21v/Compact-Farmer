@@ -37,13 +37,14 @@ define(
           .style("stroke", "black")
 
         this._svg.text
-          .attr("x", this._position.x + this._width/2)
-          .attr("y", this._position.y + this._height/2)
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "central")
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "before-edge")
           .style("stroke", "black")
           .style("font-size", "10px")
           .text(this._text)
+
       }
 
       /**
@@ -97,8 +98,8 @@ define(
           .attr("y", this._position.y)
 
         this._svg.text
-          .attr("x", this._position.x + this._width/2)
-          .attr("y", this._position.y + this._height/2)
+          .attr("x", this._position.x)
+          .attr("y", this._position.y)
       }
 
       /**

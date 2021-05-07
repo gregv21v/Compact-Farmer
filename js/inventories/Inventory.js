@@ -110,7 +110,7 @@ define([
             var item = ItemRegistry.itemFromJSON(json.slots[x][y].item);
             if(item !== null) {
               this._slots[x][y].addItem(
-                item, this._svg.layers.items
+                item, this._svg.layers
               )
             }
           }
@@ -120,6 +120,14 @@ define([
       /********************************************************
                         Getters and Setters
       *********************************************************/
+
+      /**
+       * get layers
+       * @description gets the graphics layers of the inventory
+       */
+      get layers() {
+        return this._svg.layers;
+      }
 
       /**
        * get onRightClickEnabled
@@ -240,6 +248,8 @@ define([
           }
         }
       }
+
+
 
 
       /**

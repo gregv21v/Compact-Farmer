@@ -53,7 +53,7 @@ define(
         @param item the item to add
       */
       addItem(x, y, item) {
-        this._slots.addItem(item, this._svg.layers.items)
+        this._slots.addItem(item, this._svg.layers)
       }
 
       /**

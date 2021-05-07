@@ -162,7 +162,7 @@ define(
         @param item item to put in this slot
         @param layers the graphics layers
       */
-      addItem(item, layers) {
+      addItem(item) {
         if(this._item === null) {
 
           // update the item
@@ -174,8 +174,8 @@ define(
 
           // initialize the unit and add it to the svg layer
           this._item.initSVG()
-          this._item.addGraphicsTo(layers.items)
-          this._item.initTooltip(layers.tooltips)
+          this._item.addGraphicsTo(this._inventory.layers.items)
+          this._item.initTooltip(this._inventory.layers.tooltips)
 
           // setup the drag handler that allows you to drag
           // the unit around
@@ -199,7 +199,7 @@ define(
 
           if(this._inventory.onRightClickEnabled) {
             this._item.svg.clickArea.on("contextmenu", function(event) {
-              self.onRightClick(event, layer)
+              self.onRightClick(event, layers.contextMenus)
             })
           }
         } else if(this._item.constructor === item.constructor) {
@@ -207,6 +207,16 @@ define(
             this._item.quantity += item.quantity;
             item.destroy();
         }
+      }
+
+      /**
+       * replaceItem()
+       * @description replace the item in this inventory
+       * @param item the new item to replace the old one with
+       */
+      replaceItem(item) {
+        this.destroyItem();
+        this.addItem(item)
       }
 
       /**

@@ -90,11 +90,13 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
-        let selected = this.player.toolbar.currentlySelected.item
-        console.log(selected);
-        if(selected instanceof DirtBlockItem) {
+        let selectedSlot = this.player.toolbar.currentlySelected
+        let selectedItem = this.player.toolbar.currentlySelected.item
+        if(selectedItem instanceof DirtBlockItem) {
+          selectedItem.consumeOne(selectedSlot);
           this.world.expand(new DirtBlock(this.player, this.world, this.coordinate))
-        } else if(selected instanceof FullLeafBucketItem) {
+        } else if(selectedItem instanceof FullLeafBucketItem) {
+          selectedItem.consumeOne(selectedSlot);
           this.world.expand(new WaterBlock(this.player, this.world, this.coordinate))
         }
       }
