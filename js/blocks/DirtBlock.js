@@ -5,6 +5,9 @@ define(
   [
     "items/SeedItem",
     "items/HoeItem",
+    "items/DirtBlockItem",
+    "items/ShovelItem",
+
     "blocks/Block",
     "crops/Crop",
     "crops/GrassCrop",
@@ -12,7 +15,8 @@ define(
     "d3"
   ],
   function(
-    SeedItem, HoeItem, Block,
+    SeedItem, HoeItem, DirtBlockItem, ShovelItem,
+    Block,
     Crop, GrassCrop,
     PlantRecipeRegistry,
     d3) {
@@ -154,6 +158,21 @@ define(
       }
 
       /**
+        unrender()
+        @description removes the block from the canvas
+      */
+      unrender() {
+        this.svg.background.remove();
+        this.svg.clickArea.remove();
+        this.svg.cropGroup.selectAll("*").remove();
+        this.svg.graphicsGroup.selectAll("*").remove();
+        this.svg.progressBar.remove();
+        for (let row of this.svg.rows) {
+          row.remove();
+        }
+      }
+
+      /**
         hydrate()
         @description hydrates the DirtBlock
       */
@@ -191,6 +210,10 @@ define(
           console.log("Plowing land...");
           // plow land
           this.plow()
+        } else if(selectedItem instanceof ShovelItem) {
+          // remove block from world
+          this.world.removeBlock(this);
+          this.player.inventory.add(new DirtBlockItem())
         } else {
           console.log("No item selected.");
         }

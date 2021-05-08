@@ -101,8 +101,22 @@ define([
         @description removes a given block from the world.
         @param block the block to remove
       */
-      remove(block) {
-        // Not yet implemented
+      removeBlock(block) {
+        var coordAsString = block.getCoordinateAsString()
+        if(coordAsString in this.blocks) {
+          // remove it
+          this.blocks[coordAsString].unrender();
+          delete this.blocks[coordAsString]
+
+          // add the new block
+          this.blocks[coordAsString] = new ExpansionBlock(
+            this.player, this,
+            block.coordinate
+          );
+          this.blocks[coordAsString].render()
+
+          this.updateBlocks();
+        }
       }
 
       /**
