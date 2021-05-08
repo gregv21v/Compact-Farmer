@@ -53,6 +53,14 @@ define([
       }
 
       /**
+       * clearContextMenus()
+       * @description clear all the context menus currently opened
+       */
+      clearContextMenus() {
+        this._svg.layers.contextMenus.selectAll("*").remove();
+      }
+
+      /**
         _createSlots()
         @description create all the _slots for the storage
       */

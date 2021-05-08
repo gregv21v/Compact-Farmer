@@ -199,7 +199,7 @@ define(
 
           if(this._inventory.onRightClickEnabled) {
             this._item.svg.clickArea.on("contextmenu", function(event) {
-              self.onRightClick(event, layers.contextMenus)
+              self.onRightClick(event, self._inventory.layers.contextMenus)
             })
           }
         } else if(this._item.constructor === item.constructor) {
@@ -339,6 +339,7 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
+        this._inventory.clearContextMenus();
         this._inventory.deselectAll()
         this._inventory.select(this)
         this.select()
