@@ -17,8 +17,9 @@ define(
         this._svg = {
           group: d3.create("svg:g") // the main svg group that everything resides in
         }
-        this._svg.background = this._svg.group.append("rect")
-        this._svg.text = this._svg.group.append("text")
+        this._svg.foreignObject = this._svg.group.append("foreignObject")
+        this._svg.div = this._svg.foreignObject.append("xhtml:div")
+        this._svg.paragraph = this._svg.div.append("xhtml:p")
       }
 
       /**
@@ -28,22 +29,22 @@ define(
        */
       initSVG() {
 
-        this._svg.background
+        this._svg.foreignObject
           .attr("x", this._position.x)
           .attr("y", this._position.y)
           .attr("width", this._width)
           .attr("height", this._height)
-          .style("fill", "white")
-          .style("stroke", "black")
+          .style("background", "lightblue")
+          .style("border-radius", "5px")
 
-        this._svg.text
-          .attr("x", this._position.x)
-          .attr("y", this._position.y)
-          .attr("text-anchor", "start")
-          .attr("alignment-baseline", "before-edge")
-          .style("stroke", "black")
-          .style("font-size", "10px")
-          .text(this._text)
+        this._svg.div
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .style("color", "black")
+          .style("padding", "2px")
+
+        this._svg.paragraph
+          .html(this._text)
 
       }
 
@@ -66,7 +67,7 @@ define(
        */
       set text(value) {
         this._text = value;
-        this._svg.text.text(this._text)
+        this._svg.paragraph.html(this._text)
       }
 
       /**
@@ -93,11 +94,7 @@ define(
       set position(pos) {
         this._position = pos
 
-        this._svg.background
-          .attr("x", this._position.x)
-          .attr("y", this._position.y)
-
-        this._svg.text
+        this._svg.foreignObject
           .attr("x", this._position.x)
           .attr("y", this._position.y)
       }
@@ -115,8 +112,9 @@ define(
        * @description shows the tooltip
        */
       show() {
-        this._svg.text.text(this._text)
-        this._svg.background.attr("width", this._width)
+        console.log("Showing tooltip");
+        this._svg.paragraph.html(this._text)
+        this._svg.foreignObject.attr("width", this._width)
       }
 
       /**
@@ -124,8 +122,8 @@ define(
        * @description hides the tooltip
        */
       hide() {
-        this._svg.text.text("")
-        this._svg.background.attr("width", 0)
+        this._svg.paragraph.html("")
+        this._svg.foreignObject.attr("width", 0)
       }
 
     }

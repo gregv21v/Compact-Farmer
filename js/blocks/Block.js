@@ -109,7 +109,6 @@ define(
         @description removes the block from the canvas
       */
       unrender() {
-        console.log(this);
         for (var key of Object.keys(this.svg)) {
           this.svg[key].remove();
         }

@@ -46,42 +46,11 @@ define(
         this.inventory.add(new GrassBladeItem())
         this.inventory.add(new GrassBladeItem())
         this.inventory.add(new GrassBladeItem())
-        this.inventory.add(new GrassBladeItem())
-        this.inventory.add(new GrassBladeItem())
-        this.inventory.add(new GrassBladeItem())
 
-
-        this.toolbar.add(
-          new SpinachSeedItem()
-        )
-
-        this.toolbar.add(
-          new GrassSeedItem()
-        )
-
-        this.toolbar.add(
-          new HoeItem()
-        )
-
-        this.toolbar.add(
-          new FullLeafBucketItem()
-        )
-
-        this.toolbar.add(
-          new EmptyLeafBucketItem()
-        )
-
-        this.toolbar.add(
-          new DirtBlockItem()
-        )
-
-        this.toolbar.add(
-          new ShovelItem()
-        )
-
-        this.toolbar.add(
-          new GrassSieveItem()
-        )
+        this.toolbar.add(new GrassSeedItem())
+        this.toolbar.add(new DirtBlockItem())
+        this.toolbar.add(new DirtBlockItem())
+        this.toolbar.add(new HoeItem())
 
         this.registerPlantRecipes();
         this.registerCraftingRecipes();

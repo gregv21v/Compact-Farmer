@@ -56,7 +56,13 @@ define(
       consumeItems() {
         for (var y = 0; y < this._rows; y++) {
           for (var x = 0; x < this._columns; x++) {
-            this._slots[x][y].destroyItem();
+            if(!this._slots[x][y].isEmpty()) {
+              if(this._slots[x][y].item.quantity > 1) {
+                this._slots[x][y].item.quantity--;
+              } else {
+                this._slots[x][y].destroyItem();
+              }
+            }
           }
         }
       }

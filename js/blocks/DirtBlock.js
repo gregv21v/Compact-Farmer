@@ -209,7 +209,7 @@ define(
         } else if(selectedItem instanceof HoeItem) {
           console.log("Plowing land...");
           // plow land
-          this.plow()
+          this.plow(selectedItem)
         } else if(selectedItem instanceof ShovelItem) {
           // remove block from world
           this.world.removeBlock(this);
@@ -264,7 +264,9 @@ define(
         @description prepares this plot of land for planting
 
       */
-      plow() {
+      plow(hoe) {
+        hoe.use()
+
         var worldPosition = this.world.coordinateToPosition(this.coordinate);
 
         for (var i = 0; i < this.rows; i++) {

@@ -15,7 +15,11 @@ define(
         this.size = 40
         this._quantity = 1;
 
-        this.tooltip = new Tooltip(this.name, this._position, 150, 20)
+        this.tooltip = new Tooltip(
+          this.name,
+          {x: this._position.x - 5, y: this._position.y - 5},
+          150, 90
+        )
 
         // create the svg elements
         this.svg = {}
@@ -181,6 +185,14 @@ define(
         this.tooltip.position = {
           x: this._position.x,
           y: this._position.y - this.tooltip.height
+        }
+
+        if(this.tooltip.position.y < 0) {
+          // put the tooltip below the item
+          this.tooltip.position = {
+            x: this._position.x,
+            y: this._position.y + this.size
+          }
         }
 
         this.svg.background
