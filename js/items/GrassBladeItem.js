@@ -12,7 +12,7 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "GrassBladeItem"
-        this.tooltip.text = "Grass Blade: Used for crafting"
+        this.updateToolTip("Grass Blade: Used for crafting") 
       }
 
 

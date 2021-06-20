@@ -36,8 +36,7 @@ define(
         this.isPlowed = false;
         this.growthProgress = 0;
 
-        // elements in the soil that can be extracted by the planet
-        this.elements = []
+        // elements in the soil that can be extracted by the plant
       }
 
 
@@ -60,7 +59,6 @@ define(
           isHydrated: this.isHydrated,
           isPlowed: this.isPlowed,
           growthProgress: this.growthProgress
-          //elements: this.elements
         }
       }
 
@@ -195,6 +193,7 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
+        super.onClick()
         var selectedItem = this.player.toolbar.currentlySelected.item
         console.log("Farm Block Clicked");
 

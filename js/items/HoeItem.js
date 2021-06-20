@@ -17,7 +17,7 @@ define(
         this._currDurability = 20;
         this._maxDurability = 20;
         this.name = "HoeItem"
-        this.tooltip.text = "Hoe: Used to till soil"
+        this.tooltip.html = "Hoe: Used to till soil"
       }
 
 

@@ -16,7 +16,10 @@ define([
         this.player = player;
 
         var mainSVG = d3.select("body").select("svg")
-        this.svgGroup = mainSVG.append("g")
+        this._svgLayers = {
+          blocks: mainSVG.append("g"),
+          tooltips: mainSVG.append("g")
+        }
 
         this.addBlock(new WaterBlock(this.player, this, {x: 0, y: 0}))// origin block
         this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: 1}))
@@ -231,5 +234,19 @@ define([
           block.render();
         }
       }
+
+
+      /**************************************************************
+                      Getters & Setters
+       **************************************************************/
+
+      /**
+       * get layers
+       * @description get the layers of the world
+       */
+      get layers() {
+        return this._svgLayers;
+      }
+
     }
 })

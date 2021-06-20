@@ -126,6 +126,7 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
+        super.onClick();
         var selected = this.player.toolbar.currentlySelected
         if(selected !== null) {
           var selectedItem = selected.item

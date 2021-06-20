@@ -12,8 +12,14 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "DirtBlockItem"
+        this._elements = {
+          Phospherous: 20,
+          Carbon: 10,
+          Iron: 20
+        }
 
-        this.tooltip.text = "Dirt Block: Placable \non the plus marks"
+        this._description = "Dirt Block: Placable on the plus marks"
+        this.updateToolTip()
       }
 
 

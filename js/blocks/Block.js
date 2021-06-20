@@ -2,8 +2,8 @@
   Plot - a plot of land that can be farmed on
 */
 define(
-  [ "d3"],
-  function(d3) {
+  ["d3", "gui/Tooltip"],
+  function(d3, Tooltip) {
     return class Block {
 
       static size = 50
@@ -24,16 +24,47 @@ define(
         this.player = player;
         this.world = world;
         this.coordinate = coordinate;
+        this._elements = {}
+
+        var worldPosition = this.getWorldPosition();
+        this._tooltip = new Tooltip(
+          this.name,
+          {x: worldPosition.x, y: worldPosition.y - 90},
+          150, 90
+        )
 
         // the resources needed to craft this item
         this.svg = {}
-        this.svg.background = this.world.svgGroup.append("rect")
+        this.svg.background = this.world.layers.blocks.append("rect")
 
-        this.svg.graphicsGroup = this.world.svgGroup.append("g")
+        this.svg.graphicsGroup = this.world.layers.blocks.append("g")
         this.createGraphic(this.svg.graphicsGroup);
 
-        this.svg.clickArea = this.world.svgGroup.append("rect")
+        this.svg.clickArea = this.world.layers.blocks.append("rect")
+
+        this.initTooltip(this.world.layers.tooltips);
       }
+
+      /**
+       * updateToolTip()
+       * updates the information on the tooltip
+       */
+      updateToolTip(description) {
+        this._tooltip.html = `${description}<br /><strong>Elements:</strong><br/>`
+        for (var element of Object.keys(this._elements)) {
+          this._tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
+        }
+      }
+
+      /**
+       * initTooltip()
+       * @description initializes the tooltip
+       * @param layer the graphics layer that the tooltips will be showed on
+       */
+       initTooltip(layer) {
+         this._tooltip.hide()
+         this._tooltip.addGraphicsTo(layer)
+       }
 
       /**
         toJSON()
@@ -99,7 +130,17 @@ define(
           .attr("width", size)
           .attr("height", size)
           .style("fill-opacity", 0)
-          .on("click", function() {self.onClick()});
+          .on("click", function() {self.onClick()})
+          .on("mouseover", function() {self.onMouseOver()})
+          .on("mouseout", function() {self.onMouseOut()})
+
+        this._tooltip.initSVG()
+        this._tooltip.hide()
+
+        this._tooltip.position = {
+          x: worldPosition.x,
+          y: worldPosition.y - 90
+        }
       }
 
 
@@ -120,7 +161,25 @@ define(
       */
       onClick() {
         // do something ...
-        console.log(this.name);
+        this._tooltip.hide()
+      }
+
+      /**
+        onMouseOver()
+        @description the function called when you mouse over
+          this item
+      */
+      onMouseOver() {
+        this._tooltip.show()
+      }
+
+      /**
+        onMouseOut()
+        @description the function when the mouse leaves the
+          area of the item
+      */
+      onMouseOut() {
+        this._tooltip.hide()
       }
 
       /**

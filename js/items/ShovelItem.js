@@ -12,7 +12,7 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "ShovelItem"
-        this.tooltip.text = "Shovel: Used to move dirt blocks"
+        this.tooltip.html = "Shovel: Used to move dirt blocks"
       }
 
 

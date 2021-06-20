@@ -90,6 +90,7 @@ define(
         @description the function called when this block is clicked
       */
       onClick() {
+        super.onClick();
         let selectedSlot = this.player.toolbar.currentlySelected
         let selectedItem = this.player.toolbar.currentlySelected.item
         if(selectedItem instanceof DirtBlockItem) {
@@ -99,6 +100,7 @@ define(
           selectedItem.consumeOne(selectedSlot);
           this.world.expand(new WaterBlock(this.player, this.world, this.coordinate))
         }
+
       }
 
       /**

@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
+//const electronLocalshortcut = require('electron-localshortcut')
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -11,6 +12,7 @@ function createWindow () {
   })
 
   win.loadFile('index.html')
+  //win.removeMenu() // removes the ability to refresh the window
   win.webContents.openDevTools()
 }
 

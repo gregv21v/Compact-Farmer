@@ -12,7 +12,7 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "FullLeafBucketItem"
-        this.tooltip.text = "Full Leaf Bucket: Placable"
+        this.tooltip.html = "Full Leaf Bucket: Placable"
       }
 
 

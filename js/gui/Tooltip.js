@@ -7,10 +7,10 @@ define(
       /**
        * constructor()
        * @description constructs the tooltip class
-       * @param text text of the tooltip
+       * @param html html of the tooltip
        */
-      constructor(text, position, width, height) {
-        this._text = text;
+      constructor(html, position, width, height) {
+        this._html = html;
         this._position = position;
         this._width = width
         this._height = height
@@ -19,7 +19,6 @@ define(
         }
         this._svg.foreignObject = this._svg.group.append("foreignObject")
         this._svg.div = this._svg.foreignObject.append("xhtml:div")
-        this._svg.paragraph = this._svg.div.append("xhtml:p")
       }
 
       /**
@@ -42,9 +41,10 @@ define(
           .attr("height", "100%")
           .style("color", "black")
           .style("padding", "2px")
+          .style("font-size", "11px")
 
-        this._svg.paragraph
-          .html(this._text)
+        this._svg.div
+          .html(this._html)
 
       }
 
@@ -62,12 +62,20 @@ define(
       *********************************************************************/
 
       /**
-       * set text
-       * @description sets the text of the tooltip
+       * set html
+       * @description sets the html of the tooltip
        */
-      set text(value) {
-        this._text = value;
-        this._svg.paragraph.html(this._text)
+      set html(value) {
+        this._html = value;
+        this._svg.div.html(this._html)
+      }
+
+      /**
+       * get html
+       * @description gets the html of the tooltip
+       */
+      get html() {
+        return this._html;
       }
 
       /**
@@ -112,8 +120,8 @@ define(
        * @description shows the tooltip
        */
       show() {
-        console.log("Showing tooltip");
-        this._svg.paragraph.html(this._text)
+        //console.log("Showing tooltip");
+        this._svg.div.html(this._html)
         this._svg.foreignObject.attr("width", this._width)
       }
 
@@ -122,7 +130,7 @@ define(
        * @description hides the tooltip
        */
       hide() {
-        this._svg.paragraph.html("")
+        this._svg.div.html("")
         this._svg.foreignObject.attr("width", 0)
       }
 

@@ -12,8 +12,16 @@ define(
       constructor(position = {x: 0, y: 0}) {
         super(position)
         this.name = "GrassSeedItem"
-        this.seedColor = "green"
-        this.tooltip.text = "Grass Seed: Placable on tilled farm block"
+        this._elements = {
+          Magnesium: 8,
+          Iron: 200,
+          Potassium: 42
+        }
+
+        this._description = "Grass Seed: Placable on tilled farm block"
+        this.updateToolTip()
+
+        this._imageURL = "images/grassSeed.png"
       }
 
       /**

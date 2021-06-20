@@ -4,7 +4,7 @@
 
 You start off with one block of space then you build up from there.
 
-## How to Play?
+## How do you Play?
 
 There isn't much to do in the game right now. You can till the soil, plant some seeds and gather seeds from the water.
 

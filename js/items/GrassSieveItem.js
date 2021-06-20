@@ -13,7 +13,7 @@ define(
         super(position)
         this._durability = 5;
         this.name = "GrassSieveItem"
-        this.tooltip.text = "Grass Sieve: Used to collect seeds from water"
+        this.tooltip.html = "Grass Sieve: Used to collect seeds from water"
       }
 
 
@@ -25,8 +25,8 @@ define(
         @param group the svg group to create the graphics on
       */
       createGraphic(group) {
+        super.createGraphic(group)
         // draw the blade of grass
-        this.svg.image = group.append("image")
         this.svg.label = group.append("text")
       }
 
