@@ -1,4 +1,4 @@
-define(["game/Game"], function(Game) {
-  var game = new Game();
-  game.addGraphics()
-})
+import { Game } from "./Game.js"
+
+var game = new Game();
+game.addGraphics()
