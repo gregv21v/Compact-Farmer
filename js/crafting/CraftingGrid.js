@@ -14,8 +14,8 @@ export class CraftingGrid extends Inventory {
     @param rows the number of rows in the grid
     @param columns the number of columns in the grid
   */
-  constructor(crafter, inventoryManager, rows, columns) {
-    super(inventoryManager, rows, columns)
+  constructor(player, crafter, inventoryManager, rows, columns) {
+    super(player, inventoryManager, rows, columns)
 
     this._crafter = crafter
   }
@@ -25,7 +25,7 @@ export class CraftingGrid extends Inventory {
    * convertToCraftingInput()
    * @description convert the crafting grid to a crafting input instance
    */
-   convertToCraftingInput() {
+  convertToCraftingInput() {
      var grid = []
      for (var y = 0; y < this._rows; y++) {
        var row = []
@@ -42,7 +42,7 @@ export class CraftingGrid extends Inventory {
      return new CraftingInput(grid);
    }
 
-   /**
+  /**
     * consumeItems()
     * @description consume the items after a crafted item is removed from the output
     *   slot
@@ -77,9 +77,12 @@ export class CraftingGrid extends Inventory {
   addItem(x, y, item) {
     this._slots[x][y].addItem(item, this._svg.layers);
     // look up the current formation of items in the CraftingRegistry
-    var recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
+    let recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
+
     if(recipe !== undefined) {
       this._crafter.outputItem(recipe.output.clone())
+    } else {
+      this._crafter.outputItem(new EmptyItem());
     }
   }
 
@@ -96,6 +99,8 @@ export class CraftingGrid extends Inventory {
     var recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
     if(recipe !== undefined) {
       this._crafter.outputItem(recipe.output.clone())
+    } else {
+      this._crafter.outputItem(new EmptyItem());
     }
   }
 

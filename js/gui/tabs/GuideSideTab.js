@@ -38,7 +38,7 @@ export class GuideSideTab extends SideTab {
         <h2>Guide</h2>
         <p>
 
-          You start off with 2 dirt blocks a hoe, and some grass seeds.
+          You start off with 1 dirt blocks a hoe, and 1 grass seeds.
           The grass seed can be planted, once you place a dirt block and hoe it.
 
         </p>
@@ -65,6 +65,14 @@ export class GuideSideTab extends SideTab {
             </figcaption>
           </figure>
         </div>
+
+
+        <p>
+          9 grass blades can be placed into a crafting grid to create a dirt block
+          4 grass blades in the upper left hand corner of a crafting grid makes a grass sieve
+          a grass sieve can be used to sieve dirt to find seeds and other things
+        </p>
+
 
       `)
       .style("padding", "5px")

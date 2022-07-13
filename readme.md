@@ -29,3 +29,6 @@ install electron with the command ```npm i --save-dev electron```.
 
 # Level 1
 You start off with a grass seeds and a hoe. With the hoe, you can till the soil so you can plants seeds. The only seed you have in the beginning is grass.
+
+
+

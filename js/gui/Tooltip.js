@@ -37,10 +37,7 @@ export class Tooltip {
         .style("color", "black")
         .style("padding", "2px")
         .style("font-size", "11px")
-
-      this._svg.div
         .html(this._html)
-
     }
 
     /**
@@ -50,6 +47,15 @@ export class Tooltip {
     */
     addGraphicsTo(group) {
       group.append(() => this._svg.group.node())
+    }
+
+    /**
+     * destroy()
+     * @description destroys the tooltip
+     */
+    destroy() {
+      this._svg.foreignObject.remove()
+      this._svg.div.remove()
     }
 
     /********************************************************************

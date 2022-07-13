@@ -36,6 +36,23 @@ export class InventoryManager {
   }
 
 
+  /**
+   * findSlotContainingPoint()
+   * @description find the slot that contains a given point
+   * @param {Point} point the point to check for
+   */
+  findSlotContainingPoint(point)  {
+    for (const inventory of this._inventories) {
+      let slot = inventory.findSlotContainingPoint(point)
+      if(slot) return {
+        slot: slot,
+        inventory: inventory
+      };
+    }
+    return null;
+  }
+
+
 
 
 
@@ -93,8 +110,18 @@ export class InventoryManager {
     @param item the item to snap to the closest slot
   */
   snapToClosestSlot(item) {
-    var closest = this.getClosestSlot(item)
+    let closest = this.getClosestSlot(item)
     this._inventories[closest.inventory].addItemToSlot(closest.slot, item);
+  }
+
+  /**
+    snapToClosestSlot()
+    @description snap a given item to the closest slot
+    @param item the item to snap to the closest slot
+  */
+  addToContainingSlot(point, item) {
+    let containing = this.findSlotContainingPoint(point)
+    containing.inventory.addItemToSlot(containing.slot, item);
   }
 
 

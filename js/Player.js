@@ -22,14 +22,17 @@ export class Player {
 
       this.hand = null; // an item/object that follows the curser movement
       this.inventoryManager = new InventoryManager()
-      this.inventory = new Inventory(this.inventoryManager, 6, 5)
-      this.crafter = new Crafter(this.inventoryManager, {x: 0, y: 0})
+      this.inventory = new Inventory(this, this.inventoryManager, 6, 5)
+      this.crafter = new Crafter(this, this.inventoryManager, {x: 0, y: 0})
 
-      this.toolbar = new Toolbar(this.inventoryManager)
+      this.toolbar = new Toolbar(this, this.inventoryManager)
 
       this.inventoryManager.addInventory(this.inventory);
       this.inventoryManager.addInventory(this.toolbar);
 
+      this.inventory.add(new GrassBladeItem())
+      this.inventory.add(new GrassBladeItem())
+      this.inventory.add(new GrassBladeItem())
       this.inventory.add(new GrassBladeItem())
       this.inventory.add(new GrassBladeItem())
       this.inventory.add(new GrassBladeItem())
@@ -41,22 +44,31 @@ export class Player {
       this.toolbar.add(new DirtBlockItem())
       this.toolbar.add(new DirtBlockItem())
       this.toolbar.add(new HoeItem())
+      this.toolbar.add(new ShovelItem())
 
       this.registerPlantRecipes();
       this.registerCraftingRecipes();
       this.registerItems()
 
       var mainSVG = d3.select("body").select("svg")
-      mainSVG.on("mousemove", function() { self.onMouseMove() })
+      mainSVG.on("mousemove", (event) => { self.onMouseMove(event) })
     }
+
+
+
 
 
     /**
       onMouseMove()
       @description the function called when the mouse moves
     */
-    onMouseMove() {
-      //this.hand.setPosition(d3.mouse)
+    onMouseMove(event) {
+      let pos = d3.pointer(event)
+      if(this.hand)
+        this.hand.position = {
+          x: pos[0],
+          y: pos[1]
+        }      
     }
 
 

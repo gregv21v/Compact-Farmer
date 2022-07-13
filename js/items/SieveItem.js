@@ -41,7 +41,7 @@ export class SieveItem extends Item {
       .attr("y", this._position.y)
       .attr("width", this.size)
       .attr("height", this.size)
-      .attr("href", "images/grass-sieve.png")
+      .attr("href", "images/grassSieve.png")
   }
 
 

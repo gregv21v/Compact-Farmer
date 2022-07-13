@@ -12,10 +12,10 @@ export class CraftingOutputGrid extends Inventory {
     @param craftingGrid the grid to craft the items in
     @param inventoryManager the inventory manager that manages all the inventories
   */
-  constructor(crafter, inventoryManager) {
-    super(inventoryManager, 1, 1)
+  constructor(player, crafter, inventoryManager) {
+    super(player, inventoryManager, 1, 1)
 
-    this._slots = new CraftingOutputSlot(crafter, inventoryManager, this, this._position)
+    this._slots = [[new CraftingOutputSlot(player, crafter, inventoryManager, this, this._position)]]
   }
 
   /********************************************************
@@ -28,7 +28,7 @@ export class CraftingOutputGrid extends Inventory {
   */
   addGraphicsTo(parent) {
     parent.append(() => this._svg.group.node())
-    this._slots.addGraphicsTo(this._svg.layers.slots);
+    this._slots[0][0].addGraphicsTo(this._svg.layers.slots);
   }
 
   /**
@@ -36,12 +36,21 @@ export class CraftingOutputGrid extends Inventory {
     @description initializes the attributes and styles of the grid's svgs
   */
   initSVG() {
-    this._slots.initSVG()
+    this._slots[0][0].initSVG()
   }
 
   /********************************************************
                       Getters and Setters
   *********************************************************/
+
+
+  /**
+   * isEmpty()
+   * @description checks whether the crafting grid output is empty
+   */
+  isEmpty() {
+    return this._slots[0][0].isEmpty()
+  }
 
   /**
     addItem()
@@ -52,8 +61,19 @@ export class CraftingOutputGrid extends Inventory {
     @param item the item to add
   */
   addItem(x, y, item) {
-    this._slots.addItem(item, this._svg.layers)
+    this._slots[0][0].addItem(item)
   }
+
+
+  /**
+   * replaceItem()
+   * @description replaces the given item in the output grid
+   * @param {Item} item the item to replace the current item with
+   */
+  replaceItem(item) {
+    this._slots[0][0].replaceItem(item)
+  }
+
 
   /**
     addItemToSlot()
@@ -72,7 +92,7 @@ export class CraftingOutputGrid extends Inventory {
     @param item the item to find the closest slot to
   */
   getClosestSlot(item) {
-    return this._slots;
+    return this._slots[0][0];
   }
 
   /**
@@ -90,7 +110,7 @@ export class CraftingOutputGrid extends Inventory {
     @param position position to move to
   */
   moveTo(position) {
-    this._slots.position = {
+    this._slots[0][0].position = {
       x: position.x,
       y: position.y
     }

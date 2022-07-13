@@ -104,6 +104,7 @@ export class Item {
     this.svg.count.remove()
     this.svg.graphicGroup.remove()
     this.svg.clickArea.remove()
+    this.tooltip.destroy()
   }
 
   /**

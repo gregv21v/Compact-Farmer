@@ -11,13 +11,15 @@ export class Inventory {
     @param rows the rows of this inventory
     @param columns the columns of this inventory
   */
-  constructor(manager, rows, columns) {
+  constructor(player, manager, rows, columns) {
     this._position = {x: 0, y: 0}
     this._slots = [];
     this._rows = rows;
     this._columns = columns;
     this._selectedSlot = null;
     this._inventoryManager = manager;
+    this._player = player;
+    this._allowPickup = true;
 
 
     // determines if you can move objects
@@ -44,6 +46,31 @@ export class Inventory {
     this._createSlots();
   }
 
+
+  /**
+   * findSlotContainingPoint()
+   * @description find the slot that contains a given point
+   * @param {Point} point the point to check for
+   */
+  findSlotContainingPoint(point)  {
+    for (var x = 0; x < this._columns; x++) {
+      for (var y = 0; y < this._rows; y++) {
+        var slot = this._slots[x][y]
+        if(slot.contains(point)) {
+          return slot;
+        }
+      }
+    }
+  }
+
+  /**
+   * get allowPickup()
+   * @description gets the allow pickup property
+   */
+  get allowPickup() {
+    return this._allowPickup;
+  }
+
   /**
    * clearContextMenus()
    * @description clear all the context menus currently opened
@@ -58,9 +85,10 @@ export class Inventory {
   */
   _createSlots() {
     for (var x = 0; x < this._columns; x++) {
-      var newRow = []
+      let newRow = []
       for (var y = 0; y < this._rows; y++) {
-        var newSlot = new Slot(
+        let newSlot = new Slot(
+          this._player,
           this._inventoryManager, this,
           {
             x: this._position.x + Slot.size * x,

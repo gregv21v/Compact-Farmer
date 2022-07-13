@@ -8,11 +8,12 @@ export class Crafter {
     @param inventoryManager the grid manager to manage the grids
     @param position the position to put the crafter
   */
-  constructor(inventoryManager, position) {
+  constructor(player, inventoryManager, position) {
     this._position = position;
     this._inventoryManager = inventoryManager
-    this._craftingGrid = new CraftingGrid(this, inventoryManager, 3, 3);
-    this._outputSlot = new CraftingOutputGrid(this, inventoryManager);
+    this._craftingGrid = new CraftingGrid(player, this, inventoryManager, 3, 3);
+    this._outputSlot = new CraftingOutputGrid(player, this, inventoryManager);
+    this._player = player;
 
     this._inventoryManager.addInventory(this._craftingGrid)
     this._inventoryManager.addInventory(this._outputSlot)
@@ -88,7 +89,11 @@ export class Crafter {
      @param item the item to add to the output
    */
    outputItem(item) {
-     this._outputSlot.addItem(0, 0, item)
+      if(this._outputSlot.isEmpty())
+        this._outputSlot.addItem(0, 0, item)
+      else { // replace the item in the output slot
+        this._outputSlot.replaceItem(item)
+      }
    }
 
    /**

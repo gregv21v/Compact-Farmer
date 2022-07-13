@@ -16,13 +16,15 @@ export class Slot {
     constructor()
     @description constructs the slot
   */
-  constructor(inventoryManager, inventory, position, coordinate) {
+  constructor(player, inventoryManager, inventory, position, coordinate) {
     this._coordinate = coordinate
     this._position = position;
     this._inventoryManager = inventoryManager;
     this._inventory = inventory;
     this._item = null;
     this._contextMenu = null;
+    this._player = player
+    this._onMouse = false;
 
     this._svg = {}
     this._svg.group = d3.create("svg:g")
@@ -83,7 +85,7 @@ export class Slot {
       .attr("width", Slot.size)
       .attr("height", Slot.size)
       .style("fill-opacity", 0)
-      .on("click", function() {self.onClick()})
+      .on("click", function(event) {self.onClick(event)})
       .on("mouseover", function() {self.onMouseEnter()})
       .on("mouseout", function() {self.onMouseLeave()})
       .on("mousedown", function() {self.onMouseDown()})
@@ -169,6 +171,7 @@ export class Slot {
 
       // initialize the unit and add it to the svg layer
       this._item.initSVG()
+      console.log(this._inventory)
       this._item.addGraphicsTo(this._inventory.layers.items)
       this._item.initTooltip(this._inventory.layers.tooltips)
 
@@ -186,10 +189,10 @@ export class Slot {
           self.onDragEnd(event)
         })
 
-      dragHandler(this._item.svg.clickArea)
+      //dragHandler(this._item.svg.clickArea)
 
-      this._item.svg.clickArea.on("click", function() {
-        self.onClick()
+      this._item.svg.clickArea.on("click", function(event) {
+        self.onClick(event)
       })
 
       if(this._inventory.onRightClickEnabled) {
@@ -231,7 +234,7 @@ export class Slot {
   */
   destroyItem() {
     if(this._item !== null) {
-      this._item.svg.group.selectAll("*").remove()
+      this._item.destroy();
       this._item = null;
     }
   }
@@ -247,6 +250,18 @@ export class Slot {
     return Math.sqrt(
       Math.pow(item.position.x - this._position.x, 2) +
       Math.pow(item.position.y - this._position.y, 2)
+    )
+  }
+
+  /**
+   * contains()
+   * @description check if this slot contains a given point
+   * @param {Point} point the point to check for 
+   */
+  contains(point) {
+    return (
+      this._position.x < point.x && point.x < this._position.x + Slot.size &&
+      this._position.y < point.y && point.y < this._position.y + Slot.size
     )
   }
 
@@ -333,11 +348,43 @@ export class Slot {
     onClick()
     @description the function called when this block is clicked
   */
-  onClick() {
-    this._inventory.clearContextMenus();
-    this._inventory.deselectAll()
-    this._inventory.select(this)
-    this.select()
+  onClick(event) {
+    if(this._inventory.itemsMovable) {
+
+      let pos = d3.pointer(event);
+
+      if(this._player.hand) { // there is something in the hand
+        console.log("hand full")
+        if(this._item === null) {
+          // place the item in the slot that the mouse is in
+          this._inventoryManager.addToContainingSlot({
+            x: pos[0], y: pos[1]
+          }, this._player.hand)
+          this._player.hand = null;
+        } else {
+          if(this._item.constructor === this._player.hand.constructor) { // same item
+            this._item.quantity += this._player.hand.quantity
+            this._player.hand.destroy()
+            this._player.hand = null;
+          }
+        }
+      } else {
+        this._player.hand = this._item
+        this.removeItem()
+      }
+
+      // place the item in the slot in the players hand
+      
+    } else {
+      this._inventory.deselectAll()
+      this._inventory.select(this)
+      this.select()
+    }
+
+    // select this slot and only this slot of the inventory
+    //this._inventory.clearContextMenus();
+    
+
   }
 
   /**
@@ -374,19 +421,26 @@ export class Slot {
     event.preventDefault();
 
     let self = this;
-    this._contextMenu = new ContextMenu({x: event.x, y: event.y})
+    /*this._contextMenu = new ContextMenu({x: event.x, y: event.y})
     this._contextMenu.addMenuItem("Split", function() {
       console.log("Split");
       self._inventory.splitStack(self._coordinate)
-    })
+    })*/
 
-    this._contextMenu.addGraphicsTo(layer);
-    if(this._item !== null) {
-      if(this._item.quantity > 1) {
-        this._inventoryManager.onMouse = this._item.clone()
-        this._inventoryManager.onMouse.quantity /= 2;
-      } else {
-        this._inventoryManager.onMouse = this._item;
+    //this._contextMenu.addGraphicsTo(layer);
+    let pos = d3.pointer(event)
+
+    if(this._player.hand) {
+      let newItem = this._player.hand.clone()
+      newItem.quantity = 1
+      this._inventoryManager.addToContainingSlot({
+        x: pos[0], y: pos[1]
+      }, newItem)
+      this._player.hand.quantity -= 1;
+
+      if(this._player.hand.quantity === 0) {
+        this._player.hand.destroy()
+        this._player.hand = null;
       }
     }
 

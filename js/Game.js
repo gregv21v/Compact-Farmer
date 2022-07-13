@@ -10,7 +10,7 @@ export class Game {
     this.world = new World(this.player, {x: this.width/2, y: this.height/2})
     this.hud = new HUD(this, this.player, this.world)
 
-    var svgMain = d3.select("body")
+    var canvas = d3.select("body")
       .select("svg")
       .attr("width", this.width)
       .attr("height", this.height)
@@ -18,7 +18,7 @@ export class Game {
     var self = this;
 
     window.addEventListener("resize", function() {
-      svgMain
+      canvas
         .attr("width", self.width)
         .attr("height", self.height)
 

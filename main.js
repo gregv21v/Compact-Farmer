@@ -7,9 +7,12 @@ function createWindow () {
     width: 900,
     height: 900,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
+    },
   })
+
+  win.removeMenu()
 
   win.loadFile('index.html')
   //win.removeMenu() // removes the ability to refresh the window

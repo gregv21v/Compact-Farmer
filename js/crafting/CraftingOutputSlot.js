@@ -12,8 +12,8 @@ export class CraftingOutputSlot extends Slot {
     @param inventory the inventory that this slot belongs to
     @param position the position that this slot is on the svg canvas
   */
-  constructor(crafter, inventoryManager, inventory, position) {
-    super(inventoryManager, inventory, position)
+  constructor(player, crafter, inventoryManager, inventory, position) {
+    super(player, inventoryManager, inventory, position, {x: 0, y: 0})
     this._crafter = crafter;
   }
 
@@ -29,4 +29,5 @@ export class CraftingOutputSlot extends Slot {
       this._item = null;
     }
   }
+
 }
