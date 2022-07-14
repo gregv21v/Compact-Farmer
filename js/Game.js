@@ -3,6 +3,9 @@ import { World } from "./World.js"
 import { HUD } from "./HUD.js"
 import { PlantRecipe, PlantRecipeRegistry } from "./recipes/recipes.js"
 import { GrassSeedItem, GrassBladeItem } from "./items/items.js"
+import { Inventory } from "./inventories/Inventory.js"
+import { Toolbar } from "./inventories/Toolbar.js"
+import { InventoryManager } from "./inventories/InventoryManager.js"
 
 export class Game {
   constructor() {
@@ -65,14 +68,23 @@ export class Game {
     this.world.delete()
     this.world.fromJSON(this.player, this.world, json.world)
 
+    this.player.inventoryManager.clear()
+
+    // delete the old inventories
     this.player.inventory.delete()
-    this.player.inventory.fromJSON(json.inventory)
-    this.hud.inventoryTab.inventory = this.player.inventory
-
-    this.hud.craftingTab.inventory = this.player.inventory
-
     this.player.toolbar.delete()
-    this.player.toolbar.fromJSON(json.toolbar)
+
+    // load the new inventories from the server
+    this.player.inventory = Inventory.fromJSON(this.player, this.player.inventoryManager, json.inventory)
+    this.player.toolbar = Toolbar.fromJSON(this.player, this.player.inventoryManager, json.toolbar);
+  
+    // add the inventory to the tab
+    this.hud._inventoryTab.inventory = this.player.inventory
+    this.hud._craftingTab.inventory = this.player.inventory
+
+    this.player.inventoryManager.addInventory(this.player.inventory);
+    this.player.inventoryManager.addInventory(this.player.toolbar)
+
     this.player.toolbar.moveTo({
       x: this.width / 2 - this.player.toolbar.width / 2,
       y: this.height - 50

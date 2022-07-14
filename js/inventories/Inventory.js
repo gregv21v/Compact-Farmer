@@ -19,12 +19,11 @@ export class Inventory {
     this._selectedSlot = null;
     this._inventoryManager = manager;
     this._player = player;
-    this._allowPickup = true;
 
 
     // determines if you can move objects
     // from one slot to another in the inventory
-    this._itemsMovable = false;
+    this._itemsMovable = true;
     this._active = true;
     this._onRightClickEnabled = true;
 
@@ -45,7 +44,6 @@ export class Inventory {
     this._svg.layers.items.attr("class", "itemsLayer")
     this._createSlots();
   }
-
 
   /**
    * findSlotContainingPoint()
@@ -131,18 +129,20 @@ export class Inventory {
     fromJSON()
     @description convert a json object to a storage object
   */
-  fromJSON(json) {
-    for (var x = 0; x < this._columns; x++) {
-      for (var y = 0; y < this._rows; y++) {
-        this._slots[x][y].destroyItem()
+  static fromJSON(player, inventoryManager, json) {
+    let inventory = new Inventory(player, inventoryManager, json.rows, json.columns)
+    for (var x = 0; x < inventory._columns; x++) {
+      for (var y = 0; y < inventory._rows; y++) {
+        inventory._slots[x][y].destroyItem()
         var item = ItemRegistry.itemFromJSON(json.slots[x][y].item);
         if(item !== null) {
-          this._slots[x][y].addItem(
-            item, this._svg.layers
+          inventory._slots[x][y].addItem(
+            item, inventory._svg.layers
           )
         }
       }
     }
+    return inventory
   }
 
   /********************************************************
@@ -271,10 +271,11 @@ export class Inventory {
       for (var y = 0; y < this._slots[x].length; y++) {
         if(this._slots[x][y].isEmpty() || this._slots[x][y].item.name === item.name) {
           this._slots[x][y].addItem(item, this._svg.layers);
-          return;
+          return true;
         }
       }
     }
+    return false;
   }
 
 

@@ -82,6 +82,7 @@ export class Player {
       ItemRegistry.registerItem(new GrassBladeItem())
       ItemRegistry.registerItem(new GrassSieveItem())
       ItemRegistry.registerItem(new HoeItem())
+      ItemRegistry.registerItem(new ShovelItem())
     }
 
     /**

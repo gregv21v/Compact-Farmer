@@ -32,3 +32,9 @@ You start off with a grass seeds and a hoe. With the hoe, you can till the soil 
 
 
 
+
+## Known Bugs
+1. When you move an item from, the main inventory to the crafting grid, you first have to place it in the crafting grid then pick it up again to be able to right click place the items in the grid.
+2. When you have 2 or more recipes stacked up, you have to pickup and place an item to get subsiquent outputs
+3. When you place item in the crafting grid then try to place an item back into the main inventory, it goes back to the crafting grid.
+

@@ -1,3 +1,4 @@
+import { ItemRegistry } from "../items/ItemRegistry.js";
 import { Inventory } from "./inventories.js"
 
 export class Toolbar extends Inventory {
@@ -11,6 +12,25 @@ export class Toolbar extends Inventory {
 
     this.selectedSlot = this._slots[0][0];
     this._onRightClickEnabled = false;
-    this._allowPickup = false;
   }
+
+  /**
+    fromJSON()
+    @description convert a json object to a storage object
+  */
+    static fromJSON(player, inventoryManager, json) {
+      let inventory = new Toolbar(player, inventoryManager, json.rows, json.columns)
+      for (var x = 0; x < inventory._columns; x++) {
+        for (var y = 0; y < inventory._rows; y++) {
+          inventory._slots[x][y].destroyItem()
+          var item = ItemRegistry.itemFromJSON(json.slots[x][y].item);
+          if(item !== null) {
+            inventory._slots[x][y].addItem(
+              item, inventory._svg.layers
+            )
+          }
+        }
+      }
+      return inventory
+    }
 }

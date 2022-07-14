@@ -277,7 +277,9 @@ export class DirtBlock extends Block {
         var recipe = PlantRecipeRegistry.lookup(this.crop.name)
         var products = recipe.getProducts();
         for (var product of products) {
-          this.player.inventory.add(product)
+          if(!this.player.toolbar.add(product)) {
+            this.player.inventory.add(product)
+          }
         }
         this.crop.removeBlock()
         this.crop = null;

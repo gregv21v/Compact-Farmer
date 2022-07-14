@@ -18,6 +18,7 @@ export class InventorySideTab extends SideTab {
     )
 
     this.buttonDims = {width: 30, height: 100}
+    this._inventory;
   }
 
 
@@ -79,6 +80,7 @@ export class InventorySideTab extends SideTab {
 
     // Allow all active inventories to move items
     this._inventory.activate()
+    
     this._inventoryManager.allowItemMovement();
   }
 

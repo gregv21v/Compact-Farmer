@@ -3,6 +3,7 @@
 */
 import { Item } from "./items.js"
 import { Crop } from "../crops/crops.js"
+import { GrassBladeItem } from "./items.js";
 
 export class HoeItem extends Item {
   /**
@@ -103,7 +104,7 @@ export class HoeItem extends Item {
     @description make a copy of this crop
   */
   clone() {
-    var clone = new GrassBladeItem(this._position);
+    var clone = new HoeItem(this._position);
     clone.quantity = this.quantity;
 
     clone.initSVG()

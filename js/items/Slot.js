@@ -171,7 +171,7 @@ export class Slot {
 
       // initialize the unit and add it to the svg layer
       this._item.initSVG()
-      console.log(this._inventory)
+      //console.log(this._inventory)
       this._item.addGraphicsTo(this._inventory.layers.items)
       this._item.initTooltip(this._inventory.layers.tooltips)
 
@@ -201,6 +201,7 @@ export class Slot {
         })
       }
     } else if(this._item.constructor === item.constructor) {
+        //console.log(this._item);
         console.log("Items stacked");
         this._item.quantity += item.quantity;
         item.destroy();
@@ -357,10 +358,14 @@ export class Slot {
         console.log("hand full")
         if(this._item === null) {
           // place the item in the slot that the mouse is in
-          this._inventoryManager.addToContainingSlot({
-            x: pos[0], y: pos[1]
-          }, this._player.hand)
-          this._player.hand = null;
+          if(
+            this._inventoryManager.addToContainingSlot({
+              x: pos[0], y: pos[1]
+            }, this._player.hand)
+          )
+            this._player.hand = null;
+          
+          console.log(this._player.hand);
         } else {
           if(this._item.constructor === this._player.hand.constructor) { // same item
             this._item.quantity += this._player.hand.quantity
