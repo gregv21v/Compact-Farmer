@@ -104,4 +104,22 @@ export class CraftingGrid extends Inventory {
     }
   }
 
+
+  /**
+   * removeItemFromSlot()
+   * @description removes an item from a given slot 
+   * @param slot the slot to remove the item from
+   */
+  removeItemFromSlot(slot) {
+    slot.removeItem()
+
+    let recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
+    if(recipe !== undefined) {
+      this._crafter.outputItem(recipe.output.clone())
+    } else {
+      this._crafter.outputItem(new EmptyItem())
+    }
+  }
+  
+
 }

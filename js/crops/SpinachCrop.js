@@ -11,6 +11,7 @@ export class SpinachCrop extends Crop {
   constructor() {
     super()
     this.name = "SpinachCrop"
+    this._svg.image.attr("href", "images/grassCrop.png")
   }
 
   /**

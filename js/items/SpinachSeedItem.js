@@ -15,6 +15,7 @@ export class SpinachSeedItem extends SeedItem {
     this.name = "SpinachSeedItem"
     this.seedColor = "#1d4016"
     this.tooltip.html = "Spinach Seed: Used for planting spinach"
+    this._imageURL = "images/spinachSeed.png"
   }
 
   /**
@@ -32,6 +33,7 @@ export class SpinachSeedItem extends SeedItem {
   initSVG() {
     super.initSVG();
 
+    /*
     this.svg.seeds[0]
       .attr("cx", this._position.x + this.size/2 - this.size/4)
       .attr("cy", this._position.y + this.size/2 - this.size/4)
@@ -52,6 +54,7 @@ export class SpinachSeedItem extends SeedItem {
       .attr("rx", this.size / 9)
       .attr("ry", this.size / 11)
       .style("fill", this.seedColor)
+    */
   }
 
 
@@ -66,11 +69,11 @@ export class SpinachSeedItem extends SeedItem {
     super.createGraphic(group);
 
     // make your graphics here add add them to the this.svg object
-    this.svg.seeds = [
+    /*this.svg.seeds = [
       group.append("ellipse"),
       group.append("ellipse"),
       group.append("ellipse")
-    ]
+    ]*/
   }
 
   /**
@@ -81,7 +84,7 @@ export class SpinachSeedItem extends SeedItem {
   set position(position) {
     super.position = position;
 
-    this.svg.seeds[0]
+    /*this.svg.seeds[0]
       .attr("cx", this._position.x + this.size/2 - this.size/4)
       .attr("cy", this._position.y + this.size/2 - this.size/4)
 
@@ -91,7 +94,7 @@ export class SpinachSeedItem extends SeedItem {
 
     this.svg.seeds[2]
       .attr("cx", this._position.x + this.size/2 + this.size/4)
-      .attr("cy", this._position.y + this.size/2 + this.size/4)
+      .attr("cy", this._position.y + this.size/2 + this.size/4)*/
   }
 
   /**

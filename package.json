@@ -1,6 +1,6 @@
 {
-  "name": "compact-survival",
-  "version": "1.0.0",
+  "name": "compact-farmer",
+  "version": "0.0.1",
   "description": "a game about expanding your territory and planting crops",
   "main": "main.js",
   "scripts": {

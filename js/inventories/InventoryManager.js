@@ -9,6 +9,22 @@ export class InventoryManager {
     this._inventories = []
     this._onMouse = null; // the item that is currently on the mouse
     //this._itemsMovable = false;
+
+    this._svg = {
+      group: d3.create("svg:g"),
+      layers: {}
+    }
+    this._svg.layers = {
+      slots: this._svg.group.append("g"),
+      items: this._svg.group.append("g"),
+      tooltips: this._svg.group.append("g"),
+      clickAreas: this._svg.group.append("g"),
+      contextMenus: this._svg.group.append("g")
+    }
+
+    this._svg.group.attr("class", "inventory")
+    this._svg.layers.slots.attr("class", "slotsLayer")
+    this._svg.layers.items.attr("class", "itemsLayer")
   }
 
   /**
@@ -112,15 +128,15 @@ export class InventoryManager {
   }
 
   /**
-    snapToClosestSlot()
-    @description snap a given item to the closest slot
+    addToContainingSlot()
+    @description adds the item to the containing slot
     @param item the item to snap to the closest slot
+    @returns returns true if the item was added otherwise false
   */
   addToContainingSlot(point, item) {
     let slot = this.findSlotContainingPoint(point)
     slot._inventory.addItemToSlot(slot, item);
 
-    console.log(slot);
     if(slot) return true;
     return false;
   }

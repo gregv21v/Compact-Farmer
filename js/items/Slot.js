@@ -195,6 +195,8 @@ export class Slot {
         self.onClick(event)
       })
 
+      this._item.svg.clickArea.on("dblclick", (event) => self.onDoubleClick(event))
+
       if(this._inventory.onRightClickEnabled) {
         this._item.svg.clickArea.on("contextmenu", function(event) {
           self.onRightClick(event, self._inventory.layers.contextMenus)
@@ -308,41 +310,17 @@ export class Slot {
                    Mouse Interactions
   *********************************************************/
 
-  /**
-    onDragEnd()
-    @description the function that is called when you end dragging a
-      unit
-  */
-  onDragEnd(event) {
-    if(this._inventory.itemsMovable) {
-      console.log("Drag");
-      var tempItem = this._item;
-      this.removeItem()
-      this._inventoryManager.snapToClosestSlot(tempItem)
-    }
-  }
+
 
   /**
-    onDrag()
-    @description the function that is called when you are dragging a
-      unit
-  */
-  onDrag(event) {
-    if(this._inventoryManager.onMouse !== null && this._inventory.itemsMovable) {
-      this._inventoryManager.onMouse.position = {
-        x: event.x - Slot.size/2,
-        y: event.y - Slot.size/2
-      }
-    }
-  }
-
-  /**
-    onDrag()
-    @description the function that is called when you are dragging a
-      unit
-  */
-  onDragStart(event) {
-    this._inventoryManager.onMouse = this._item;
+   * onDoubleClick()
+   * @description the event that occures when an item or slot is double clicked
+   */
+  onDoubleClick(event) {
+    console.log("Double Click");
+    // add all the items of the clicks item to
+    // your hand
+    this._player.hand = this._inventory.getAllItemsByName(this._item.name);
   }
 
   /**
@@ -353,19 +331,25 @@ export class Slot {
     if(this._inventory.itemsMovable) {
 
       let pos = d3.pointer(event);
+      console.log(pos);
+      this._svg.clickArea.append("circle")
+        .attr("cx", pos[0])
+        .attr("cy", pos[1])
+        .attr("r", 5)
 
       if(this._player.hand) { // there is something in the hand
-        console.log("hand full")
         if(this._item === null) {
           // place the item in the slot that the mouse is in
+          console.log("Hand full, and no item");
           if(
             this._inventoryManager.addToContainingSlot({
               x: pos[0], y: pos[1]
             }, this._player.hand)
-          )
+          ) {
             this._player.hand = null;
-          
-          console.log(this._player.hand);
+            console.log("Slot clicked");
+          } else 
+            console.log("No slot clicked");
         } else {
           if(this._item.constructor === this._player.hand.constructor) { // same item
             this._item.quantity += this._player.hand.quantity
@@ -374,8 +358,9 @@ export class Slot {
           }
         }
       } else {
+        console.log("Hand empty");
         this._player.hand = this._item
-        this.removeItem()
+        this._inventory.removeItemFromSlot(this)
       }
 
       // place the item in the slot in the players hand

@@ -279,6 +279,31 @@ export class Inventory {
   }
 
 
+  /**
+   * getAllItemsByName() 
+   * @description gets all the items by a certain name and put them into one stack
+   * @param {string} name the name of the item
+   */
+  getAllItemsByName(name) {
+    let item = ItemRegistry.lookup(name).clone()
+    item.quantity = 0;
+    for (var x = 0; x < this._slots.length; x++) {
+      for (var y = 0; y < this._slots[x].length; y++) {
+        if(this._slots[x][y].item !== null && this._slots[x][y].item.name === name) {
+          item.quantity += this._slots[x][y].item.quantity
+          this.removeItemFromSlot(this._slots[x][y])
+          this._slots[x][y].destroyItem()
+        }
+      }
+    }
+
+    if(item.quantity === 0)
+      return null;
+    else 
+      return item
+  }
+
+
 
 
   /**
@@ -351,6 +376,15 @@ export class Inventory {
   */
   addItemToSlot(slot, item) {
     slot.addItem(item, this._svg.layers);
+  }
+
+  /**
+   * removeItemFromSlot()
+   * @description removes an item from a given slot 
+   * @param slot the slot to remove the item from
+   */
+  removeItemFromSlot(slot) {
+    slot.removeItem()
   }
 
 
