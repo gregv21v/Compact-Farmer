@@ -1,9 +1,9 @@
 /**
   DirtBlockItem
 */
-import { Item } from "./items.js"
+import { CompostableItem } from "./items.js"
 
-export class DirtBlockItem extends Item {
+export class DirtBlockItem extends CompostableItem {
   /**
     constructor()
     @description constructs the block
@@ -16,6 +16,7 @@ export class DirtBlockItem extends Item {
       Carbon: 10,
       Iron: 20
     }
+    this._compostValue = 50
 
     this._description = "Dirt Block: Placable on the plus marks"
     this.updateToolTip()
@@ -28,13 +29,13 @@ export class DirtBlockItem extends Item {
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
     // draw the blade of grass
-    this.svg.image = group.append("image")
-    this.svg.label = group.append("text")
+    this._svg.image = group.append("image")
+    this._svg.label = group.append("text")
   }
 
   /**
@@ -44,7 +45,7 @@ export class DirtBlockItem extends Item {
   initSVG() {
     super.initSVG();
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
@@ -63,7 +64,7 @@ export class DirtBlockItem extends Item {
   set position(position) {
     super.position = position;
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
   }

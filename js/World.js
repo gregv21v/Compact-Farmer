@@ -1,24 +1,24 @@
 import {
   Block, ExpansionBlock, DirtBlock,
-  WaterBlock
+  WaterBlock, ComposterBlock
 } from "./blocks/blocks.js"
 
 
 export class World {
 
-  constructor(player, position) {
+  constructor(player, layer, position) {
     this.position = position
     this.blocks = {};
     this.player = player;
+    this._layer = layer;
 
-    var mainSVG = d3.select("body").select("svg")
     this._svgLayers = {
-      blocks: mainSVG.append("g"),
-      tooltips: mainSVG.append("g")
+      blocks: layer.append("g"),
+      tooltips: layer.append("g")
     }
 
     this.addBlock(new WaterBlock(this.player, this, {x: 0, y: 0}))// origin block
-    this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: 1}))
+    this.addBlock(new ComposterBlock(this.player, this, {x: 0, y: 1}))
     this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: -1}))
     this.addBlock(new ExpansionBlock(this.player, this, {x: -1, y: 0}))
     this.addBlock(new ExpansionBlock(this.player, this, {x: 1, y: 0}))
@@ -50,6 +50,8 @@ export class World {
         block = DirtBlock.fromJSON(player, world, json[key])
       } else if(json[key].name === "WaterBlock") {
         block = WaterBlock.fromJSON(player, world, json[key])
+      } else if(json[key].name === "ComposterBlock") {
+        block = ComposterBlock.fromJSON(player, world, json[key])
       } else {
         block = Block.fromJSON(player, world, json[key]);
       }

@@ -28,8 +28,9 @@ export class Tooltip {
         .attr("y", this._position.y)
         .attr("width", this._width)
         .attr("height", this._height)
-        .style("background", "lightblue")
+        .style("background", "rgba(255,255,255,0.5)")
         .style("border-radius", "5px")
+        .style("border", "solid black 1px")
 
       this._svg.div
         .attr("width", "100%")
@@ -37,6 +38,7 @@ export class Tooltip {
         .style("color", "black")
         .style("padding", "2px")
         .style("font-size", "11px")
+        .style("background", "rgba(255,255,255,0.5)")
         .html(this._html)
     }
 

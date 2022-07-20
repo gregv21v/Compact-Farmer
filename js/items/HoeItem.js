@@ -26,14 +26,14 @@ export class HoeItem extends Item {
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
     // draw the blade of grass
-    this.svg.image = group.append("image")
-    this.svg.label = group.append("text")
-    this.svg.progressBar = group.append("rect")
+    this._svg.image = group.append("image")
+    this._svg.label = group.append("text")
+    this._svg.progressBar = group.append("rect")
   }
 
   /**
@@ -43,14 +43,14 @@ export class HoeItem extends Item {
   initSVG() {
     super.initSVG();
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
       .attr("height", this.size)
       .attr("href", "images/hoe.png")
 
-    this.svg.progressBar
+    this._svg.progressBar
       .attr("x", this._position.x)
       .attr("y", this._position.y + this.size - 2)
       .attr("width", (this._currDurability / this._maxDurability) * this.size)
@@ -81,11 +81,11 @@ export class HoeItem extends Item {
   set position(position) {
     super.position = position;
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
 
-    this.svg.progressBar
+    this._svg.progressBar
       .attr("x", this._position.x)
       .attr("y", this._position.y + this.size - 2)
   }
@@ -136,7 +136,7 @@ export class HoeItem extends Item {
   set maxDurability(value) {
     this._maxDurability = value;
 
-    this.svg.progressBar
+    this._svg.progressBar
       .attr("width", (this._currDurability / this._maxDurability) * this.size)
   }
 
@@ -157,7 +157,7 @@ export class HoeItem extends Item {
   set currDurability(value) {
     this._currDurability = value;
 
-    this.svg.progressBar
+    this._svg.progressBar
       .attr("width", (this._currDurability / this._maxDurability) * this.size)
   }
 }

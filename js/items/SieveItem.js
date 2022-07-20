@@ -1,10 +1,10 @@
 /**
   Item
 */
-import { Item } from "./items.js"
+import { CompostableItem } from "./items.js"
 
 
-export class SieveItem extends Item {
+export class SieveItem extends CompostableItem {
   /**
     constructor()
     @description constructs the block
@@ -13,6 +13,7 @@ export class SieveItem extends Item {
     super(position)
     this.name = "SieveItem"
     this.tooltip.html = "Sieve: Used to collect seeds from water"
+    this._compostValue = 28
   }
 
 
@@ -20,13 +21,13 @@ export class SieveItem extends Item {
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
     // draw the blade of grass
-    this.svg.image = group.append("image")
-    this.svg.label = group.append("text")
+    this._svg.image = group.append("image")
+    this._svg.label = group.append("text")
   }
 
   /**
@@ -36,7 +37,7 @@ export class SieveItem extends Item {
   initSVG() {
     super.initSVG();
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
@@ -55,7 +56,7 @@ export class SieveItem extends Item {
   set position(position) {
     super.position = position;
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
   }

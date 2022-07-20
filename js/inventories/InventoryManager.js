@@ -7,25 +7,10 @@ export class InventoryManager {
   */
   constructor() {
     this._inventories = []
-    this._onMouse = null; // the item that is currently on the mouse
-    //this._itemsMovable = false;
-
-    this._svg = {
-      group: d3.create("svg:g"),
-      layers: {}
-    }
-    this._svg.layers = {
-      slots: this._svg.group.append("g"),
-      items: this._svg.group.append("g"),
-      tooltips: this._svg.group.append("g"),
-      clickAreas: this._svg.group.append("g"),
-      contextMenus: this._svg.group.append("g")
-    }
-
-    this._svg.group.attr("class", "inventory")
-    this._svg.layers.slots.attr("class", "slotsLayer")
-    this._svg.layers.items.attr("class", "itemsLayer")
   }
+
+
+
 
   /**
     allowItemMovement()

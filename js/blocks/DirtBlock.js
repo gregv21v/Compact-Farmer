@@ -22,9 +22,11 @@ export class DirtBlock extends Block {
       this.isCropFullyGrown = false; // there are two stages, start and complete
       this.isHydrated = false;
       this.isPlowed = false;
-      this.growthProgress = 0;
+      this._progress = 0;
 
       // elements in the soil that can be extracted by the plant
+
+      this.updateToolTip("A Dirt Block can be tilled.")
     }
 
 
@@ -46,7 +48,7 @@ export class DirtBlock extends Block {
         isCropFullyGrown: this.isCropFullyGrown,
         isHydrated: this.isHydrated,
         isPlowed: this.isPlowed,
-        growthProgress: this.growthProgress
+        progress: this._progress
       }
     }
 
@@ -56,7 +58,7 @@ export class DirtBlock extends Block {
     */
     static fromJSON(player, world, json) {
       var newDirtBlock = new DirtBlock(player, world, json.coordinate)
-      newDirtBlock.growthProgress = json.growthProgress;
+      newDirtBlock._progress = json.progress;
       newDirtBlock.crop = null;
       if(json.crop !== null) {
         if(json.crop.name === "GrassCrop") {
@@ -118,7 +120,7 @@ export class DirtBlock extends Block {
         this.crop.render()
       }
 
-      var worldPosition = this.world.coordinateToPosition(this.coordinate);
+      let worldPosition = this.world.coordinateToPosition(this.coordinate);
       // render the background
       if(this.isHydrated)
         this.svg.background.style("fill", "#42240a")
@@ -135,11 +137,10 @@ export class DirtBlock extends Block {
             .style("stroke", "black")
         }
 
-      var progressBarHeight = 4;
       this.svg.progressBar
         .attr("x", worldPosition.x)
-        .attr("y", worldPosition.y + Block.size - progressBarHeight)
-        .attr("height", progressBarHeight)
+        .attr("y", worldPosition.y + Block.size - Block.ProgressBarHeight)
+        .attr("height", Block.ProgressBarHeight)
         .style("fill", "green")
     }
 
@@ -180,8 +181,8 @@ export class DirtBlock extends Block {
       onClick()
       @description the function called when this block is clicked
     */
-    onClick() {
-      super.onClick()
+    onLeftClick() {
+      super.onLeftClick()
       var selectedItem = this.player.toolbar.currentlySelected.item
       console.log("Farm Block Clicked");
 
@@ -221,7 +222,7 @@ export class DirtBlock extends Block {
     plantCrop(crop) {
       this.crop = crop
       this.crop.render()
-      this.growthProgress = 0;
+      this._progress = 0;
       this.setGrowthTimer()
     }
 
@@ -233,12 +234,12 @@ export class DirtBlock extends Block {
       var self = this;
       var id = setInterval(frame, this.crop.getGrowTime());
       function frame() {
-        if (self.growthProgress >= Block.size) {
+        if (self._progress >= Block.size) {
           self.isCropFullyGrown = true;
           clearInterval(id);
         } else {
-          self.growthProgress++;
-          self.svg.progressBar.attr("width", self.growthProgress)
+          self._progress++;
+          self.svg.progressBar.attr("width", self._progress)
         }
       }
     }

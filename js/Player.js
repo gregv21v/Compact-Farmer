@@ -15,20 +15,33 @@ import {
   DirtBlockItem, FullLeafBucketItem, EmptyLeafBucketItem,
   ShovelItem, ItemRegistry
 } from "./items/items.js"
+import { BlockRegistry } from "./blocks/BlockRegistry.js";
 
 export class Player {
-    constructor() {
+  /**
+   * constructor()
+   * @description create a new player
+   * @param {d3.selection} mouseLayer the layer to add the mouse to
+   * @param {d3.selection} inventoryLayer the layer to add the inventory to
+   */
+    constructor(mouseLayer, inventoryLayer) {
       var self = this;
+      var canvas = d3.select("body").select("svg")
+
+      this._mouseLayer = mouseLayer
+      this._inventoryLayer = inventoryLayer
 
       this.hand = null; // an item/object that follows the curser movement
-      this.inventoryManager = new InventoryManager()
+      this.inventoryManager = new InventoryManager(inventoryLayer)
       this.inventory = new Inventory(this, this.inventoryManager, 6, 5)
       this.crafter = new Crafter(this, this.inventoryManager, {x: 0, y: 0})
-
       this.toolbar = new Toolbar(this, this.inventoryManager)
+
+      
 
       this.inventoryManager.addInventory(this.inventory);
       this.inventoryManager.addInventory(this.toolbar);
+
 
       this.inventory.add(new GrassBladeItem())
       this.inventory.add(new GrassBladeItem())
@@ -50,10 +63,40 @@ export class Player {
       this.registerCraftingRecipes();
       this.registerItems()
 
-      var mainSVG = d3.select("body").select("svg")
-      mainSVG.on("mousemove", (event) => { self.onMouseMove(event) })
+      
+      canvas.on("mousemove", (event) => { self.onMouseMove(event) })
     }
 
+    /**
+     * addGraphicsTo()
+     * @description add the graphics to the given svg element
+     * @param {d3.selection} svg the svg element to add the graphics to
+     */
+    addGraphicsTo(svg) {
+
+    }
+
+
+
+    /**
+     * addToHand()
+     * @description add an item to the hand of the player
+     * @param {Item} item the item to add
+     */
+    addItemToHand(item) {
+      this.hand = item
+      this._mouseLayer.append(() => item.svgGroup.node())
+    }
+
+
+    /** 
+     * removeItemFromHand()
+     * @description remove an item from the hand of the player
+     * @param {Item} item the item to remove
+     */
+    removeItemFromHand() {
+      this.hand = null
+    }
 
 
 
@@ -83,7 +126,10 @@ export class Player {
       ItemRegistry.registerItem(new GrassSieveItem())
       ItemRegistry.registerItem(new HoeItem())
       ItemRegistry.registerItem(new ShovelItem())
+      ItemRegistry.registerItem(new DirtBlockItem())
     }
+
+
 
     /**
       registerCraftingRecipes()

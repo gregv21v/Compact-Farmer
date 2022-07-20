@@ -1,11 +1,11 @@
 /**
   Item
 */
-import { Item } from "./items.js"
+import { CompostableItem } from "./items.js"
 import { Crop } from "../crops/crops.js"
 
 
-export class SeedItem extends Item {
+export class SeedItem extends CompostableItem {
   /**
     constructor()
     @description constructs the block
@@ -15,6 +15,7 @@ export class SeedItem extends Item {
     this.name = "SeedItem"
     this.tooltip.html = "Seeds: Placable in tilled soil"
     this._imageURL = "images/seed.png"
+    this._compostable = true;
   }
 
   /**

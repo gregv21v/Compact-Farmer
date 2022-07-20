@@ -16,6 +16,7 @@ export class SpinachSeedItem extends SeedItem {
     this.seedColor = "#1d4016"
     this.tooltip.html = "Spinach Seed: Used for planting spinach"
     this._imageURL = "images/spinachSeed.png"
+    this._compostable = true;
   }
 
   /**

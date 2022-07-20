@@ -16,6 +16,8 @@ export class WaterBlock extends Block {
     super(player, world, coordinate)
 
     this.name = "WaterBlock"
+
+    this.updateToolTip("Allows you to grow plants nearby")
   }
 
   /**

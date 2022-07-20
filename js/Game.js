@@ -9,14 +9,26 @@ import { InventoryManager } from "./inventories/InventoryManager.js"
 
 export class Game {
   constructor() {
-    this.player = new Player()
-    this.world = new World(this.player, {x: this.width/2, y: this.height/2})
-    this.hud = new HUD(this, this.player, this.world)
+    
 
-    var canvas = d3.select("body")
+    let canvas = d3.select("body")
       .select("svg")
       .attr("width", this.width)
       .attr("height", this.height)
+
+    this._svg = {
+      group: canvas.append("g"),
+      layers: {}
+    }
+    this._svg.layers.world = this._svg.group.append("g")
+    this._svg.layers.tabs = this._svg.group.append("g")
+    this._svg.layers.mouse = this._svg.group.append("g")
+    this._svg.layers.tooltips = this._svg.group.append("g")
+
+    
+    this.player = new Player(this._svg.layers.mouse, this._svg.layers.tabs);
+    this.world = new World(this.player, this._svg.layers.world, {x: this.width/2, y: this.height/2})
+    this.hud = new HUD(this, this.player, this.world)
 
     var self = this;
 
@@ -140,8 +152,8 @@ export class Game {
     render()
     @description displays the graphics of the game
   */
-  addGraphics() {
-      this.hud.addGraphics()
-      this.world.render()
+  addGraphics() {    
+    this.hud.addGraphicsTo(this._svg.layers.tabs)
+    this.world.render()
   }
 }

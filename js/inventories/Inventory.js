@@ -286,13 +286,15 @@ export class Inventory {
    */
   getAllItemsByName(name) {
     let item = ItemRegistry.lookup(name).clone()
+    let self = this;
+    item._svg.clickArea.on("click", (event) => self.itemOnLeftClick(event, item))
     item.quantity = 0;
     for (var x = 0; x < this._slots.length; x++) {
       for (var y = 0; y < this._slots[x].length; y++) {
-        if(this._slots[x][y].item !== null && this._slots[x][y].item.name === name) {
+        if(this._slots[x][y].item && this._slots[x][y].item.name === name) {
           item.quantity += this._slots[x][y].item.quantity
-          this.removeItemFromSlot(this._slots[x][y])
           this._slots[x][y].destroyItem()
+          this.removeItemFromSlot(this._slots[x][y])
         }
       }
     }
@@ -301,6 +303,34 @@ export class Inventory {
       return null;
     else 
       return item
+  }
+
+
+  /**
+    onClick()
+    @description the function called when this block is clicked
+  */
+  itemOnLeftClick(event, item) {
+    if(this._itemsMovable) {
+
+      let pos = d3.pointer(event);
+
+      if(this._player.hand) { // there is something in the hand
+        // place the item in the players hand into the designated slot
+        if(
+          this._inventoryManager.addToContainingSlot({
+            x: pos[0], y: pos[1]
+          }, this._player.hand)
+        ) {
+          //this._player.hand.destroy();
+          this._player.removeItemFromHand();
+          console.log("Slot clicked");
+        } 
+      } else {
+        console.log("Hand empty");
+        this._player.addItemToHand(item)
+      }
+    } 
   }
 
 

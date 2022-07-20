@@ -1,4 +1,5 @@
 export { Item } from "./Item.js"
+export { CompostableItem } from "./CompostableItem.js"
 export { DirtBlockItem } from "./DirtBlockItem.js"
 export { EmptyItem } from "./EmptyItem.js"
 export { EmptyLeafBucketItem } from "./EmptyLeafBucketItem.js"

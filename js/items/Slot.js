@@ -178,27 +178,15 @@ export class Slot {
       // setup the drag handler that allows you to drag
       // the unit around
       var self = this
-      var dragHandler = d3.drag()
-        .on("start", function(event) {
-          self.onDragStart(event)
-        })
-        .on("drag", function(event) {
-          self.onDrag(event)
-        })
-        .on("end", function(event) {
-          self.onDragEnd(event)
-        })
 
-      //dragHandler(this._item.svg.clickArea)
-
-      this._item.svg.clickArea.on("click", function(event) {
+      this._item._svg.clickArea.on("click", (event) =>{
         self.onClick(event)
       })
 
-      this._item.svg.clickArea.on("dblclick", (event) => self.onDoubleClick(event))
+      this._item._svg.clickArea.on("dblclick", (event) => self.onDoubleClick(event))
 
       if(this._inventory.onRightClickEnabled) {
-        this._item.svg.clickArea.on("contextmenu", function(event) {
+        this._item._svg.clickArea.on("contextmenu", function(event) {
           self.onRightClick(event, self._inventory.layers.contextMenus)
         })
       }
@@ -225,7 +213,7 @@ export class Slot {
     @description removes the item from this slot
   */
   removeItem() {
-    if(this._item !== null) {
+    if(this._item) {
       //this._item.svg.group.selectAll("*").remove()
       this._item = null;
     }
@@ -236,9 +224,8 @@ export class Slot {
     @description removes the item and its graphic from the slot
   */
   destroyItem() {
-    if(this._item !== null) {
+    if(this._item) {
       this._item.destroy();
-      this._item = null;
     }
   }
 
@@ -320,7 +307,7 @@ export class Slot {
     console.log("Double Click");
     // add all the items of the clicks item to
     // your hand
-    this._player.hand = this._inventory.getAllItemsByName(this._item.name);
+    this._player.addItemToHand(this._inventory.getAllItemsByName(this._item.name));
   }
 
   /**
@@ -338,32 +325,23 @@ export class Slot {
         .attr("r", 5)
 
       if(this._player.hand) { // there is something in the hand
-        if(this._item === null) {
-          // place the item in the slot that the mouse is in
-          console.log("Hand full, and no item");
-          if(
-            this._inventoryManager.addToContainingSlot({
-              x: pos[0], y: pos[1]
-            }, this._player.hand)
-          ) {
-            this._player.hand = null;
-            console.log("Slot clicked");
-          } else 
-            console.log("No slot clicked");
-        } else {
-          if(this._item.constructor === this._player.hand.constructor) { // same item
-            this._item.quantity += this._player.hand.quantity
-            this._player.hand.destroy()
-            this._player.hand = null;
-          }
-        }
+        // place the item in the players hand into the designated slot
+        if(
+          this._inventoryManager.addToContainingSlot({
+            x: pos[0], y: pos[1]
+          }, this._player.hand)
+        ) {
+          //this._player.hand.destroy();
+          this._player.removeItemFromHand();
+          console.log("Slot clicked");
+        } 
       } else {
         console.log("Hand empty");
-        this._player.hand = this._item
+        this._player.addItemToHand(this._item)
         this._inventory.removeItemFromSlot(this)
       }
 
-      // place the item in the slot in the players hand
+      
       
     } else {
       this._inventory.deselectAll()
@@ -430,7 +408,7 @@ export class Slot {
 
       if(this._player.hand.quantity === 0) {
         this._player.hand.destroy()
-        this._player.hand = null;
+        this._player.removeItemFromHand()
       }
     }
 

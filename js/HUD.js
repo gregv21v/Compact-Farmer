@@ -75,22 +75,24 @@ export class HUD {
 
   }
 
-  addGraphics() {
-    var svgMain = d3.select("body").select("svg").append("g")
-
-    this._sideTabManager.addGraphicsTo(svgMain);
+  /**
+   * addGraphicsTo()
+   * @description adds the graphics of the hud to the game
+   * @param {SVGElement} svg the svg element to add the graphics to
+   */
+  addGraphicsTo(mainLayer) {
+    this._sideTabManager.addGraphicsTo(mainLayer);
 
     this._player.toolbar.initSVG()
-    this._player.toolbar.addGraphicsTo(svgMain)
+    this._player.toolbar.addGraphicsTo(mainLayer)
 
     this.dragBtn.initSVG()
-    this.dragBtn.addGraphicsTo(svgMain)
+    this.dragBtn.addGraphicsTo(mainLayer)
 
     this.saveBtn.initSVG()
-    this.saveBtn.addGraphicsTo(svgMain)
+    this.saveBtn.addGraphicsTo(mainLayer)
 
     this.loadBtn.initSVG()
-    this.loadBtn.addGraphicsTo(svgMain)
-
+    this.loadBtn.addGraphicsTo(mainLayer)
   }
 }

@@ -7,6 +7,7 @@ import { Tooltip } from "../gui/Tooltip.js"
 export class Block {
 
     static size = 50
+    static ProgressBarHeight = 4;
     /**
       getCoordinateAsString()
       @description get the coordinate of this block as a string
@@ -25,6 +26,8 @@ export class Block {
       this.world = world;
       this.coordinate = coordinate;
       this._elements = {}
+      this._progress = 0;
+      this._progressMax = 100;
 
       var worldPosition = this.getWorldPosition();
       this._tooltip = new Tooltip(
@@ -43,6 +46,7 @@ export class Block {
       this.svg.clickArea = this.world.layers.blocks.append("rect")
 
       this.initTooltip(this.world.layers.tooltips);
+      this.updateToolTip("A basic Block")
     }
 
     /**
@@ -50,7 +54,8 @@ export class Block {
      * updates the information on the tooltip
      */
     updateToolTip(description) {
-      this._tooltip.html = `${description}<br /><strong>Elements:</strong><br/>`
+      this._tooltip.html = `<strong>${this.name}</strong>:
+      ${description}<br /><strong>Elements:</strong><br/>`
       for (var element of Object.keys(this._elements)) {
         this._tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
       }
@@ -130,9 +135,10 @@ export class Block {
         .attr("width", size)
         .attr("height", size)
         .style("fill-opacity", 0)
-        .on("click", function() {self.onClick()})
-        .on("mouseover", function() {self.onMouseOver()})
-        .on("mouseout", function() {self.onMouseOut()})
+        .on("click", (event) => {self.onLeftClick(event)})
+        .on("contextmenu", (event) => self.onRightClick(event))
+        .on("mouseover", (event) => {self.onMouseOver(event)})
+        .on("mouseout", (event) => {self.onMouseOut(event)})
 
       this._tooltip.initSVG()
       this._tooltip.hide()
@@ -156,10 +162,19 @@ export class Block {
     }
 
     /**
-      onClick()
+      onLeftClick()
       @description the function called when this block is clicked
     */
-    onClick() {
+    onLeftClick() {
+      // do something ...
+      this._tooltip.hide()
+    }
+
+    /**
+      onRightClick()
+      @description the function called when this block is clicked
+    */
+    onRightClick() {
       // do something ...
       this._tooltip.hide()
     }

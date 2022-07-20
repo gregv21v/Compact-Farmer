@@ -23,8 +23,8 @@ export class EmptyLeafBucketItem extends Item {
   */
   createGraphic(group) {
     // draw the blade of grass
-    this.svg.image = group.append("image")
-    this.svg.label = group.append("text")
+    this._svg.image = group.append("image")
+    this._svg.label = group.append("text")
   }
 
   /**

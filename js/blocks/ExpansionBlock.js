@@ -14,6 +14,8 @@ export class ExpansionBlock extends Block {
     super(player, world, coordinate)
 
     this.name = "ExpansionBlock"
+
+    this.updateToolTip("Click with a Dirt block to expand your farm")
   }
 
   /**
@@ -71,11 +73,11 @@ export class ExpansionBlock extends Block {
 
 
   /**
-    onClick()
+    onLeftClick()
     @description the function called when this block is clicked
   */
-  onClick() {
-    super.onClick();
+  onLeftClick() {
+    super.onLeftClick();
     let selectedSlot = this.player.toolbar.currentlySelected
     let selectedItem = this.player.toolbar.currentlySelected.item
     if(selectedItem instanceof DirtBlockItem) {

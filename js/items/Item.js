@@ -27,14 +27,23 @@ export class Item {
     this.updateToolTip();
 
     // create the svg elements
-    this.svg = {}
-    this.svg.group = d3.create("svg:g")
-    this.svg.background = this.svg.group.append("rect")
-    this.svg.graphicGroup = this.svg.group.append("g")
-    this.svg.label = this.svg.group.append("text")
-    this.svg.count = this.svg.group.append("text")
-    this.createGraphic(this.svg.graphicGroup)
-    this.svg.clickArea = this.svg.group.append("rect")
+    this._svg = {}
+    this._svg.group = d3.create("svg:g")
+    this._svg.background = this._svg.group.append("rect")
+    this._svg.graphicGroup = this._svg.group.append("g")
+    this._svg.label = this._svg.group.append("text")
+    this._svg.count = this._svg.group.append("text")
+    this.createGraphic(this._svg.graphicGroup)
+    this._svg.clickArea = this._svg.group.append("rect")
+  }
+
+
+  /**
+   * get isCompostable
+   * @description gets the isCompostable value
+   */
+  get isCompostable() {
+    return this._compostable;
   }
 
   /**
@@ -99,11 +108,11 @@ export class Item {
    * @description completely destroys the unit
    */
   destroy() {
-    this.svg.background.remove()
-    this.svg.label.remove()
-    this.svg.count.remove()
-    this.svg.graphicGroup.remove()
-    this.svg.clickArea.remove()
+    this._svg.background.remove()
+    this._svg.label.remove()
+    this._svg.count.remove()
+    this._svg.graphicGroup.remove()
+    this._svg.clickArea.remove()
     this.tooltip.destroy()
   }
 
@@ -112,10 +121,10 @@ export class Item {
     @description initialize the values for the svg
   */
   initSVG() {
-    this.svg.group.attr("class", "item")
+    this._svg.group.attr("class", "item")
 
     // render the background
-    this.svg.background
+    this._svg.background
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
@@ -126,7 +135,7 @@ export class Item {
     this.tooltip.initSVG();
     this.tooltip.hide()
 
-    /*this.svg.label
+    /*this._svg.label
       .attr("x", this._position.x + this.size/2)
       .attr("y", this._position.y + this.size - 5)
       .attr("text-anchor", "middle")
@@ -135,7 +144,7 @@ export class Item {
       .style("font-size", "10px")
       .text(this.name)*/
 
-    this.svg.count
+    this._svg.count
       .attr("x", this._position.x + this.size - 5)
       .attr("y", this._position.y + 5)
       .attr("text-anchor", "center")
@@ -146,7 +155,7 @@ export class Item {
 
     var self = this;
 
-    this.svg.clickArea
+    this._svg.clickArea
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
@@ -158,7 +167,7 @@ export class Item {
       .on("mouseout", function() {self.onMouseOut()})
 
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
       .attr("width", this.size)
@@ -167,15 +176,23 @@ export class Item {
   }
 
   /**
+   * get svg
+   * @description gets the svg object
+   */
+  get svgGroup() {
+    return this._svg.group;
+  }
+
+  /**
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
-    // make your graphics here add add them to the this.svg object
-    this.svg.image = group.append("image")
+    // make your graphics here add add them to the this._svg object
+    this._svg.image = group.append("image")
   }
 
   /**
@@ -185,7 +202,7 @@ export class Item {
   */
   set quantity(value) {
     this._quantity = value
-    this.svg.count.text(value)
+    this._svg.count.text(value)
   }
 
   /**
@@ -218,7 +235,7 @@ export class Item {
       }
     }
 
-    this.svg.background
+    this._svg.background
       .attr("x", this._position.x)
       .attr("y", this._position.y)
 
@@ -227,20 +244,20 @@ export class Item {
       y: this._position.y + this.size - 5
     }
 
-    this.svg.label
+    this._svg.label
       .attr("x", textPos.x)
       .attr("y", textPos.y)
 
-    this.svg.count
+    this._svg.count
       .attr("x", this._position.x + this.size - 5)
       .attr("y", this._position.y + 5)
 
 
-    this.svg.clickArea
+    this._svg.clickArea
       .attr("x", this._position.x)
       .attr("y", this._position.y)
 
-    this.svg.image
+    this._svg.image
       .attr("x", this._position.x)
       .attr("y", this._position.y)
   }
@@ -277,7 +294,7 @@ export class Item {
     @description adds the graphics to the parent svg
   */
   addGraphicsTo(parent) {
-    parent.append(() => this.svg.group.node())
+    parent.append(() => this._svg.group.node())
   }
 
 
