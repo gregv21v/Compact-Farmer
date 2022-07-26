@@ -33,8 +33,8 @@ export class CraftingSideTab extends SideTab {
       y: this.position.y + 10
     })
 
-    this._inventory.initSVG();
-    this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
+    this._inventory.render();
+    this._inventory.attach(this.svg.contentAreaGroup)
   }
 
   /**
@@ -48,8 +48,8 @@ export class CraftingSideTab extends SideTab {
       y: this.position.y + 30
     })
 
-    this._crafter.initSVG()
-    this._crafter.addGraphicsTo(this.svg.contentAreaGroup)
+    this._crafter.render()
+    this._crafter.attach(this.svg.contentAreaGroup)
   }
 
   /**

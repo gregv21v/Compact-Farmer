@@ -22,21 +22,21 @@ export class CraftingOutputGrid extends Inventory {
                       Graphics Methods
   *********************************************************/
   /**
-    addGraphicsTo()
+    attach()
     @description adds the graphics to a parent svg object
     @param parent the svg to add the graphics to
   */
-  addGraphicsTo(parent) {
+  attach(parent) {
     parent.append(() => this._svg.group.node())
-    this._slots[0][0].addGraphicsTo(this._svg.layers.slots);
+    this._slots[0][0].attach(this._svg.layers.slots);
   }
 
   /**
-    initSVG()
+    render()
     @description initializes the attributes and styles of the grid's svgs
   */
-  initSVG() {
-    this._slots[0][0].initSVG()
+  render() {
+    this._slots[0][0].render()
   }
 
   /********************************************************

@@ -79,11 +79,9 @@ export class CraftingGrid extends Inventory {
     // look up the current formation of items in the CraftingRegistry
     let recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
 
-    if(recipe !== undefined) {
+    if(recipe) {
       this._crafter.outputItem(recipe.output.clone())
-    } else {
-      this._crafter.outputItem(new EmptyItem());
-    }
+    } 
   }
 
   /**
@@ -97,11 +95,9 @@ export class CraftingGrid extends Inventory {
 
     // look up the current formation of items in the CraftingRegistry
     var recipe = CraftingRegistry.lookup(this.convertToCraftingInput())
-    if(recipe !== undefined) {
+    if(recipe) {
       this._crafter.outputItem(recipe.output.clone())
-    } else {
-      this._crafter.outputItem(new EmptyItem());
-    }
+    } 
   }
 
 

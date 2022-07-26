@@ -11,7 +11,9 @@ export class FullLeafBucketItem extends Item {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "FullLeafBucketItem"
-    this.tooltip.html = "Full Leaf Bucket: Placable"
+
+    this._displayName = "Full Leaf Bucket"
+    this._description = "Placable"
   }
 
 
@@ -29,11 +31,11 @@ export class FullLeafBucketItem extends Item {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -75,7 +77,7 @@ export class FullLeafBucketItem extends Item {
     var clone = new FullLeafBucketItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

@@ -16,7 +16,12 @@ export class ComposterBlock extends Block {
   constructor(player, world, coordinate) {
     super(player, world, coordinate)
 
-    this.name = "ComposterBlock"
+    this._name = "ComposterBlock" 
+
+    this._displayName = "Composter"
+    this._description = "Left click with a plant to make compost. Right click to extract dirt blocks"
+
+    this.updateToolTip()
   }
 
   /**
@@ -25,8 +30,8 @@ export class ComposterBlock extends Block {
   */
   toJSON() {
     return {
-      name: this.name,
-      coordinate: this.coordinate,
+      name: this._name,
+      coordinate: this._coordinate,
       progress: this._progress
     }
   }
@@ -46,40 +51,100 @@ export class ComposterBlock extends Block {
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
-    // make your graphics here add add them to the this.svg object
-    this.svg.circle = group.append("circle")
-    this.svg.progressBar = group.append("rect")
+    // make your graphics here add add them to the this._svg object
+    this._svg.circle = group.append("circle")
+    this._svg.progressBar = group.append("rect")
+
+    this._lineCount = 10;
+    this._svg.randomLines = [];
+
+    for(let i = 0; i < this._lineCount; i++) {
+      this._svg.randomLines.push(group.append("path"))
+    }
+
+
+  }
+
+  /**
+   * render()
+   * @description renders the block to the screen
+   */
+  render() {
+    super.render()
   }
 
 
-
   /**
-    render()
-    @description sets all the attributes of the svg to their appropriate class
-      variables
-  */
-  render() {
-    super.render()
+   * update()
+   * @description updates the block
+   */
+  update() {
+    super.update()
 
-    let worldPosition = this.world.coordinateToPosition(this.coordinate);
+    let worldPosition = this._world.coordinateToPosition(this._coordinate);
+
+    //this.updateToolTip("Left clicking this block with plants will allow you produce compost")
 
     // render the cross
-    this.svg.circle
+    this._svg.circle
       .attr("cx", worldPosition.x + Block.size / 2)
       .attr("cy", worldPosition.y + Block.size / 2)
       .attr("r", Block.size / 2 - 5)
       .style("fill", "#45211e")
+      .style("stroke", "black")
+    
+    this.renderRandomLines()
 
-    this.svg.progressBar
+    this._svg.progressBar
         .attr("x", worldPosition.x)
         .attr("y", worldPosition.y + Block.size - Block.ProgressBarHeight)
         .attr("height", Block.ProgressBarHeight)
         .attr("width", this._progress / this._progressMax * Block.size)
         .style("fill", "#45211e")
+  }
+
+
+  /**
+   * renderRandomLines()
+   * @description renders the random lines on the block
+   */
+  renderRandomLines() {
+    let worldPosition = this._world.coordinateToPosition(this._coordinate);
+    let center = {
+      x: worldPosition.x + Block.size / 2,
+      y: worldPosition.y + Block.size / 2
+    }
+
+    for(let i = 0; i < this._svg.randomLines.length; i++) {
+      let path = d3.path()
+
+      // radius within the circle
+      let randomRadius = () => Math.floor(Math.random() * (Block.size / 2 - 5))
+      let randomAngle = () => Math.random() * 2 * Math.PI 
+      let startPoint = {
+        x: center.x + randomRadius() * Math.cos(randomAngle()),
+        y: center.y + randomRadius() * Math.sin(randomAngle())
+      }
+
+      let endPoint = {
+        x: center.x + randomRadius() * Math.cos(randomAngle()),
+        y: center.y + randomRadius() * Math.sin(randomAngle())
+      }
+
+      //console.log(startPoint, endPoint);
+
+      path.moveTo(startPoint.x, startPoint.y)
+      path.lineTo(endPoint.x, endPoint.y)
+
+      this._svg.randomLines[i]
+        .attr("d", path)
+        .style("fill", "none")
+        .style("stroke", "black")
+    }
   }
 
 
@@ -91,7 +156,7 @@ export class ComposterBlock extends Block {
   onLeftClick() {
     super.onLeftClick();
 
-    let selectedSlot = this.player.toolbar.currentlySelected
+    let selectedSlot = this._player.toolbar.currentlySelected
     let selectedItem = selectedSlot.item
 
     if(
@@ -99,11 +164,11 @@ export class ComposterBlock extends Block {
       selectedItem instanceof CompostableItem &&
       this._progress + selectedItem.compostValue <= this._progressMax
     ) {
-      selectedItem.consumeOne(selectedSlot)
+      selectedSlot.consumeOne()
 
       // update the progress bar
       this._progress += selectedItem.compostValue;
-      this.svg.progressBar.attr("width", this._progress / this._progressMax * Block.size)
+      this._svg.progressBar.attr("width", this._progress / this._progressMax * Block.size)
     }
   }
 
@@ -114,16 +179,18 @@ export class ComposterBlock extends Block {
   onRightClick() {
     super.onRightClick();
 
-    let selectedSlot = this.player.toolbar.currentlySelected
+    let selectedSlot = this._player.toolbar.currentlySelected
     let selectedItem = selectedSlot.item
 
     // if the compost bin is at least half full, 
     // pull out a dirt block
     if(selectedItem === null && this._progress >= this._progressMax / 2) {
       this._progress -= this._progressMax / 2
-      this.svg.progressBar.attr("width", (this._progress / this._progressMax) * Block.size)
+      this._svg.progressBar.attr("width", (this._progress / this._progressMax) * Block.size)
 
-      selectedSlot.addItem(new DirtBlockItem())
+      if(!this._player.toolbar.add(new DirtBlockItem())) {
+        this._player.inventory.add(new DirtBlockItem())
+      }
     }
 
     console.log("Right Clicked Composter Block");

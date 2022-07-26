@@ -34,7 +34,7 @@ export class InventorySideTab extends SideTab {
       y: this.position.y + 30
     })
 
-    this._inventory.addGraphicsTo(this.svg.contentAreaGroup)
+    this._inventory.attach(this.svg.contentAreaGroup)
   }
 
   /**
@@ -49,7 +49,7 @@ export class InventorySideTab extends SideTab {
       y: this.position.y + 30
     })
 
-    this._crafter.addGraphicsTo(this.svg.contentAreaGroup)
+    this._crafter.attach(this.svg.contentAreaGroup)
   }
 
 

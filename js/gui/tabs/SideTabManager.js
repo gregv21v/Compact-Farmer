@@ -1,3 +1,5 @@
+import { Slot } from "../../items/Slot.js";
+
 /**
   SideTabManager - Manages side tabs
 */
@@ -25,7 +27,7 @@ export class SideTabManager {
 
       tab.contentDims = {
         width: game.width/2,
-        height: game.height
+        height: game.height - Slot.size - 10
       }
       this.tabs.push(tab)
     } else {
@@ -35,12 +37,12 @@ export class SideTabManager {
       // position the new tab just below the last tab
       tab.position = {
         x: game.width - 30,
-        y: lastTab.position.y + lastTab.buttonDims.height
+        y: lastTab.position.y + lastTab.buttonDims.height + 5 
       }
 
       tab.contentDims = {
         width: game.width/2,
-        height: game.height
+        height: game.height - Slot.size - 10
       }
 
       this.tabs.push(tab)
@@ -52,14 +54,14 @@ export class SideTabManager {
 
 
   /**
-    addGraphicsTo()
+    attach()
     @description add the graphics to the specifed group
     @param group group to add the graphics to
   */
-  addGraphicsTo(group) {
+  attach(group) {
     for (var tab of this.tabs) {
-      tab.initSVG()
-      tab.addGraphicsTo(group)
+      tab.render()
+      tab.attach(group)
     }
   }
 

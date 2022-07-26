@@ -47,15 +47,15 @@ export class SideTab {
       width: game.width / 2,
       height: game.height - 50
     }
-    this.initSVG()
+    this.render()
   }
 
   /**
-    addGraphicsTo()
+    attach()
     @description add the graphics of the side tab to a given svg group
     @param group the group to add the graphics to
   */
-  addGraphicsTo(group) {
+  attach(group) {
     group.append(() => this.svg.group.node())
   }
 
@@ -132,10 +132,10 @@ export class SideTab {
 
 
   /**
-    initSVG()
+    render()
     @description initializes the svgs for this side tab
   */
-  initSVG() {
+  render() {
     // initialzies svg
     this.svg.buttonBackground
       .attr("x", this._position.x)
@@ -167,6 +167,8 @@ export class SideTab {
       .attr("width", this.contentDims.width)
       .attr("height", this.contentDims.height)
       .style("fill", this.styles.fill)
+      .style("stroke", "black")
+      .style("stroke-width", "3px")
 
     this.svg.buttonClickArea
       .attr("x", this._position.x)

@@ -1,22 +1,33 @@
 const { app, contextBridge } = require('electron')
-const Datastore = require('nedb-promises')
-const db = Datastore.create({
-  filename: "playerData",
+const Datastore = require('@seald-io/nedb')
+const db = new Datastore({
+  filename: "worlds",
   autoload: true
 })
 
 
+
+
+
+
+
 contextBridge.exposeInMainWorld('api', {
-  save: async function(username, data) {
-    var user = await db.findOne({username: username})
-    console.log(user);
-    if(user === null) {
-      return db.insert({username: username, data: data})
+  saveWorld: async function(name, world) {
+    let savedWorld = await db.findOneAsync({name})
+    if(!savedWorld) {
+      return db.insertAsync({name, world})
     } else {
-      return db.update(user, {username: username, data: data})
+      return db.updateAsync(world, {name, world})
     }
   },
-  load: async function(username) {
-    return await db.findOne({username: username})
+  loadWorld: async function(name) {
+    return await db.findOneAsync({name})
+  },
+  deleteWorld: async function(name) {
+    return await db.removeAsync({name})
+  },
+  getListOfWorlds: async function() {
+    return await db.findAsync({})
   }
 })
+

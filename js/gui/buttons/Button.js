@@ -1,23 +1,24 @@
 /**
-  Plot - a plot of land that can be farmed on
+  Button - a plot of land that can be farmed on
 */
 export class Button {
   /**
     constructor()
     @description constructs the item
+    @param {Object} position the position of the button
+    @param {Number} width the width of the button
+    @param {Number} height the height of the button
+    @param {String} text the text to display on the button
+    @param {Function} onClickFn the function to call when the button is clicked
   */
-  constructor(position, width, height, text) {
+  constructor(position, width, height, text, onClickFn) {
     this._text = text;
     this._width = width;
     this._height = height;
     this._position = position;
+    this._onClickFn = onClickFn;
 
-    this._svg = {
-      group: d3.create("svg:g")
-    }
-    this._svg.background = this._svg.group.append("rect")
-    this._createGraphic(this._svg.group.append("g"));
-    this._svg.clickArea = this._svg.group.append("rect")
+    
   }
 
   /**
@@ -53,11 +54,11 @@ export class Button {
   }
 
   /**
-    addGraphicsTo()
+    attach()
     @description add the graphics of the button to a given svg group
     @param group the group to add the graphics to
   */
-  addGraphicsTo(group) {
+  attach(group) {
     group.append(() => this._svg.group.node())
   }
 
@@ -75,11 +76,20 @@ export class Button {
 
 
   /**
-    initSVG()
+    render()
     @description initializes the values of the svg objects
   */
-  initSVG() {
+  render() {
     var self = this;
+
+    this._svg = {
+      group: d3.create("svg:g")
+    }
+    this._svg.background = this._svg.group.append("rect")
+    this._createGraphic(this._svg.group.append("g"));
+    this._svg.clickArea = this._svg.group.append("rect") 
+
+    this._svg.group.attr("class", "button")
 
     this._svg.background
       .attr("x", this._position.x)
@@ -109,7 +119,7 @@ export class Button {
       .attr("width", this._width)
       .attr("height", this._height)
       .style("fill-opacity", 0)
-      .on("click", function() {self.onClick()})
+      .on("click", function() {self._onClickFn()})
       .on("mousedown", function() {self.onMouseDown()})
       .on("mouseup", function() {self.onMouseUp()})
       .on("mouseenter", function() {self.onMouseEnter()})
@@ -144,22 +154,13 @@ export class Button {
   }
 
   /**
-    unrender()
+    remove()
     @description removes the block from the canvas
   */
-  unrender() {
+  remove() {
     for (var svg of Object.keys(this._svg)) {
       this._svg[svg].remove();
     }
-  }
-
-  /**
-    onClick()
-    @description the function called when this button is clicked
-  */
-  onClick() {
-    // do something ...
-    console.log(this.name);
   }
 
   /**

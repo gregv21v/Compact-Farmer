@@ -12,7 +12,9 @@ export class GrassSieveItem extends SieveItem {
     super(position)
     this._durability = 5;
     this.name = "GrassSieveItem"
-    this.tooltip.html = "Grass Sieve: Used to collect seeds from water"
+
+    this._description = "Used to collect seeds from water"
+    this._displayName = "Grass Sieve"
   }
 
 
@@ -30,11 +32,11 @@ export class GrassSieveItem extends SieveItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -76,7 +78,7 @@ export class GrassSieveItem extends SieveItem {
     var clone = new GrassSieveItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

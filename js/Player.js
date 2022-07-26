@@ -24,56 +24,73 @@ export class Player {
    * @param {d3.selection} mouseLayer the layer to add the mouse to
    * @param {d3.selection} inventoryLayer the layer to add the inventory to
    */
-    constructor(mouseLayer, inventoryLayer) {
+    constructor(props) {
+      this._props = props
+
+      this._inventoryLayer = props.inventoryLayer
+      this._mouseLayer = props.mouseLayer
+
       var self = this;
       var canvas = d3.select("body").select("svg")
 
-      this._mouseLayer = mouseLayer
-      this._inventoryLayer = inventoryLayer
-
       this.hand = null; // an item/object that follows the curser movement
-      this.inventoryManager = new InventoryManager(inventoryLayer)
+      this.inventoryManager = new InventoryManager(this._inventoryLayer)
       this.inventory = new Inventory(this, this.inventoryManager, 6, 5)
       this.crafter = new Crafter(this, this.inventoryManager, {x: 0, y: 0})
       this.toolbar = new Toolbar(this, this.inventoryManager)
 
-      
-
       this.inventoryManager.addInventory(this.inventory);
       this.inventoryManager.addInventory(this.toolbar);
-
-
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-      this.inventory.add(new GrassBladeItem())
-
-      this.toolbar.add(new GrassSeedItem())
-      this.toolbar.add(new DirtBlockItem())
-      this.toolbar.add(new DirtBlockItem())
-      this.toolbar.add(new HoeItem())
-      this.toolbar.add(new ShovelItem())
 
       this.registerPlantRecipes();
       this.registerCraftingRecipes();
       this.registerItems()
 
-      
       canvas.on("mousemove", (event) => { self.onMouseMove(event) })
     }
 
     /**
-     * addGraphicsTo()
+     * fromJSON()
+     * @description create a player from a json object
+     * @param {JSON} json the json to load
+     */
+    static fromJSON(json, props) {
+      var player = new Player(props)
+      player.inventory = Inventory.fromJSON(this, this._inventoryManager, json.inventory)
+      player.toolbar = Toolbar.fromJSON(this, this._inventoryManager, json.toolbar)
+      return player
+    }
+
+
+
+    /**
+     * render()
+     * @description render the player
+     * @param {Object} props the properties to render the player with
+     */
+    render() {
+      this.inventory.render()
+      this.toolbar.render()
+      this.crafter.render()
+    }
+
+    /**
+     * attach()
      * @description add the graphics to the given svg element
      * @param {d3.selection} svg the svg element to add the graphics to
      */
-    addGraphicsTo(svg) {
+    attach(svg) {
 
+    }
+
+
+    /**
+     * update()
+     * @description update the player
+     * @param {Object} props the properties to render the player with
+     */
+    update(props) {
+      Object.assign(this._props, props)
     }
 
 

@@ -61,10 +61,10 @@ export class Slot {
   *********************************************************/
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the _svg
   */
-  initSVG() {
+  render() {
     var self = this;
 
     this._svg.group.attr("class", "slot")
@@ -77,7 +77,7 @@ export class Slot {
       .attr("height", Slot.size)
       .style("fill", "grey")
       .style("stroke", "black")
-      .style("stroke-width", 3)
+      .style("stroke-width", 1)
 
     this._svg.clickArea
       .attr("x", this._position.x)
@@ -92,13 +92,14 @@ export class Slot {
   }
 
   /**
-    addGraphicsTo()
+    attach()
     @description add this slot to parent graphics
     @param parent the svg element to add this slot to
   */
-  addGraphicsTo(parent) {
+  attach(parent) {
     parent.append(() => this._svg.group.node())
   }
+
 
 
   /********************************************************
@@ -160,7 +161,7 @@ export class Slot {
     @param layers the graphics layers
   */
   addItem(item) {
-    if(this._item === null) {
+    if(!this._item) {
 
       // update the item
       this._item = item;
@@ -170,16 +171,16 @@ export class Slot {
       }
 
       // initialize the unit and add it to the svg layer
-      this._item.initSVG()
+      this._item.render()
       //console.log(this._inventory)
-      this._item.addGraphicsTo(this._inventory.layers.items)
+      this._item.attach(this._inventory.layers.items)
       this._item.initTooltip(this._inventory.layers.tooltips)
 
       // setup the drag handler that allows you to drag
       // the unit around
       var self = this
 
-      this._item._svg.clickArea.on("click", (event) =>{
+      this._item._svg.clickArea.on("click", (event) => {
         self.onClick(event)
       })
 
@@ -199,11 +200,25 @@ export class Slot {
   }
 
   /**
+    * consumeOne()
+    * @description consumes one of the item in this slot
+    */
+  consumeOne(slot) {
+    if(this._item.quantity > 1) {
+      this._item.quantity -= 1;
+    } else {
+      this.destroyItem()
+      this.removeItem()
+    }
+  }
+
+  /**
    * replaceItem()
    * @description replace the item in this inventory
    * @param item the new item to replace the old one with
    */
   replaceItem(item) {
+    console.log("Replacing item");
     this.destroyItem();
     this.addItem(item)
   }
@@ -226,6 +241,7 @@ export class Slot {
   destroyItem() {
     if(this._item) {
       this._item.destroy();
+      this._item = null;
     }
   }
 
@@ -283,6 +299,7 @@ export class Slot {
   */
   select() {
     this._svg.background.style("stroke", "green")
+    this._svg.background.style("stroke-width", 5)
   }
 
   /**
@@ -291,6 +308,7 @@ export class Slot {
   */
   deselect() {
     this._svg.background.style("stroke", "black")
+    this._svg.background.style("stroke-width", 1)
   }
 
   /********************************************************
@@ -318,11 +336,7 @@ export class Slot {
     if(this._inventory.itemsMovable) {
 
       let pos = d3.pointer(event);
-      console.log(pos);
-      this._svg.clickArea.append("circle")
-        .attr("cx", pos[0])
-        .attr("cy", pos[1])
-        .attr("r", 5)
+
 
       if(this._player.hand) { // there is something in the hand
         // place the item in the players hand into the designated slot
@@ -395,7 +409,7 @@ export class Slot {
       self._inventory.splitStack(self._coordinate)
     })*/
 
-    //this._contextMenu.addGraphicsTo(layer);
+    //this._contextMenu.attach(layer);
     let pos = d3.pointer(event)
 
     if(this._player.hand) {

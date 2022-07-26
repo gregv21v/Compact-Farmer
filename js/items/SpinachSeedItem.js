@@ -14,9 +14,9 @@ export class SpinachSeedItem extends SeedItem {
     super(position)
     this.name = "SpinachSeedItem"
     this.seedColor = "#1d4016"
-    this.tooltip.html = "Spinach Seed: Used for planting spinach"
+    this._description = "Used for planting spinach"
+    this._displayName = "Spinach Seed"
     this._imageURL = "images/spinachSeed.png"
-    this._compostable = true;
   }
 
   /**
@@ -28,11 +28,11 @@ export class SpinachSeedItem extends SeedItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     /*
     this.svg.seeds[0]
@@ -135,7 +135,7 @@ export class SpinachSeedItem extends SeedItem {
     var clone = new SpinachSeedItem(this.position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 }

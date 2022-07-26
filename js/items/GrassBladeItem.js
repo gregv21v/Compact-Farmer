@@ -13,7 +13,10 @@ export class GrassBladeItem extends CompostableItem {
     super(position)
     this.name = "GrassBladeItem"
     this._compostValue = 7;
-    this.updateToolTip("Grass Blade: Used for crafting")
+
+    this._description = "Used in a composter to make dirt"
+    this._displayName = "Grass Blade"
+    this.updateToolTip()
   }
 
 
@@ -31,11 +34,11 @@ export class GrassBladeItem extends CompostableItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -77,7 +80,7 @@ export class GrassBladeItem extends CompostableItem {
     var clone = new GrassBladeItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

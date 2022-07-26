@@ -12,8 +12,8 @@ export class SpinachItem extends CompostableItem {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "SpinachItem"
-    this.tooltip.html = "Spinach: Used for crafting"
-    this._compostable = true;
+    this._description = "Used for crafting"
+    this._displayName = "Spinach"
   }
 
 
@@ -31,11 +31,11 @@ export class SpinachItem extends CompostableItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -77,7 +77,7 @@ export class SpinachItem extends CompostableItem {
     var clone = new SpinachItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

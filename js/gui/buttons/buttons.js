@@ -1,5 +1,2 @@
 export { Button } from "./Button.js"
-export { DragButton } from "./DragButton.js"
-export { LoadButton } from "./LoadButton.js"
-export { SaveButton } from "./SaveButton.js"
 export { SideButton } from "./SideButton.js"

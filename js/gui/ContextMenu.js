@@ -26,11 +26,11 @@ export class ContextMenu {
   }
 
   /**
-   * addGraphicsTo()
+   * attach()
    * @description add this ContextMenu to the parent graphic
    * @param group group to add the context menu to
    */
-  addGraphicsTo(group) {
+  attach(group) {
     group.append(() => this._svg.group.node())
   }
 
@@ -97,11 +97,11 @@ export class ContextMenu {
 
 
   /**
-   * initSVG()
+   * render()
    * @description draw context menu
    * @param position position to draw the context menu at
    */
-  initSVG(parent, position) {
+  render(parent, position) {
 
   }
 }

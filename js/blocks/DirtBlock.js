@@ -17,8 +17,8 @@ export class DirtBlock extends Block {
     constructor(player, world, coordinate) {
       super(player, world, coordinate)
 
-      this.name = "DirtBlock"
-      this.crop = null;
+      this._name = "DirtBlock"
+      this._crop = null;
       this.isCropFullyGrown = false; // there are two stages, start and complete
       this.isHydrated = false;
       this.isPlowed = false;
@@ -26,7 +26,9 @@ export class DirtBlock extends Block {
 
       // elements in the soil that can be extracted by the plant
 
-      this.updateToolTip("A Dirt Block can be tilled.")
+      this._displayName = "Dirt Block"
+      this._description = "Left click with a hoe to till. After you have tilled, you can plant a crop. Left click with a seed to plant."
+      this.updateToolTip()
     }
 
 
@@ -37,13 +39,13 @@ export class DirtBlock extends Block {
     */
     toJSON() {
       var crop = null
-      if(this.crop) {
-        crop = this.crop.toJSON()
+      if(this._crop) {
+        crop = this._crop.toJSON()
       }
 
       return {
-        name: this.name,
-        coordinate: this.coordinate,
+        name: this._name,
+        coordinate: this._coordinate,
         crop: crop,
         isCropFullyGrown: this.isCropFullyGrown,
         isHydrated: this.isHydrated,
@@ -83,28 +85,28 @@ export class DirtBlock extends Block {
     */
     delete() {
       super.delete()
-      if(this.crop !== null)
-        this.crop.delete()
+      if(this._crop !== null)
+        this._crop.delete()
     }
 
     /**
       createGraphic()
       @description override this function to draw the graphics for the
         block.
-        Each svg should be added to this.svg
+        Each svg should be added to this._svg
       @param group the svg group to create the graphics on
 
     */
     createGraphic(group) {
-      // make your graphics here add add them to the this.svg object
-      this.svg.rows = []
+      // make your graphics here add add them to the this._svg object
+      this._svg.rows = []
       this.rows = 4;
 
       for (var i = 0; i < this.rows; i++) {
-        this.svg.rows.push(group.append("line"))
+        this._svg.rows.push(group.append("line"))
       }
-      this.svg.cropGroup = group.append("g")
-      this.svg.progressBar = group.append("rect")
+      this._svg.cropGroup = group.append("g")
+      this._svg.progressBar = group.append("rect")
     }
 
 
@@ -116,20 +118,27 @@ export class DirtBlock extends Block {
     render() {
       super.render()
 
-      if(this.crop !== null) {
-        this.crop.render()
+      if(this._crop !== null) {
+        this._crop.render()
       }
+    }
 
-      let worldPosition = this.world.coordinateToPosition(this.coordinate);
+    /**
+     * update()
+     * @description updates the block
+     */
+    update() {
+      super.update()
+      let worldPosition = this._world.coordinateToPosition(this._coordinate);
       // render the background
       if(this.isHydrated)
-        this.svg.background.style("fill", "#42240a")
+        this._svg.background.style("fill", "#42240a")
       else
-        this.svg.background.style("fill", "#7d4514") // dehydrated color
+        this._svg.background.style("fill", "#7d4514") // dehydrated color
 
       if(this.isPlowed)
         for (var i = 0; i < this.rows; i++) {
-          this.svg.rows[i]
+          this._svg.rows[i]
             .attr("x1", worldPosition.x + Block.size/10)
             .attr("y1", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
             .attr("x2", worldPosition.x + Block.size - Block.size/10)
@@ -137,24 +146,27 @@ export class DirtBlock extends Block {
             .style("stroke", "black")
         }
 
-      this.svg.progressBar
+      this._svg.progressBar
         .attr("x", worldPosition.x)
         .attr("y", worldPosition.y + Block.size - Block.ProgressBarHeight)
         .attr("height", Block.ProgressBarHeight)
         .style("fill", "green")
+      
+
+      if(this._crop) this._crop.update()
     }
 
     /**
       unrender()
       @description removes the block from the canvas
     */
-    unrender() {
-      this.svg.background.remove();
-      this.svg.clickArea.remove();
-      this.svg.cropGroup.selectAll("*").remove();
-      this.svg.graphicsGroup.selectAll("*").remove();
-      this.svg.progressBar.remove();
-      for (let row of this.svg.rows) {
+    remove() {
+      this._svg.background.remove();
+      this._svg.clickArea.remove();
+      this._svg.cropGroup.selectAll("*").remove();
+      this._svg.graphicsGroup.selectAll("*").remove();
+      this._svg.progressBar.remove();
+      for (let row of this._svg.rows) {
         row.remove();
       }
     }
@@ -165,7 +177,7 @@ export class DirtBlock extends Block {
     */
     hydrate() {
       this.isHydrated = true;
-      this.svg.background.style("fill", "#361d07")
+      this._svg.background.style("fill", "#361d07")
     }
 
     /**
@@ -174,7 +186,7 @@ export class DirtBlock extends Block {
     */
     dehydrate() {
       this.isHydrated = false;
-      this.svg.background.style("fill", "#7d4514")
+      this._svg.background.style("fill", "#7d4514")
     }
 
     /**
@@ -183,15 +195,15 @@ export class DirtBlock extends Block {
     */
     onLeftClick() {
       super.onLeftClick()
-      var selectedItem = this.player.toolbar.currentlySelected.item
+      var selectedItem = this._player.toolbar.currentlySelected.item
       console.log("Farm Block Clicked");
 
       if(selectedItem instanceof SeedItem) {
         // plant seeds
-        if(this.crop === null && this.isHydrated && this.isPlowed) {
+        if(this._crop === null && this.isHydrated && this.isPlowed) {
           var crop = selectedItem.getCrop();
           crop.setBlock(this);
-          this.player.toolbar.useSelectedSlot()
+          this._player.toolbar.useSelectedSlot()
           this.plantCrop(crop);
         }
       } else if(selectedItem instanceof HoeItem) {
@@ -200,15 +212,18 @@ export class DirtBlock extends Block {
         this.plow(selectedItem)
       } else if(selectedItem instanceof ShovelItem) {
         // remove block from world
-        this.world.removeBlock(this);
-        this.player.inventory.add(new DirtBlockItem())
+        this._world.removeBlock(this);
+
+        if(!this._player.toolbar.add(new DirtBlockItem())) {
+          this._player.inventory.add(new DirtBlockItem())
+        }
       } else {
         console.log("No item selected.");
       }
 
 
       // harvest crop
-      if(this.crop !== null) {
+      if(this._crop !== null) {
         this.harvest()
       }
 
@@ -220,8 +235,8 @@ export class DirtBlock extends Block {
       @param crop the crop to plant
     */
     plantCrop(crop) {
-      this.crop = crop
-      this.crop.render()
+      this._crop = crop
+      this._crop.render()
       this._progress = 0;
       this.setGrowthTimer()
     }
@@ -232,7 +247,7 @@ export class DirtBlock extends Block {
     */
     setGrowthTimer() {
       var self = this;
-      var id = setInterval(frame, this.crop.getGrowTime());
+      var id = setInterval(frame, this._crop.getGrowTime());
       function frame() {
         if (self._progress >= Block.size) {
           self.isCropFullyGrown = true;
@@ -255,10 +270,10 @@ export class DirtBlock extends Block {
     plow(hoe) {
       hoe.use()
 
-      var worldPosition = this.world.coordinateToPosition(this.coordinate);
+      var worldPosition = this._world.coordinateToPosition(this._coordinate);
 
       for (var i = 0; i < this.rows; i++) {
-        this.svg.rows[i]
+        this._svg.rows[i]
           .attr("x1", worldPosition.x + Block.size/10)
           .attr("y1", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
           .attr("x2", worldPosition.x + Block.size - Block.size/10)
@@ -275,17 +290,17 @@ export class DirtBlock extends Block {
     harvest() {
       // harvest the crop
       if(this.isCropFullyGrown) {
-        var recipe = PlantRecipeRegistry.lookup(this.crop.name)
+        var recipe = PlantRecipeRegistry.lookup(this._crop.name)
         var products = recipe.getProducts();
         for (var product of products) {
-          if(!this.player.toolbar.add(product)) {
-            this.player.inventory.add(product)
+          if(!this._player.toolbar.add(product)) {
+            this._player.inventory.add(product)
           }
         }
-        this.crop.removeBlock()
-        this.crop = null;
+        this._crop.removeBlock()
+        this._crop = null;
         this.isCropFullyGrown = false;
-        this.svg.progressBar.attr("width", 0)
+        this._svg.progressBar.attr("width", 0)
       }
     }
 

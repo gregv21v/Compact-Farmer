@@ -18,7 +18,8 @@ export class DirtBlockItem extends CompostableItem {
     }
     this._compostValue = 50
 
-    this._description = "Dirt Block: Placable on the plus marks"
+    this._description = "Placable on the plus marks"
+    this._displayName = "Dirt Block"
     this.updateToolTip()
   }
 
@@ -39,11 +40,11 @@ export class DirtBlockItem extends CompostableItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -85,7 +86,7 @@ export class DirtBlockItem extends CompostableItem {
     var clone = new DirtBlockItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

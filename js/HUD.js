@@ -4,15 +4,16 @@ import {
 } from "./gui/tabs/tabs.js"
 
 import {
-  DragButton, SaveButton, LoadButton
+  Button
 } from "./gui/buttons/buttons.js"
 
 
 export class HUD {
-  constructor(game, player, world) {
+  constructor(game, scene, player, world) {
     this._game = game;
     this._player = player;
     this._world = world;
+    this._scene = scene;
     this._sideTabManager = new SideTabManager()
 
     this._inventoryTab = new InventorySideTab()
@@ -32,38 +33,44 @@ export class HUD {
 
     this._player.toolbar.moveTo({
       x: game.height / 2 - this._player.toolbar.width / 2,
-      y: this._game.height - 50
+      y: this._game.height - 50 - 5
     })
 
-    this.dragBtn = new DragButton(
-      this._world,
-      {x: 100, y: this._game.height - 50},
-      50, 50 // width, height
-    )
-
-    this.saveBtn = new SaveButton(
-      game,
+  
+    let self = this;
+    this.saveBtn = new Button(
       {x: 0, y: this._game.height - 50}, // position
-      50, 50 // width, height
+      50, 50, // width, height
+      "Save", // text
+      () => {
+        //console.log(game.currentScene);
+        if(game.currentScene.name === "PlayScene") {
+          console.log("saving");
+          game.currentScene.saveWorld("Test 3");
+        }
+      }
     )
 
-    this.loadBtn = new LoadButton(
-      game,
+    this.exitBtn = new Button(
       {x: 50, y: this._game.height - 50}, // position
-      50, 50 // width, height
+      50, 50, // width, height
+      "Exit",
+      () => {
+        game.currentScene = "MainMenuScene";
+      }
     )
   }
 
+  /**
+   * resize()
+   * @description resizes the hud
+   */
   resize() {
-    console.log("Resizing");
-    this.dragBtn.moveTo(
-      {x: 100, y: this._game.height - 50}
+    this.exitBtn.moveTo(
+      {x: 50, y: this._game.height - 50}
     )
     this.saveBtn.moveTo(
       {x: 0, y: this._game.height - 50}
-    )
-    this.loadBtn.moveTo(
-      {x: 50, y: this._game.height - 50}
     )
 
     this._player.toolbar.moveTo({
@@ -75,24 +82,49 @@ export class HUD {
 
   }
 
+
   /**
-   * addGraphicsTo()
+   * render()
+   * @description renders the hud
+   */
+  render() {
+    this._player.toolbar.render()
+
+    this.saveBtn.render()
+
+    this.exitBtn.render()
+  }
+
+  /**
+   * update()
+   * @description updates the hud
+   * @param {Object} props the properties to update the hud with
+   */
+  update(props) {
+   /* this._sideTabManager.update(props);
+
+    this._player.toolbar.update(props);
+
+    this.dragBtn.update(props);
+
+    this.saveBtn.update(props);
+
+    this.exitBtn.update(props);*/
+  }
+
+
+  /**
+   * attach()
    * @description adds the graphics of the hud to the game
    * @param {SVGElement} svg the svg element to add the graphics to
    */
-  addGraphicsTo(mainLayer) {
-    this._sideTabManager.addGraphicsTo(mainLayer);
+  attach(mainLayer) {
+    this._sideTabManager.attach(mainLayer);
 
-    this._player.toolbar.initSVG()
-    this._player.toolbar.addGraphicsTo(mainLayer)
+    this._player.toolbar.attach(mainLayer)
 
-    this.dragBtn.initSVG()
-    this.dragBtn.addGraphicsTo(mainLayer)
+    this.saveBtn.attach(mainLayer)
 
-    this.saveBtn.initSVG()
-    this.saveBtn.addGraphicsTo(mainLayer)
-
-    this.loadBtn.initSVG()
-    this.loadBtn.addGraphicsTo(mainLayer)
+    this.exitBtn.attach(mainLayer)
   }
 }

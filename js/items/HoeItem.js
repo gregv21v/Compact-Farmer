@@ -18,7 +18,9 @@ export class HoeItem extends Item {
     this._currDurability = 20;
     this._maxDurability = 20;
     this.name = "HoeItem"
-    this.tooltip.html = "Hoe: Used to till soil"
+    this._description = "Used to till soil"
+    this._displayName = "Hoe"
+    this.updateToolTip()
   }
 
 
@@ -37,11 +39,11 @@ export class HoeItem extends Item {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -107,7 +109,7 @@ export class HoeItem extends Item {
     var clone = new HoeItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

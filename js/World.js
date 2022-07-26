@@ -6,22 +6,26 @@ import {
 
 export class World {
 
-  constructor(player, layer, position) {
-    this.position = position
+  /**
+   * constructor()
+   * @description constructs a new world
+   * @param {Object} props the properties of the world
+   *  Properties:
+   *    player: the player
+   *    position: the position of the world
+   */
+  constructor(props) {
+    this._props = props;
+    this._name = "World";
+
+    // properties
+    this.position = props.position;
+    this.player = props.player;
+
+    // state variables
     this.blocks = {};
-    this.player = player;
-    this._layer = layer;
 
-    this._svgLayers = {
-      blocks: layer.append("g"),
-      tooltips: layer.append("g")
-    }
-
-    this.addBlock(new WaterBlock(this.player, this, {x: 0, y: 0}))// origin block
-    this.addBlock(new ComposterBlock(this.player, this, {x: 0, y: 1}))
-    this.addBlock(new ExpansionBlock(this.player, this, {x: 0, y: -1}))
-    this.addBlock(new ExpansionBlock(this.player, this, {x: -1, y: 0}))
-    this.addBlock(new ExpansionBlock(this.player, this, {x: 1, y: 0}))
+    // render the world
   }
 
   /**
@@ -41,32 +45,35 @@ export class World {
     fromJSON()
     @description converts a json object into this world
   */
-  fromJSON(player, world, json) {
+  static fromJSON(json, props) {
+    let world = new World(props)
     for (var key of Object.keys(json)) {
       var block = null;
       if(json[key].name === "ExpansionBlock") {
-        block = ExpansionBlock.fromJSON(player, world, json[key])
+        block = ExpansionBlock.fromJSON(props.player, world, json[key])
       } else if(json[key].name === "DirtBlock") {
-        block = DirtBlock.fromJSON(player, world, json[key])
+        block = DirtBlock.fromJSON(props.player, world, json[key])
       } else if(json[key].name === "WaterBlock") {
-        block = WaterBlock.fromJSON(player, world, json[key])
+        block = WaterBlock.fromJSON(props.player, world, json[key])
       } else if(json[key].name === "ComposterBlock") {
-        block = ComposterBlock.fromJSON(player, world, json[key])
+        block = ComposterBlock.fromJSON(props.player, world, json[key])
       } else {
-        block = Block.fromJSON(player, world, json[key]);
+        block = Block.fromJSON(props.player, world, json[key]);
       }
 
-      this.blocks[key] = block
+      world.blocks[key] = block
     }
+
+    return world;
   }
 
   /**
     delete()
     @description delete all the blocks in the world
   */
-  delete() {
+  remove() {
     for (var key of Object.keys(this.blocks)) {
-      this.blocks[key].delete()
+      this.blocks[key].remove()
       delete this.blocks[key]
     }
   }
@@ -79,6 +86,9 @@ export class World {
   */
   addBlock(block) {
     this.blocks[block.getCoordinateAsString()] = block;
+
+    block.render()
+    block.update()
   }
 
 
@@ -106,7 +116,7 @@ export class World {
     var coordAsString = block.getCoordinateAsString()
     if(coordAsString in this.blocks) {
       // remove it
-      this.blocks[coordAsString].unrender();
+      this.blocks[coordAsString].remove();
       delete this.blocks[coordAsString]
 
       // add the new block
@@ -131,11 +141,13 @@ export class World {
     var coordAsString = block.getCoordinateAsString()
     if(coordAsString in this.blocks) {
       // remove it
-      this.blocks[coordAsString].unrender();
+      this.blocks[coordAsString].remove();
       delete this.blocks[coordAsString]
 
       // add the new block
       block.render();
+      block.update();
+
       this.blocks[coordAsString] = block;
 
       this.updateBlocks();
@@ -148,9 +160,12 @@ export class World {
   */
   updateBlocks() {
     for (var block of Object.values(this.blocks)) {
-      block.update(this)
+      block.update()
+      block.updateWorld(this)
     }
   }
+
+  
 
   /**
     expand()
@@ -205,6 +220,8 @@ export class World {
       this.blocks[bottomExp.getCoordinateAsString()] = bottomExp;
       bottomExp.render()
     }
+
+    this.updateBlocks();
   }
 
 
@@ -216,8 +233,92 @@ export class World {
     @description renders the world to the svg canvas
   */
   render() {
-    for (var block of Object.values(this.blocks)) {
+    this._svg = {
+      group: d3.create("svg:g"),
+      layers: {}
+    }
+
+    this._svg.layers.blocks = this._svg.group.append("g")
+    this._svg.layers.tooltips = this._svg.group.append("g")
+
+    for (const block of Object.values(this.blocks)) { 
       block.render();
+    }
+
+    this.enableDrag();
+  }
+
+
+  /**
+   * enableDrag() 
+   * @description enables the drag functionality of the world
+   */
+  enableDrag() {
+    this.dragActive = true;
+    this.dragStart = {x: 0, y: 0}
+    this.lastDrag = {x: 0, y: 0}
+
+    let svgMain = d3.select("body").select("svg")
+    let self = this;
+    let dragHandler = d3.drag()
+      .on("start", (event) => {
+        if(self.dragActive) {
+          self.dragStart = {
+            x: event.x,
+            y: event.y
+          }
+
+          self.lastDrag = {
+            x: 0,
+            y: 0
+          }
+        }
+      })
+      .on("drag", (event) => {
+        if(self.dragActive) {
+          self.move({
+            x: -self.lastDrag.x,
+            y: -self.lastDrag.y
+          })
+
+          self.move({
+            x: event.x - self.dragStart.x,
+            y: event.y - self.dragStart.y
+          })
+
+          self.lastDrag = {
+            x: event.x - self.dragStart.x,
+            y: event.y - self.dragStart.y
+          }
+        }
+      })
+
+    dragHandler(svgMain)
+  }
+
+
+  /** 
+   * update()
+   * @description updates the world
+   */
+  update() {
+    for (const block of Object.values(this.blocks)) {
+      block.update();
+    }
+  }
+
+  /**
+   * attach()
+   * @description attaches the world to the svg canvas
+   * @param svg the svg canvas to attach to
+   */
+  attach(svg) {
+    console.log("attaching world to svg");
+
+    svg.append(() => this._svg.group.node())
+
+    for (const block of Object.values(this.blocks)) {
+      //block.attach();
     }
   }
 
@@ -228,9 +329,7 @@ export class World {
   move(delta) {
     this.position.x += delta.x
     this.position.y += delta.y
-    for (var block of Object.values(this.blocks)) {
-      block.render();
-    }
+    this.update()
   }
 
 
@@ -243,7 +342,7 @@ export class World {
    * @description get the layers of the world
    */
   get layers() {
-    return this._svgLayers;
+    return this._svg.layers;
   }
 
 }

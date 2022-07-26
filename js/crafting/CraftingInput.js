@@ -19,7 +19,7 @@ export class CraftingInput {
         key += this.items[x][y].name + "_";
       }
     }
-    console.log(key);
+    //console.log(key);
     return key;
   }
 

@@ -6,7 +6,7 @@ import { Tooltip } from "../gui/Tooltip.js"
 
 export class Block {
 
-    static size = 50
+    static size = 60
     static ProgressBarHeight = 4;
     /**
       getCoordinateAsString()
@@ -21,41 +21,32 @@ export class Block {
       @description constructs the block
     */
     constructor(player, world, coordinate) {
-      this.name = "Block"
-      this.player = player;
-      this.world = world;
-      this.coordinate = coordinate;
+      this._name = "Block"
+      this._player = player;
+      this._world = world;
+      this._coordinate = coordinate;
       this._elements = {}
       this._progress = 0;
       this._progressMax = 100;
 
       var worldPosition = this.getWorldPosition();
       this._tooltip = new Tooltip(
-        this.name,
+        this._name,
         {x: worldPosition.x, y: worldPosition.y - 90},
         150, 90
       )
 
-      // the resources needed to craft this item
-      this.svg = {}
-      this.svg.background = this.world.layers.blocks.append("rect")
-
-      this.svg.graphicsGroup = this.world.layers.blocks.append("g")
-      this.createGraphic(this.svg.graphicsGroup);
-
-      this.svg.clickArea = this.world.layers.blocks.append("rect")
-
-      this.initTooltip(this.world.layers.tooltips);
-      this.updateToolTip("A basic Block")
+      this._displayName = "Block"
+      this._description = "A basic block"
     }
 
     /**
      * updateToolTip()
      * updates the information on the tooltip
      */
-    updateToolTip(description) {
-      this._tooltip.html = `<strong>${this.name}</strong>:
-      ${description}<br /><strong>Elements:</strong><br/>`
+    updateToolTip() {
+      this._tooltip.html = `<strong>${this._displayName}</strong>: <br>
+      ${this._description}<br /><strong>Elements:</strong><br/>`
       for (var element of Object.keys(this._elements)) {
         this._tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
       }
@@ -68,7 +59,7 @@ export class Block {
      */
      initTooltip(layer) {
        this._tooltip.hide()
-       this._tooltip.addGraphicsTo(layer)
+       this._tooltip.attach(layer)
      }
 
     /**
@@ -77,8 +68,8 @@ export class Block {
     */
     toJSON() {
       return {
-        name: this.name,
-        coordinate: this.coordinate
+        name: this._name,
+        coordinate: this._coordinate
       }
     }
 
@@ -94,21 +85,21 @@ export class Block {
       createGraphic()
       @description override this function to draw the graphics for the
         block.
-        Each svg should be added to this.svg
+        Each svg should be added to this._svg
       @param group the svg group to create the graphics on
     */
     createGraphic(group) {
-      // make your graphics here add add them to the this.svg object
+      // make your graphics here add add them to the this._svg object
     }
 
     /**
       delete()
       @description deletes this block
     */
-    delete() {
-      this.svg.background.remove()
-      this.svg.graphicsGroup.remove()
-      this.svg.clickArea.remove()
+    remove() {
+      this._svg.background.remove()
+      this._svg.graphicsGroup.remove()
+      this._svg.clickArea.remove()
     }
 
 
@@ -118,18 +109,41 @@ export class Block {
         variables
     */
     render() {
-      var worldPosition = this.getWorldPosition();
-      var size = Block.size;
-      var self = this;
+      //let worldPosition = this.getWorldPosition();
+
+      // the resources needed to craft this item
+      this._svg = {}
+      this._svg.background = this._world.layers.blocks.append("rect")
+
+      this._svg.graphicsGroup = this._world.layers.blocks.append("g")
+      this.createGraphic(this._svg.graphicsGroup);
+
+      this._svg.clickArea = this._world.layers.blocks.append("rect")
+
+      this.initTooltip(this._world.layers.tooltips);
+      this.updateToolTip("A basic Block")
+
+      this._tooltip.render()
+      this._tooltip.hide()
+    }
+
+    /**
+     * update()
+     * @description updates the block
+     */
+    update() {
+      let worldPosition = this.getWorldPosition();
+      let size = Block.size;
+      let self = this;
       // render the background
-      this.svg.background
+      this._svg.background
         .attr("x", worldPosition.x)
         .attr("y", worldPosition.y)
         .attr("width", size)
         .attr("height", size)
         .style("fill", "grey")
 
-      this.svg.clickArea
+      this._svg.clickArea
         .attr("x", worldPosition.x)
         .attr("y", worldPosition.y)
         .attr("width", size)
@@ -140,24 +154,27 @@ export class Block {
         .on("mouseover", (event) => {self.onMouseOver(event)})
         .on("mouseout", (event) => {self.onMouseOut(event)})
 
-      this._tooltip.initSVG()
-      this._tooltip.hide()
-
       this._tooltip.position = {
         x: worldPosition.x,
         y: worldPosition.y - 90
       }
+      
     }
 
-
+    /**
+      updateWorld()
+      @description updates the state of the block
+    */
+    updateWorld(world) {
+    }
 
     /**
-      unrender()
+      remove()
       @description removes the block from the canvas
     */
-    unrender() {
-      for (var key of Object.keys(this.svg)) {
-        this.svg[key].remove();
+    remove() {
+      for (var key of Object.keys(this._svg)) {
+        this._svg[key].remove();
       }
     }
 
@@ -202,7 +219,7 @@ export class Block {
       @description get the coordinate of this block as a string
     */
     getCoordinateAsString() {
-      return "x_" + this.coordinate.x + "y_" + this.coordinate.y;
+      return "x_" + this._coordinate.x + "y_" + this._coordinate.y;
     }
 
     /**
@@ -210,15 +227,16 @@ export class Block {
       @description gets the position of the block in the world
     */
     getWorldPosition() {
-      return this.world.coordinateToPosition(this.coordinate)
+      return this._world.coordinateToPosition(this._coordinate)
     }
 
     /**
-      update()
-      @description updates the state of the block
-    */
-    update(world) {
-
+     * get coordinate()
+     * @description gets the coordinate of this block
+     * @returns {Coordinate} the coordinate of this block
+     */
+    get coordinate() {
+      return this._coordinate;
     }
 
     /**
@@ -232,6 +250,17 @@ export class Block {
     */
     preformActionOn(item) {
 
+    }
+
+
+    /**
+     * get svg()
+     * @description gets the svg of this block
+     * @returns {Object} the svg of this block
+     * 
+     */
+    get svg() {
+      return this._svg;
     }
 
 

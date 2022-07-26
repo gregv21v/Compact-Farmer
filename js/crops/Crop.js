@@ -97,4 +97,18 @@ export class Crop {
         .attr("width", Block.size)
         .attr("height", Block.size)
     }
+
+    /**
+     * update()
+     * @description updates the crop
+     */
+    update() {
+      let worldPosition = this.block.getWorldPosition();
+      this._svg.image
+        .attr("x", worldPosition.x)
+        .attr("y", worldPosition.y)
+        .attr("width", Block.size)
+        .attr("height", Block.size)
+      
+    }
 }

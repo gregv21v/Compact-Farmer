@@ -10,7 +10,9 @@ export class EmptyLeafBucketItem extends Item {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "EmptyLeafBucketItem"
-    this.tooltip.html = "Empty Leaf Bucket: Fill this with water"
+    this._description = "Fill this with water"
+    this._displayName = "Empty Leaf Bucket"
+    this.updateToolTip()
   }
 
 
@@ -28,11 +30,11 @@ export class EmptyLeafBucketItem extends Item {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this.svg.image
       .attr("x", this._position.x)
@@ -74,7 +76,7 @@ export class EmptyLeafBucketItem extends Item {
     var clone = new EmptyLeafBucketItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

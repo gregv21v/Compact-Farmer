@@ -36,14 +36,21 @@ export class Inventory {
       items: this._svg.group.append("g"),
       tooltips: this._svg.group.append("g"),
       clickAreas: this._svg.group.append("g"),
-      contextMenus: this._svg.group.append("g")
+      contextMenus: this._svg.group.append("g"),
     }
 
     this._svg.group.attr("class", "inventory")
     this._svg.layers.slots.attr("class", "slotsLayer")
     this._svg.layers.items.attr("class", "itemsLayer")
+    this._svg.layers.tooltips.attr("class", "tooltipsLayer")
+    this._svg.layers.clickAreas.attr("class", "clickAreasLayer")
+    this._svg.layers.contextMenus.attr("class", "contextMenusLayer")
     this._createSlots();
   }
+
+
+
+
 
   /**
    * findSlotContainingPoint()
@@ -424,28 +431,28 @@ export class Inventory {
   *********************************************************/
 
   /**
-    addGraphicsTo()
+    attach()
     @description add the graphics of the storage to a given svg group
     @param parent the parent to add the graphics to
   */
-  addGraphicsTo(parent) {
+  attach(parent) {
     parent.append(() => this._svg.group.node())
     for (var x = 0; x < this._slots.length; x++) {
       for (var y = 0; y < this._slots[x].length; y++) {
-        this._slots[x][y].initSVG()
-        this._slots[x][y].addGraphicsTo(this._svg.layers.slots);
+        this._slots[x][y].render()
+        this._slots[x][y].attach(this._svg.layers.slots);
       }
     }
   }
 
   /**
-    initSVG()
-    @description initializes the attributes and styles of the grid's svgs
-  */
-  initSVG() {
+   * render()
+   * @param {Object} props the properties to render
+   */
+  render() {
     for (var x = 0; x < this.columns; x++) {
       for (var y = 0; y < this.rows; y++) {
-        this._slots[x][y].initSVG()
+        this._slots[x][y].render()
       }
     }
   }
@@ -478,6 +485,26 @@ export class Inventory {
   */
   select(slot) {
     this._selectedSlot = slot;
+    this._selectedSlot.attach(this._svg.layers.slots);
+    if(this._selectedSlot.item) {
+      this._selectedSlot.item.attach(this._svg.layers.items);
+    }
+    this._selectedSlot.select();
+  }
+
+  /**
+   * selectSlotByPosition()
+   * @description selects a slot by its position
+   */
+  selectSlotByPosition(x, y) {
+    this.deselectAll();
+
+    this._selectedSlot = this._slots[x][y];
+    this._selectedSlot.attach(this._svg.layers.slots);
+    if(this._selectedSlot.item) {
+      this._selectedSlot.item.attach(this._svg.layers.items);
+    }
+    this._selectedSlot.select(); 
   }
 
 

@@ -19,7 +19,7 @@ export class GrassSeedItem extends SeedItem {
     }
     this._compostable = true;
 
-    this._description = "Grass Seed: Placable on tilled farm block"
+    this._description = "<strong>Grass Seed:</strong> <br> Placable on tilled farm block"
     this.updateToolTip()
 
     this._imageURL = "images/grassSeed.png"
@@ -41,7 +41,7 @@ export class GrassSeedItem extends SeedItem {
     var clone = new GrassSeedItem(this.position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 }

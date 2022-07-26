@@ -13,7 +13,8 @@ export class SeedItem extends CompostableItem {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "SeedItem"
-    this.tooltip.html = "Seeds: Placable in tilled soil"
+    this._description = "Placable in tilled dirt block"
+    this._displayName = "Seed"
     this._imageURL = "images/seed.png"
     this._compostable = true;
   }

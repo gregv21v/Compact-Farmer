@@ -12,7 +12,8 @@ export class SieveItem extends CompostableItem {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "SieveItem"
-    this.tooltip.html = "Sieve: Used to collect seeds from water"
+    this._description = "Used to collect seeds from water"
+    this._displayName = "Sieve"
     this._compostValue = 28
   }
 
@@ -31,11 +32,11 @@ export class SieveItem extends CompostableItem {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -77,7 +78,7 @@ export class SieveItem extends CompostableItem {
     var clone = new SieveItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

@@ -9,7 +9,7 @@ export class LoadButton extends Button {
     @description constructs the item
   */
   constructor(player, position, width, height) {
-    super(position, width, height, "Load")
+    super(position, width, height, "Load", () => {self.onClick()})
 
     this.player = player;
   }

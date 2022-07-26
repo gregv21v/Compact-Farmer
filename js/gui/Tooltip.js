@@ -17,11 +17,11 @@ export class Tooltip {
     }
 
     /**
-     * initSVG()
+     * render()
      * @description initializes the svgs of the tooltip. Should only be
      *  called once
      */
-    initSVG() {
+    render() {
 
       this._svg.foreignObject
         .attr("x", this._position.x)
@@ -43,11 +43,11 @@ export class Tooltip {
     }
 
     /**
-      addGraphicsTo()
+      attach()
       @description add the graphics of the button to a given svg group
       @param group the group to add the graphics to
     */
-    addGraphicsTo(group) {
+    attach(group) {
       group.append(() => this._svg.group.node())
     }
 

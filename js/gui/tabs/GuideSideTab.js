@@ -21,11 +21,11 @@ export class GuideSideTab extends SideTab {
   }
 
   /**
-    initSVG()
+    render()
     @description initializes the svgs for this side tab
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this.svg.foreignObject
       .attr("x", this._position.x + this.buttonDims.width)
@@ -36,38 +36,56 @@ export class GuideSideTab extends SideTab {
     this._html.div
       .html(`
         <h2>Guide</h2>
-        <p>
+        <b>Welcome to the guide!</b>
+    
+        <p style="text-align: left;">
+          The goal of this game is to grow a garden.
 
-          You start off with 1 dirt blocks a hoe, and 1 grass seeds.
-          The grass seed can be planted, once you place a dirt block and hoe it.
-
+        <p style="text-align: left;">  
+          Here I will teach you the basics of growing a garden. On your toolbar you will see that you have 
+          several items that you can use. Lets first start with the dirt block.
         </p>
 
-        <div style='display: flex; flex: row;'>
-          <figure>
-            <img src="./images/grassSeed.png" width="25px" height="50px" alt="Grass Seed">
-            <figcaption>
-          	 Grass Seed
-            </figcaption>
-          </figure>
+        <figure>
+          <img src="./images/dirtBlock.png" width="50px" height="50px" alt="Dirt Block">
+          <figcaption>
+            Dirt Block
+          </figcaption>
+        </figure>
 
-          <figure>
-            <img src="./images/dirtBlock.png" width="50px" height="50px" alt="Grass Seed">
-            <figcaption>
-          	 Dirt Block
-            </figcaption>
-          </figure>
+        <p style="text-align: left;">
+          Dirt blocks can be placed on expansion blocks (the blocks with a the green plus sign) 
+          to expand your farm.
+        </p>
 
-          <figure>
-            <img src="./images/hoe.png" width="50px" height="50px" alt="Grass Seed">
-            <figcaption>
-          	 Hoe
-            </figcaption>
-          </figure>
-        </div>
+        <p style="text-align: left;">
+          Close the guide tab, and try placing the two dirt blocks you have on the expansion block. Once you are done open the 
+          guide tab again.
+        </p>
+        
+        <p>
+          Now that you have a dirt block placeed, you can plow that dirt block with the hoe.
+        </p>
 
+        <figure>
+          <img src="./images/hoe.png" width="50px" height="50px" alt="Hoe">
+          <figcaption>
+            Hoe
+          </figcaption>
+        </figure>
 
         <p>
+          Once you have hoed the dirt block, you can plant a seed. You start with grass seeds.
+        </p>
+
+        <figure>
+          <img src="./images/grassSeed.png" width="25px" height="50px" alt="Grass Seed">
+          <figcaption>
+            Grass Seed
+          </figcaption>
+        </figure>
+
+        <p style="text-align: left;">
           9 grass blades can be placed into a crafting grid to create a dirt block
           4 grass blades in the upper left hand corner of a crafting grid makes a grass sieve
           a grass sieve can be used to sieve dirt to find seeds and other things
@@ -76,7 +94,7 @@ export class GuideSideTab extends SideTab {
 
       `)
       .style("padding", "5px")
-      .style("text-align", "center")
+      .style("text-align", "left")
 
   }
 

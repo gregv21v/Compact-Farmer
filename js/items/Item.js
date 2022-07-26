@@ -5,12 +5,15 @@ import { Tooltip } from "../gui/Tooltip.js"
 
 
 export class Item {
+  static Size = 40;
+
   /**
     constructor()
     @description constructs the block
   */
   constructor(position = {x: 0, y: 0}) {
     this.name = "Item"
+    this._displayName = "Item";
     this._position = position;
     this.size = 40
     this._quantity = 1;
@@ -24,6 +27,7 @@ export class Item {
       150, 90
     )
 
+    
     this.updateToolTip();
 
     // create the svg elements
@@ -37,21 +41,13 @@ export class Item {
     this._svg.clickArea = this._svg.group.append("rect")
   }
 
-
-  /**
-   * get isCompostable
-   * @description gets the isCompostable value
-   */
-  get isCompostable() {
-    return this._compostable;
-  }
-
   /**
    * updateToolTip()
    * updates the information on the tooltip
    */
   updateToolTip() {
-    this.tooltip.html = `${this._description}<br /><strong>Elements:</strong><br/>`
+    this.tooltip.html = `<strong>${this._displayName}</strong> 
+    <br/>${this._description}<br /><strong>Elements:</strong><br/>`
     for (var element of Object.keys(this._elements)) {
       this.tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
     }
@@ -62,23 +58,13 @@ export class Item {
    * @description initializes the tooltip
    * @param layer the graphics layer that the tooltips will be showed on
    */
-   initTooltip(layer) {
-     this.tooltip.hide()
-     this.tooltip.addGraphicsTo(layer)
-   }
+  initTooltip(layer) {
+    this.tooltip.hide()
+    this.tooltip.attach(layer)
+  }
 
 
-   /**
-    * consumeOne()
-    * @description consumes one of this item
-    */
-   consumeOne(slot) {
-     if(this.quantity > 1) {
-       this.quantity -= 1;
-     } else {
-       slot.destroyItem()
-     }
-   }
+   
 
   /**
     toJSON()
@@ -92,14 +78,15 @@ export class Item {
   }
 
   /**
-    clone()
-    @description make a copy of this crop
-  */
+   * clone()
+   * @description creates a clone of this item
+   * @returns a clone of this item
+   */
   clone() {
-    var clone = new Item(this._position);
+    let clone = new Item(this._position);
     clone.quantity = this._quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 
@@ -117,10 +104,10 @@ export class Item {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
+  render() {
     this._svg.group.attr("class", "item")
 
     // render the background
@@ -132,7 +119,7 @@ export class Item {
       .style("fill", "grey")
       .style("stroke", "black")
 
-    this.tooltip.initSVG();
+    this.tooltip.render();
     this.tooltip.hide()
 
     /*this._svg.label
@@ -290,10 +277,10 @@ export class Item {
   }
 
   /**
-    addGraphicsTo()
+    attach()
     @description adds the graphics to the parent svg
   */
-  addGraphicsTo(parent) {
+  attach(parent) {
     parent.append(() => this._svg.group.node())
   }
 

@@ -1,45 +1,79 @@
-import { Player } from "./Player.js"
-import { World } from "./World.js"
-import { HUD } from "./HUD.js"
-import { PlantRecipe, PlantRecipeRegistry } from "./recipes/recipes.js"
-import { GrassSeedItem, GrassBladeItem } from "./items/items.js"
-import { Inventory } from "./inventories/Inventory.js"
-import { Toolbar } from "./inventories/Toolbar.js"
-import { InventoryManager } from "./inventories/InventoryManager.js"
+import PlayScene from "./scenes/PlayScene.js"
+import MainMenuScene from "./scenes/MainMenuScene.js"
+import WorldCreationScene from "./scenes/WorldCreationScene.js"
+import WorldSelectionScene from "./scenes/WorldSelectionScene.js"
 
 export class Game {
+  
+  /**
+   * constructor()
+   * @description constructs the game
+   */
   constructor() {
-    
-
-    let canvas = d3.select("body")
-      .select("svg")
+    this._canvas = d3.select("svg")
       .attr("width", this.width)
       .attr("height", this.height)
-
-    this._svg = {
-      group: canvas.append("g"),
-      layers: {}
-    }
-    this._svg.layers.world = this._svg.group.append("g")
-    this._svg.layers.tabs = this._svg.group.append("g")
-    this._svg.layers.mouse = this._svg.group.append("g")
-    this._svg.layers.tooltips = this._svg.group.append("g")
-
     
-    this.player = new Player(this._svg.layers.mouse, this._svg.layers.tabs);
-    this.world = new World(this.player, this._svg.layers.world, {x: this.width/2, y: this.height/2})
-    this.hud = new HUD(this, this.player, this.world)
+    this._scenes = {
+      "MainMenuScene": new MainMenuScene(this), 
+      "PlayScene": new PlayScene(this),
+      "WorldCreationScene": new WorldCreationScene(this),
+      "WorldSelectionScene": new WorldSelectionScene(this)
+    }
+    this._currentScene = "MainMenuScene"
 
-    var self = this;
+    this.currentScene.render()
+    this.currentScene.update()
+    this.currentScene.attach(this._canvas)
 
-    window.addEventListener("resize", function() {
-      canvas
-        .attr("width", self.width)
-        .attr("height", self.height)
+    let self = this;
+    window.addEventListener("resize", () => { 
+      self._canvas.attr("width", self.width)
+                  .attr("height", self.height)
+      self.currentScene.resize() 
+    })
 
-      self.hud.resize()
+    d3.select("body").on("keypress", (event) => {
+      self.currentScene.keyPress(event)
     })
   }
+
+  /**
+   * set currentSceneIndex()
+   * @description sets the current scene index
+   * @param {number} index the index of the scene
+   */
+  set currentScene(name) {
+    this._scenes[this._currentScene].remove() // remove the current scene from the dom
+
+    this._currentScene = name
+    
+    this._scenes[this._currentScene].render() // render the current scene
+    this._scenes[this._currentScene].update() // update the current scene
+    this._scenes[this._currentScene].attach(this._canvas) // attach the new scene to the dom
+
+    let self = this;
+    window.addEventListener("resize", () => { 
+      self._canvas.attr("width", self.width)
+                  .attr("height", self.height)
+      self._scenes[self._currentScene].resize() 
+    })
+
+    d3.select("body").on("keypress", (event) => {
+      self._scenes[self._currentScene].keyPress(event)
+    })
+  }
+
+
+  /**
+   * get currentScene()
+   * @description gets the current scene
+   * @return {Scene} the current scene
+   */
+  get currentScene() {
+    return this._scenes[this._currentScene];
+  }
+
 
 
   /**
@@ -77,7 +111,7 @@ export class Game {
     @description creates a player out of json data
   */
   fromJSON(json) {
-    this.world.delete()
+    /*this.world.delete()
     this.world.fromJSON(this.player, this.world, json.world)
 
     this.player.inventoryManager.clear()
@@ -102,26 +136,11 @@ export class Game {
       y: this.height - 50
     })
 
-    this.addGraphics()
+    this.addGraphics()*/
   }
 
 
-  /**
-    save()
-    @description save the player data to the server
-  */
-  save() {
-    /*$.ajax({
-      type: "POST",
-      url: "/save",
-      contentType: 'application/json',
-      data: JSON.stringify(this.toJSON()),
-      success: function(response) { console.log(response);},
-      dataType: "json"
-    })*/
-
-    window.api.save("gregv21v", JSON.stringify(this.toJSON()));
-  }
+  
 
   /**
     load()
@@ -129,7 +148,7 @@ export class Game {
   */
   load() {
 
-    var self = this;
+    //var self = this;
     /*
     $.ajax({
       type: "POST",
@@ -148,12 +167,5 @@ export class Game {
     })
   }
 
-  /**
-    render()
-    @description displays the graphics of the game
-  */
-  addGraphics() {    
-    this.hud.addGraphicsTo(this._svg.layers.tabs)
-    this.world.render()
-  }
+  
 }

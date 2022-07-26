@@ -15,9 +15,11 @@ export class WaterBlock extends Block {
   constructor(player, world, coordinate) {
     super(player, world, coordinate)
 
-    this.name = "WaterBlock"
+    this._name = "WaterBlock"
 
-    this.updateToolTip("Allows you to grow plants nearby")
+    this._displayName = "Water"
+    this._description = "A block of water"
+    this.updateToolTip()
   }
 
   /**
@@ -32,30 +34,27 @@ export class WaterBlock extends Block {
     createGraphic()
     @description override this function to draw the graphics for the
       block.
-      Each svg should be added to this.svg
+      Each svg should be added to this._svg
     @param group the svg group to create the graphics on
   */
   createGraphic(group) {
-    // make your graphics here add add them to the this.svg object
-    this.svg.waves = []
-    this.waveCount = 5;
+    // make your graphics here add add them to the this._svg object
+    this._svg.waves = []
+    this._waveCount = 5;
 
-    for (var i = 0; i < this.waveCount; i++) {
-      this.svg.waves.push(group.append("path"))
+    for (let i = 0; i < this._waveCount; i++) {
+      this._svg.waves.push(group.append("path"))
     }
   }
 
   /**
-    render()
-    @description renders the item to the SVG canvas
-  */
-  render() {
-    super.render()
-    // render the background
+   * updateWaves()
+   * @description updates the waves
+   */
+  updateWaves() {
     var worldPosition = this.getWorldPosition();
-    this.svg.background.style("fill", "blue")
 
-    for (var i = 0; i < this.waveCount; i++) {
+    for (var i = 0; i < this._waveCount; i++) {
       var path = d3.path()
       var count = 6
       var startX = worldPosition.x
@@ -80,24 +79,38 @@ export class WaterBlock extends Block {
          )
         }
       }
-      this.svg.waves[i]
+      this._svg.waves[i]
         .style("fill", "none")
         .style("stroke", "#131354")
         .attr("d", path)
     }
+  }
+  
+  /**
+   * update()
+   * @description updates the state of the block
+   */
+  update() {
+    super.update();
 
+    // render the background
+    this._svg.background.style("fill", "blue")
+
+    // update the waves
+    this.updateWaves()
   }
 
+
   /**
-    update()
+    updateWorld()
     @description updates the state of the block
   */
-  update(world) {
+  updateWorld(world) {
 
     // hydrate all the blocks in the 2 block radius of this block
     var start = {
-      x: this.coordinate.x - 2,
-      y: this.coordinate.y - 2
+      x: this._coordinate.x - 2,
+      y: this._coordinate.y - 2
     }
     for (var x = 0; x < 5; x++) {
       for (var y = 0; y < 5; y++) {
@@ -132,14 +145,14 @@ export class WaterBlock extends Block {
   }
 
   /**
-    harvest()
-    @description harvest the crop from this plot of land
+    sieve()
+    @description sieve the crop from this plot of land
   */
   sieve() {
-    var recipe = PlantRecipeRegistry.lookup("GrassSieve")
-    var products = recipe.getProducts();
+    let recipe = PlantRecipeRegistry.lookup("GrassSieve")
+    let products = recipe.getProducts();
     console.log(products);
-    for (var product of products) {
+    for (let product of products) {
       this.player.inventory.add(product)
     }
     console.log("Sieved");

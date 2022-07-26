@@ -12,7 +12,9 @@ export class ShovelItem extends Item {
   constructor(position = {x: 0, y: 0}) {
     super(position)
     this.name = "ShovelItem"
-    this.tooltip.html = "Shovel: Used to move dirt blocks"
+    this._displayName = "Shovel"
+    this._description = "Used to move dirt blocks"
+    this.updateToolTip()
   }
 
 
@@ -30,11 +32,11 @@ export class ShovelItem extends Item {
   }
 
   /**
-    initSVG()
+    render()
     @description initialize the values for the svg
   */
-  initSVG() {
-    super.initSVG();
+  render() {
+    super.render();
 
     this._svg.image
       .attr("x", this._position.x)
@@ -76,7 +78,7 @@ export class ShovelItem extends Item {
     var clone = new ShovelItem(this._position);
     clone.quantity = this.quantity;
 
-    clone.initSVG()
+    clone.render()
     return clone
   }
 

@@ -65,28 +65,28 @@ export class Crafter {
    }
 
    /**
-     initSVG()
+     render()
      @description initializes the attributes and styles of the crafter's svgs
    */
-   initSVG() {
-     this._outputSlot.initSVG();
-     this._craftingGrid.initSVG();
+   render() {
+     this._outputSlot.render();
+     this._craftingGrid.render();
    }
 
    /**
-     addGraphicsTo()
+     attach()
      @description initializes the attributes and styles of the crafter's svgs
      @param parent the parent svg to attach the crafter to
    */
-   addGraphicsTo(parent) {
-     this._craftingGrid.addGraphicsTo(parent)
-     this._outputSlot.addGraphicsTo(parent)
+   attach(parent) {
+     this._craftingGrid.attach(parent)
+     this._outputSlot.attach(parent)
    }
 
    /**
      outputItem()
-     @description adds a item to the output slot
-     @param item the item to add to the output
+     @description adds or replaces an item in the output slot
+     @param item the item to add or replace in the output slot
    */
    outputItem(item) {
       if(this._outputSlot.isEmpty())
