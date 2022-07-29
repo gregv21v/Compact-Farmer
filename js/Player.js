@@ -34,13 +34,6 @@ export class Player {
       var canvas = d3.select("body").select("svg")
 
       this.hand = null; // an item/object that follows the curser movement
-      this.inventoryManager = new InventoryManager(this._inventoryLayer)
-      this.inventory = new Inventory(this, this.inventoryManager, 6, 5)
-      this.crafter = new Crafter(this, this.inventoryManager, {x: 0, y: 0})
-      this.toolbar = new Toolbar(this, this.inventoryManager)
-
-      this.inventoryManager.addInventory(this.inventory);
-      this.inventoryManager.addInventory(this.toolbar);
 
       this.registerPlantRecipes();
       this.registerCraftingRecipes();
@@ -49,6 +42,62 @@ export class Player {
       canvas.on("mousemove", (event) => { self.onMouseMove(event) })
     }
 
+
+    /**
+     * get inventory()
+     * @description gets the inventory 
+     * @returns the inventory
+     */
+    get inventory() {
+      return this._inventory
+    }
+
+    /**
+     * get toolbar()
+     * @description gets the toolbar 
+     * @returns the toolbar
+     */
+    get toolbar() {
+      return this._toolbar
+    }
+
+    /**
+     * get crafter()
+     * @description gets the crafter 
+     * @returns the crafter
+     */
+    get crafter() {
+      return this._crafter
+    }
+
+    /**
+     * get inventoryManager()
+     * @description gets the inventory manager
+     * @returns the inventory manager
+     */
+    get inventoryManager() {
+      return this._inventoryManager
+    }
+
+
+    /**
+     * createInventories() 
+     * @description creates the inventories for the player
+     */
+    createInventories() {
+      this._inventoryManager = new InventoryManager(this._inventoryLayer)
+      this._inventory = new Inventory(this, this._inventoryManager, 6, 5)
+      this._crafter = new Crafter(this, this._inventoryManager, {x: 0, y: 0})
+      this._toolbar = new Toolbar(this, this._inventoryManager)
+
+      this._inventoryManager.addInventory(this.inventory);
+      this._inventoryManager.addInventory(this.toolbar);
+    }
+
+
+
+    // TODO: Make it so that the json for the inventories is simply a list of items with their coordinates
+
     /**
      * fromJSON()
      * @description create a player from a json object
@@ -56,8 +105,13 @@ export class Player {
      */
     static fromJSON(json, props) {
       var player = new Player(props)
-      player.inventory = Inventory.fromJSON(this, this._inventoryManager, json.inventory)
-      player.toolbar = Toolbar.fromJSON(this, this._inventoryManager, json.toolbar)
+      player._inventoryManager = new InventoryManager(player.inventoryLayer)
+      player._inventory = Inventory.fromJSON(player, player._inventoryManager, json.inventory)
+      player._toolbar = Toolbar.fromJSON(player, player._inventoryManager, json.toolbar)
+      player._crafter = new Crafter(player, player._inventoryManager, {x: 0, y: 0})
+
+      player._inventoryManager.addInventory(player._inventory);
+      player._inventoryManager.addInventory(player._toolbar);
       return player
     }
 
@@ -69,10 +123,15 @@ export class Player {
      * @param {Object} props the properties to render the player with
      */
     render() {
+
+
+
       this.inventory.render()
       this.toolbar.render()
       this.crafter.render()
     }
+
+   
 
     /**
      * attach()

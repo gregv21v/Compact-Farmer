@@ -39,6 +39,23 @@ export default class MainMenuScene extends Scene {
     render() {
         super.render();
 
+        this._svg.background = this._svg.group.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", this._game.width)
+            .attr("height", this._game.height)
+            .style("fill", "lightgreen")
+
+        this._svg.title = this._svg.group.append("text")
+            .attr("x", this._game.width/2)
+            .attr("y", this._game.height/2 - 200)
+            .attr("text-anchor", "middle")
+            .style("font-size", "50px")
+            .style("font-family", "Arial")
+            .style("fill", "#355223")
+            .text("Compact Farmer")
+            .style("filter", "drop-shadow(16px 16px 20px black)")
+
         this._newGameBtn.render();
         this._loadGameBtn.render();
     }
@@ -50,6 +67,8 @@ export default class MainMenuScene extends Scene {
     remove() {
         this._newGameBtn.remove();
         this._loadGameBtn.remove();
+        this._svg.background.remove();
+        this._svg.title.remove();
     }
 
 
@@ -83,6 +102,14 @@ export default class MainMenuScene extends Scene {
                 y: this._game.height/2 + 50
             }
         )
+
+        this._svg.background
+            .attr("width", this._game.width)
+            .attr("height", this._game.height)
+
+        this._svg.title
+            .attr("x", this._game.width/2)
+            .attr("y", this._game.height/2 - 200)
         
     }
 }

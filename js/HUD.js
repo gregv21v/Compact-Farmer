@@ -6,6 +6,7 @@ import {
 import {
   Button
 } from "./gui/buttons/buttons.js"
+import { RecipeSideTab } from "./gui/tabs/RecipeSideTab.js";
 
 
 export class HUD {
@@ -17,6 +18,7 @@ export class HUD {
     this._sideTabManager = new SideTabManager()
 
     this._inventoryTab = new InventorySideTab()
+    console.log(this._player._inventory);
     this._inventoryTab.inventory = this._player.inventory
     this._inventoryTab.inventoryManager = this._player.inventoryManager;
 
@@ -26,10 +28,12 @@ export class HUD {
     this._craftingTab.inventoryManager = this._player.inventoryManager
 
     this._guideTab = new GuideSideTab()
+    this._recipeTab = new RecipeSideTab()
 
     this._sideTabManager.addTab(this._inventoryTab, game)
     this._sideTabManager.addTab(this._craftingTab, game)
     this._sideTabManager.addTab(this._guideTab, game)
+    this._sideTabManager.addTab(this._recipeTab, game)
 
     this._player.toolbar.moveTo({
       x: game.height / 2 - this._player.toolbar.width / 2,
@@ -46,7 +50,7 @@ export class HUD {
         //console.log(game.currentScene);
         if(game.currentScene.name === "PlayScene") {
           console.log("saving");
-          game.currentScene.saveWorld("Test 3");
+          game.currentScene.saveWorld(game.currentScene._world.name);
         }
       }
     )

@@ -19,21 +19,21 @@ import Scene from "./Scene.js";
         this._createBtn = new Button(
             {
                 x: this._game.width - 100 - 100, 
-                y: this._game.height - 50 - 100
+                y: this._game.height - 25 - 100
             },
-            100, 50,
+            100, 25,
             "Create",
             () => {
                 self._game.currentScene = "PlayScene"
-                self._game.currentScene.addDefaults();
+                // add the default settings of the world plus its name
+                self._game.currentScene.addDefaults(this._svg.input.node().value); 
                 self._game.currentScene.saveWorld(this._svg.input.node().value);
             }
         )
 
         this._backToMainMenuBtn = new Button(
-            {x: this._game.width/2 - 100, y: this._game.height - 50 - 100},
-            this._game.width/4,
-            50,
+            {x: this._game.width/2 - 100, y: this._game.height - 25 - 100},
+            200, 25,
             "Back to Main Menu",
             () => {self._game.currentScene = "MainMenuScene";}
         )
@@ -49,23 +49,42 @@ import Scene from "./Scene.js";
         this._createBtn.render();
         this._backToMainMenuBtn.render();
 
+
         this._svg.background = this._svg.group.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", this._game.width)
+            .attr("height", this._game.height)
+            .attr("fill", "#355223")
+
+        this._svg.dialogBackground = this._svg.group.append("rect")
             .attr("x", 50)
             .attr("y", 50)
             .style("fill", "gray")
             .style("margin", "25px")
+            .style("filter", "drop-shadow(16px 16px 20px black)")
 
 
-        this._svg.textBox = this._svg.group.append("foreignObject")
-            .attr("x", 50 + 50)
-            .attr("y", 50 + 50)
-            .attr("width", 200)
-            .attr("height", 200)
+        this._svg.foreignObject = this._svg.group.append("foreignObject")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", this._game.width - 50*2)
+            .attr("height", this._game.height - 50*2)
 
-        let div = this._svg.textBox.append("xhtml:div")
+        
+
+        let div = this._svg.foreignObject.append("xhtml:div")
+        this._svg.title = div.append("h1")
+            .text("Create a New World")
+            .style("text-align", "center")
+
+        this._svg.label = div.append("xhtml:p")
+            .text("World Name:")
+            .style("padding-left", "25px")
         this._svg.input = div.append("xhtml:input")
             .attr("type", "text")
             .attr("placeholder", "World Name")
+            .style("margin-left", "25px")
     }
 
 
@@ -77,6 +96,10 @@ import Scene from "./Scene.js";
         Object.assign(this._props, props)
 
         this._svg.background
+            .attr("width", this._game.width)
+            .attr("height", this._game.height)
+
+        this._svg.dialogBackground
             .attr("width", this._game.width - 50*2)
             .attr("height", this._game.height - 50*2)
     }
@@ -125,13 +148,25 @@ import Scene from "./Scene.js";
         this._createBtn.moveTo(
             {
                 x: this._game.width - 100 - 100, 
-                y: this._game.height - 50 - 100
+                y: this._game.height - 25 - 100
+            }
+        )
+
+        this._backToMainMenuBtn.moveTo(
+            {
+                x: this._game.width/2 - 100, 
+                y: this._game.height - 25 - 100
             }
         )
 
         this._svg.background
+            .attr("width", this._game.width)
+            .attr("height", this._game.height)
+
+        this._svg.dialogBackground
             .attr("width", this._game.width - 50*2)
             .attr("height", this._game.height - 50*2)
+
     }
 
 

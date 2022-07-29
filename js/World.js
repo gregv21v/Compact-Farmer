@@ -28,6 +28,8 @@ export class World {
     // render the world
   }
 
+
+
   /**
     toJSON()
     @description converts this world to its json representation
@@ -38,6 +40,24 @@ export class World {
       blocksAsJSON[key] = this.blocks[key].toJSON()
     }
     return blocksAsJSON;
+  }
+
+
+  /**
+   * get name()
+   * @description get the name of the world
+   * @returns {string} the name of the world
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * set name()
+   * @description set the name of the world
+   */
+  set name(value) {
+    this._name = value;
   }
 
 

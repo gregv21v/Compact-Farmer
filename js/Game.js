@@ -38,6 +38,15 @@ export class Game {
     })
   }
 
+
+  /**
+   * get scenes()
+   * @description gets the list of scenes
+   */
+  get scenes() {
+    return this._scenes
+  }
+
   /**
    * set currentSceneIndex()
    * @description sets the current scene index
@@ -94,6 +103,16 @@ export class Game {
     return window.innerWidth;
   }
 
+
+  /**
+   * attachScene()
+   * @description attaches the current scene to the DOM
+   * @param {string} name the name of the scene to attach
+   */
+  attachScene(name) {
+    this._scenes[name].attach(this._canvas)
+  }
+
   /**
     toJSON()
     @description converts this block to its json representation
@@ -106,38 +125,7 @@ export class Game {
     }
   }
 
-  /**
-    fromJSON()
-    @description creates a player out of json data
-  */
-  fromJSON(json) {
-    /*this.world.delete()
-    this.world.fromJSON(this.player, this.world, json.world)
-
-    this.player.inventoryManager.clear()
-
-    // delete the old inventories
-    this.player.inventory.delete()
-    this.player.toolbar.delete()
-
-    // load the new inventories from the server
-    this.player.inventory = Inventory.fromJSON(this.player, this.player.inventoryManager, json.inventory)
-    this.player.toolbar = Toolbar.fromJSON(this.player, this.player.inventoryManager, json.toolbar);
   
-    // add the inventory to the tab
-    this.hud._inventoryTab.inventory = this.player.inventory
-    this.hud._craftingTab.inventory = this.player.inventory
-
-    this.player.inventoryManager.addInventory(this.player.inventory);
-    this.player.inventoryManager.addInventory(this.player.toolbar)
-
-    this.player.toolbar.moveTo({
-      x: this.width / 2 - this.player.toolbar.width / 2,
-      y: this.height - 50
-    })
-
-    this.addGraphics()*/
-  }
 
 
   
@@ -146,25 +134,8 @@ export class Game {
     load()
     @description load the player data from the server
   */
-  load() {
-
-    //var self = this;
-    /*
-    $.ajax({
-      type: "POST",
-      url: "/load",
-      contentType: 'application/json',
-      data: JSON.stringify({username: "gregv21v"}),
-      success: function(response) {
-        self.fromJSON(response)
-        console.log("Loaded");
-      },
-      dataType: "json"
-    })*/
-    window.api.load("gregv21v").then(function(user) {
-      console.log(JSON.parse(user.data));
-      self.fromJSON(JSON.parse(user.data))
-    })
+  loadWorld() {
+    
   }
 
   

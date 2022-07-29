@@ -27,6 +27,9 @@ export default class PlayScene extends Scene {
     }
 
 
+    
+
+
     /**
      * render()
      * @description displays the graphics of the game
@@ -41,6 +44,8 @@ export default class PlayScene extends Scene {
             mouseLayer: this._svg.layers.mouse,
         });
 
+        this._player.createInventories()
+ 
         // create the world
         this._world = new World({
             player: this._player,
@@ -115,11 +120,20 @@ export default class PlayScene extends Scene {
      * @description loads a world from a JSON representation
      */
     loadWorld(json) {
+        console.log(json);
+
+        // remove all content from the tabs and mouse layers
+        this._svg.layers.tabs.selectAll("*").remove()
+        this._svg.layers.mouse.selectAll("*").remove()
+
         this._player = Player.fromJSON(json, {
             inventoryLayer: this._svg.layers.tabs,
             mouseLayer: this._svg.layers.mouse,
         })
-        this._world = World.fromJSON(json, {
+
+
+        //console.log({x: this._game.width/2, y: this._game.height/2});
+        this._world = World.fromJSON(json.blocks, {
             player: this._player,
             position: {x: this._game.width/2, y: this._game.height/2}
         })
@@ -127,10 +141,21 @@ export default class PlayScene extends Scene {
         this._hud = new HUD(this._game, this, this._player, this._world)
 
         this._player.toolbar.moveTo({
-            x: this.width / 2 - this.player.toolbar.width / 2,
-            y: this.height - 50
+            x: this._game.width / 2 - this._player.toolbar.width / 2,
+            y: this._game.height - 50
         })
+
+
+        this._player.render()
+        this._world.render()
+        this._hud.render()
+
+        this._world.update()
+
+        this._hud.attach(this._svg.layers.tabs) 
+        this._world.attach(this._svg.layers.world);
     }
+
 
 
     saveWorld(name) {
@@ -142,7 +167,11 @@ export default class PlayScene extends Scene {
      * createStartWorld()
      * @description creates a world for the player to start in
      */
-    addDefaults() {
+    addDefaults(name) {
+        this._world.name = name;
+
+        //this._player.createInventories()
+
         this._player.inventory.add(new GrassBladeItem())
         this._player.inventory.add(new GrassBladeItem())
         this._player.inventory.add(new GrassBladeItem())
@@ -164,6 +193,9 @@ export default class PlayScene extends Scene {
         this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: -1, y: 0}))
         this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: 1, y: 0}))
     }
+
+
+
     
 
     /**

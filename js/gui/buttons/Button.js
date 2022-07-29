@@ -98,6 +98,7 @@ export class Button {
       .attr("height", this._height)
       .style("fill", "orange")
       .style("stroke", "black")
+      .style("filter", "drop-shadow(5px 5px 6px black)")
 
     var textPos = {
       x: this._position.x + this.width/2,

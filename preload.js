@@ -1,7 +1,7 @@
 const { app, contextBridge } = require('electron')
 const Datastore = require('@seald-io/nedb')
 const db = new Datastore({
-  filename: "worlds",
+  filename: "saves/worlds",
   autoload: true
 })
 
