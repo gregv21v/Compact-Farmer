@@ -14,7 +14,7 @@ Note: Farm blocks that are dark have water, and those that are light do not.
 
 Screenshot:
 
-![Alt text](screenshots/screenshot1.png?raw=true "Optional Title")
+![Alt text](images/screenshots/screenshot1.png?raw=true "Optional Title")
 
 
 ## Running the game
@@ -59,6 +59,6 @@ You start off with a grass seeds and a hoe. With the hoe, you can till the soil 
 
 
 ## Possible Features
-1. Procedurally Generate the look and feel of plants
+1. Procedurally generate the look and feel of plants
 
 
