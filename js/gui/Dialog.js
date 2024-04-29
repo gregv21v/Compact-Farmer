@@ -32,5 +32,5 @@ export default class Dialog {
             .style("pointer-events", "none")
             .style("opacity", "0.8")
             .style("transition", "opacity 0.5s")
-            .
+    }
 }

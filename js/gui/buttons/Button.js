@@ -17,8 +17,6 @@ export class Button {
     this._height = height;
     this._position = position;
     this._onClickFn = onClickFn;
-
-    
   }
 
   /**

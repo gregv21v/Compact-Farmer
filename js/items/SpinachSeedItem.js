@@ -16,7 +16,9 @@ export class SpinachSeedItem extends SeedItem {
     this.seedColor = "#1d4016"
     this._description = "Used for planting spinach"
     this._displayName = "Spinach Seed"
+    this.updateToolTip()
     this._imageURL = "images/spinachSeed.png"
+    
   }
 
   /**

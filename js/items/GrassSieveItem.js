@@ -10,40 +10,13 @@ export class GrassSieveItem extends SieveItem {
   */
   constructor(position = {x: 0, y: 0}) {
     super(position)
-    this._durability = 5;
     this.name = "GrassSieveItem"
 
+    this._imageURL = "images/grassSieve.png"
     this._description = "Used to collect seeds from water"
     this._displayName = "Grass Sieve"
-  }
-
-
-  /**
-    createGraphic()
-    @description override this function to draw the graphics for the
-      block.
-      Each svg should be added to this._svg
-    @param group the svg group to create the graphics on
-  */
-  createGraphic(group) {
-    super.createGraphic(group)
-    // draw the blade of grass
-    this._svg.label = group.append("text")
-  }
-
-  /**
-    render()
-    @description initialize the values for the svg
-  */
-  render() {
-    super.render();
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
-      .attr("width", this.size)
-      .attr("height", this.size)
-      .attr("href", "images/grassSieve.png")
+    this._compostValue = 28;
+    this.updateToolTip()
   }
 
 
@@ -56,10 +29,6 @@ export class GrassSieveItem extends SieveItem {
   */
   set position(position) {
     super.position = position;
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
   }
 
   /**

@@ -39,6 +39,14 @@ export class GrassCrop extends Crop {
     @description get the time it takes to grow the crop in miliseconds
   */
   getGrowTime() {
-    return 40;
+    return 20;
+  }
+
+  /**
+    clone()
+    @description make a copy of this crop
+  */
+  clone() {
+    return new GrassCrop();
   }
 }

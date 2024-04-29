@@ -39,12 +39,17 @@ export class GuideSideTab extends SideTab {
         <b>Welcome to the guide!</b>
     
         <p style="text-align: left;">
-          The goal of this game is to grow a garden.
+          The goal of this game is to grow and expand your farm.
 
         <p style="text-align: left;">  
-          Here I will teach you the basics of growing a garden. On your toolbar you will see that you have 
-          several items that you can use. Lets first start with the dirt block.
+          Here I will teach you the basics of building a farm. On your toolbar you will see that you have 
+          several items that you can use. 
         </p>
+
+        <img src="./images/screenshots/Toolbar_7_23_2022.png" height="50">
+
+        <p>Lets start with the dirt block. This is the basic building block of the farm. Its where you plant 
+          all your plants.</p>
 
         <figure>
           <img src="./images/dirtBlock.png" width="50px" height="50px" alt="Dirt Block">
@@ -59,12 +64,13 @@ export class GuideSideTab extends SideTab {
         </p>
 
         <p style="text-align: left;">
-          Close the guide tab, and try placing the two dirt blocks you have on the expansion block. Once you are done open the 
-          guide tab again.
+          Close the guide tab, and try placing the two dirt blocks you have on the expansion block. 
+          Once you are done open the guide tab again.
         </p>
         
         <p>
-          Now that you have a dirt block placeed, you can plow that dirt block with the hoe.
+          Now that you have a dirt block placed, you can plow that dirt block with the hoe. Click the hoe 
+          item then the dirt block.
         </p>
 
         <figure>
@@ -75,7 +81,8 @@ export class GuideSideTab extends SideTab {
         </figure>
 
         <p>
-          Once you have hoed the dirt block, you can plant a seed. You start with grass seeds.
+          Once you have hoed the dirt block, you can plant a seed. You start with grass seeds. Later on 
+          you will get more seeds.
         </p>
 
         <figure>
@@ -85,13 +92,7 @@ export class GuideSideTab extends SideTab {
           </figcaption>
         </figure>
 
-        <p style="text-align: left;">
-          9 grass blades can be placed into a crafting grid to create a dirt block
-          4 grass blades in the upper left hand corner of a crafting grid makes a grass sieve
-          a grass sieve can be used to sieve dirt to find seeds and other things
-        </p>
-
-
+        <p>Place the grass seeds on the dirt block you just tilled.</p>
       `)
       .style("padding", "5px")
       .style("text-align", "left")

@@ -17,14 +17,14 @@ export class Item {
     this._position = position;
     this.size = 40
     this._quantity = 1;
-    this._imageURL = "";
+    this._imageURL = "chair.png";
     this._elements = {}
     this._description = ""
 
     this.tooltip = new Tooltip(
       this.name,
       {x: this._position.x - 5, y: this._position.y - 5},
-      150, 90
+      150, 150
     )
 
     
@@ -47,7 +47,8 @@ export class Item {
    */
   updateToolTip() {
     this.tooltip.html = `<strong>${this._displayName}</strong> 
-    <br/>${this._description}<br /><strong>Elements:</strong><br/>`
+    <br/>${this._description}
+    <br /><strong>Elements:</strong><br/>`
     for (var element of Object.keys(this._elements)) {
       this.tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
     }
@@ -162,6 +163,38 @@ export class Item {
       .attr("href", this._imageURL)
   }
 
+  /** 
+   * update() 
+   * @description updates the block
+   */
+  update() {
+
+    // render the background
+    this._svg.background
+      .attr("x", this._position.x)
+      .attr("y", this._position.y)
+      .attr("width", this.size)
+      .attr("height", this.size)
+
+    this._svg.count
+      .attr("x", this._position.x + this.size - 5)
+      .attr("y", this._position.y + 5)
+      .text(this._quantity)
+
+    this._svg.clickArea
+      .attr("x", this._position.x)
+      .attr("y", this._position.y)
+      .attr("width", this.size)
+      .attr("height", this.size)
+
+    this._svg.image
+      .attr("x", this._position.x)
+      .attr("y", this._position.y)
+      .attr("width", this.size)
+      .attr("height", this.size)
+      .attr("href", this._imageURL)
+  }
+
   /**
    * get svg
    * @description gets the svg object
@@ -236,8 +269,7 @@ export class Item {
       .attr("y", textPos.y)
 
     this._svg.count
-      .attr("x", this._position.x + this.size - 5)
-      .attr("y", this._position.y + 5)
+       
 
 
     this._svg.clickArea

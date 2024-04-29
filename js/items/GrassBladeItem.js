@@ -14,42 +14,11 @@ export class GrassBladeItem extends CompostableItem {
     this.name = "GrassBladeItem"
     this._compostValue = 7;
 
+    this._imageURL = "images/grass.png"
     this._description = "Used in a composter to make dirt"
     this._displayName = "Grass Blade"
     this.updateToolTip()
   }
-
-
-  /**
-    createGraphic()
-    @description override this function to draw the graphics for the
-      block.
-      Each svg should be added to this._svg
-    @param group the svg group to create the graphics on
-  */
-  createGraphic(group) {
-    // draw the blade of grass
-    this._svg.image = group.append("image")
-    this._svg.label = group.append("text")
-  }
-
-  /**
-    render()
-    @description initialize the values for the svg
-  */
-  render() {
-    super.render();
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
-      .attr("width", this.size)
-      .attr("height", this.size)
-      .attr("href", "images/grass.png")
-  }
-
-
-
 
   /**
     setPosition()
@@ -58,10 +27,6 @@ export class GrassBladeItem extends CompostableItem {
   */
   set position(position) {
     super.position = position;
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
   }
 
   /**

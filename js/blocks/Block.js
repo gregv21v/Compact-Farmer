@@ -13,7 +13,7 @@ export class Block {
       @description get the coordinate of this block as a string
     */
     static getCoordinateAsString(coordinate) {
-      return "x_" + coordinate.x + "y_" + coordinate.y;
+      return coordinate.x + "_" + coordinate.y;
     }
 
     /**
@@ -38,6 +38,8 @@ export class Block {
 
       this._displayName = "Block"
       this._description = "A basic block"
+
+
     }
 
     /**
@@ -51,16 +53,6 @@ export class Block {
         this._tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
       }
     }
-
-    /**
-     * initTooltip()
-     * @description initializes the tooltip
-     * @param layer the graphics layer that the tooltips will be showed on
-     */
-     initTooltip(layer) {
-       this._tooltip.hide()
-       this._tooltip.attach(layer)
-     }
 
     /**
       toJSON()
@@ -112,16 +104,18 @@ export class Block {
       //let worldPosition = this.getWorldPosition();
 
       // the resources needed to craft this item
-      this._svg = {}
-      this._svg.background = this._world.layers.blocks.append("rect")
+      this._svg = {
+        group: d3.create("svg:g")
+      }
+      this._svg.background = this._svg.group.append("rect")
 
-      this._svg.graphicsGroup = this._world.layers.blocks.append("g")
+      this._svg.graphicsGroup = this._svg.group.append("g")
       this.createGraphic(this._svg.graphicsGroup);
 
-      this._svg.clickArea = this._world.layers.blocks.append("rect")
+      this._svg.clickArea = this._svg.group.append("rect")
 
-      this.initTooltip(this._world.layers.tooltips);
       this.updateToolTip("A basic Block")
+      this._tooltip.hide()
 
       this._tooltip.render()
       this._tooltip.hide()
@@ -159,6 +153,15 @@ export class Block {
         y: worldPosition.y - 90
       }
       
+    }
+
+    /**
+     * attach()
+     * @description attaches the block to the world dom
+     */
+    attach(tooltipLayer, blocksLayer) {
+      this._tooltip.attach(tooltipLayer)
+      blocksLayer.append(() => this._svg.group.node())
     }
 
     /**
@@ -219,8 +222,10 @@ export class Block {
       @description get the coordinate of this block as a string
     */
     getCoordinateAsString() {
-      return "x_" + this._coordinate.x + "y_" + this._coordinate.y;
+      return this._coordinate.x + "_" + this._coordinate.y;
     }
+
+    
 
     /**
       getWorldPosition()

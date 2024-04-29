@@ -17,7 +17,6 @@ export class GrassSeedItem extends SeedItem {
       Iron: 200,
       Potassium: 42
     }
-    this._compostable = true;
 
     this._description = "<strong>Grass Seed:</strong> <br> Placable on tilled farm block"
     this.updateToolTip()

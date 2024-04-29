@@ -129,14 +129,22 @@ export class WaterBlock extends Block {
     onClick()
     @description the function called when this block is clicked
   */
-  onClick() {
-    super.onClick();
-    var selected = this.player.toolbar.currentlySelected
+  onLeftClick() {
+    super.onLeftClick();
+    var selected = this._player.toolbar.currentlySelected
     if(selected !== null) {
       var selectedItem = selected.item
       if(selectedItem instanceof SieveItem) {
         // sieve
-        this.sieve()
+        
+        if(selectedItem.use()) {
+          selectedItem.update()
+          this.sieve()
+        } else {
+          selectedItem.destroy();
+          selected.removeItem();
+        }
+        
       } else if (selectedItem instanceof EmptyLeafBucketItem) {
         // replace emptyLeafBucket with a full one
         selected.replaceItem(new FullLeafBucketItem());
@@ -146,14 +154,15 @@ export class WaterBlock extends Block {
 
   /**
     sieve()
-    @description sieve the crop from this plot of land
+    @description Sieve the water for plant seeds
   */
   sieve() {
     let recipe = PlantRecipeRegistry.lookup("GrassSieve")
     let products = recipe.getProducts();
     console.log(products);
     for (let product of products) {
-      this.player.inventory.add(product)
+      if(!this._player.toolbar.add(product))
+        this._player.inventory.add(product)
     }
     console.log("Sieved");
   }

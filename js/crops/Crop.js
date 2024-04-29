@@ -16,6 +16,16 @@ export class Crop {
       }
     }
 
+
+    /**
+     * get svg()
+     * @description get the svg representation of this crop
+     * @returns {SVGImageElement}
+    */
+    get svg() {
+      return this._svg.image
+    }
+
     /**
       toJSON()
       @description converts this block to its json representation
@@ -48,7 +58,15 @@ export class Crop {
     */
     setBlock(block) {
       this.block = block;
-      this.block.svg.cropGroup.append(() => this._svg.image.node())
+    }
+
+
+    /**
+     * attach() 
+     * @description attaches the crop to the block
+     */
+    attach(parent) {
+      parent.append(() => this._svg.image.node())
     }
 
     /**

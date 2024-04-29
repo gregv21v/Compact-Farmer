@@ -71,7 +71,7 @@ import Scene from "./Scene.js";
 
             this._svg.foreignObject.append("xhtml:button")
                 .attr("type", "button")
-                .html("Create New World")
+                .html("Create New Farm")
                 .style("float", "right")
                 .style("width", "25%")
                 .style("height", "50px")
@@ -118,7 +118,7 @@ import Scene from "./Scene.js";
                     ((name) => {return () => name})(world.name)()
                 ).then((world) => {
                     self._game.currentScene = "PlayScene"
-                    self._game.scenes.PlayScene.loadWorld(world.world)                            
+                    self._game.scenes.PlayScene.loadWorld(world)                            
                 }).catch((err) => {
                     console.log(err)
                 })

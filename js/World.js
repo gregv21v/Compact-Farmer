@@ -23,7 +23,7 @@ export class World {
     this.player = props.player;
 
     // state variables
-    this.blocks = {};
+    this._blocks = {};
 
     // render the world
   }
@@ -36,8 +36,8 @@ export class World {
   */
   toJSON() {
     let blocksAsJSON = {}
-    for (var key of Object.keys(this.blocks)) {
-      blocksAsJSON[key] = this.blocks[key].toJSON()
+    for (var key of Object.keys(this._blocks)) {
+      blocksAsJSON[key] = this._blocks[key].toJSON()
     }
     return blocksAsJSON;
   }
@@ -62,6 +62,15 @@ export class World {
 
 
   /**
+   * get blocks()
+   * @description get the blocks in the world
+   * @returns {Object} the blocks in the world
+   */
+  get blocks() {
+    return this._blocks;
+  }
+
+  /**
     fromJSON()
     @description converts a json object into this world
   */
@@ -81,7 +90,8 @@ export class World {
         block = Block.fromJSON(props.player, world, json[key]);
       }
 
-      world.blocks[key] = block
+
+      world._blocks[key] = block
     }
 
     return world;
@@ -92,9 +102,9 @@ export class World {
     @description delete all the blocks in the world
   */
   remove() {
-    for (var key of Object.keys(this.blocks)) {
-      this.blocks[key].remove()
-      delete this.blocks[key]
+    for (var key of Object.keys(this._blocks)) {
+      this._blocks[key].remove()
+      delete this._blocks[key]
     }
   }
 
@@ -105,9 +115,10 @@ export class World {
     @param block the block to add
   */
   addBlock(block) {
-    this.blocks[block.getCoordinateAsString()] = block;
+    this._blocks[block.getCoordinateAsString()] = block;
 
     block.render()
+    block.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
     block.update()
   }
 
@@ -134,18 +145,18 @@ export class World {
   */
   removeBlock(block) {
     var coordAsString = block.getCoordinateAsString()
-    if(coordAsString in this.blocks) {
+    if(coordAsString in this._blocks) {
       // remove it
-      this.blocks[coordAsString].remove();
-      delete this.blocks[coordAsString]
+      this._blocks[coordAsString].remove();
+      delete this._blocks[coordAsString]
 
       // add the new block
-      this.blocks[coordAsString] = new ExpansionBlock(
+      this._blocks[coordAsString] = new ExpansionBlock(
         this.player, this,
         block.coordinate
       );
-      this.blocks[coordAsString].render()
-
+      this._blocks[coordAsString].render()
+      this._blocks[coordAsString].attach(this._svg.layers.tooltips, this._svg.layers.blocks);
       this.updateBlocks();
     }
   }
@@ -159,16 +170,17 @@ export class World {
   replaceBlock(block) {
 
     var coordAsString = block.getCoordinateAsString()
-    if(coordAsString in this.blocks) {
+    if(coordAsString in this._blocks) {
       // remove it
-      this.blocks[coordAsString].remove();
-      delete this.blocks[coordAsString]
+      this._blocks[coordAsString].remove();
+      delete this._blocks[coordAsString]
 
       // add the new block
       block.render();
+      block.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
       block.update();
 
-      this.blocks[coordAsString] = block;
+      this._blocks[coordAsString] = block;
 
       this.updateBlocks();
     }
@@ -179,7 +191,7 @@ export class World {
     @description update all the blocks
   */
   updateBlocks() {
-    for (var block of Object.values(this.blocks)) {
+    for (var block of Object.values(this._blocks)) {
       block.update()
       block.updateWorld(this)
     }
@@ -205,9 +217,10 @@ export class World {
       x: block.coordinate.x - 1,
       y: block.coordinate.y
     })
-    if(!(leftExp.getCoordinateAsString() in this.blocks)) {
-      this.blocks[leftExp.getCoordinateAsString()] = leftExp;
+    if(!(leftExp.getCoordinateAsString() in this._blocks)) {
+      this._blocks[leftExp.getCoordinateAsString()] = leftExp;
       leftExp.render();
+      leftExp.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
     }
 
 
@@ -216,9 +229,10 @@ export class World {
       x: block.coordinate.x + 1,
       y: block.coordinate.y
     })
-    if(!(rightExp.getCoordinateAsString() in this.blocks)) {
-      this.blocks[rightExp.getCoordinateAsString()] = rightExp;
+    if(!(rightExp.getCoordinateAsString() in this._blocks)) {
+      this._blocks[rightExp.getCoordinateAsString()] = rightExp;
       rightExp.render()
+      rightExp.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
     }
 
     // top
@@ -226,9 +240,10 @@ export class World {
       x: block.coordinate.x,
       y: block.coordinate.y - 1
     })
-    if(!(topExp.getCoordinateAsString() in this.blocks)) {
-      this.blocks[topExp.getCoordinateAsString()] = topExp;
+    if(!(topExp.getCoordinateAsString() in this._blocks)) {
+      this._blocks[topExp.getCoordinateAsString()] = topExp;
       topExp.render()
+      topExp.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
     }
 
     // bottom
@@ -236,9 +251,10 @@ export class World {
       x: block.coordinate.x,
       y: block.coordinate.y + 1
     })
-    if(!(bottomExp.getCoordinateAsString() in this.blocks)) {
-      this.blocks[bottomExp.getCoordinateAsString()] = bottomExp;
+    if(!(bottomExp.getCoordinateAsString() in this._blocks)) {
+      this._blocks[bottomExp.getCoordinateAsString()] = bottomExp;
       bottomExp.render()
+      bottomExp.attach(this._svg.layers.tooltips, this._svg.layers.blocks);
     }
 
     this.updateBlocks();
@@ -261,7 +277,7 @@ export class World {
     this._svg.layers.blocks = this._svg.group.append("g")
     this._svg.layers.tooltips = this._svg.group.append("g")
 
-    for (const block of Object.values(this.blocks)) { 
+    for (const block of Object.values(this._blocks)) { 
       block.render();
     }
 
@@ -317,12 +333,14 @@ export class World {
   }
 
 
+
+
   /** 
    * update()
    * @description updates the world
    */
   update() {
-    for (const block of Object.values(this.blocks)) {
+    for (const block of Object.values(this._blocks)) {
       block.update();
     }
   }
@@ -337,10 +355,37 @@ export class World {
 
     svg.append(() => this._svg.group.node())
 
-    for (const block of Object.values(this.blocks)) {
-      //block.attach();
+    for (const block of Object.values(this._blocks)) {
+      block.attach(this._svg.layers.tooltips, this._svg.layers.blocks)
     }
   }
+
+
+  /**
+   * getSurroundingBlocks()
+   * @description gets the blocks surrounding the given block
+   * @param {Block} block the block to get the surrounding blocks for
+   */
+  getSurroundingBlocks(block) {
+    var surroundingBlocks = []
+
+    console.log("getting surrounding blocks for block", block);
+    console.log("blocks", this._blocks);
+
+    for(var x = block.coordinate.x - 1; x <= block.coordinate.x + 1; x++) {
+      for(var y = block.coordinate.y - 1; y <= block.coordinate.y + 1; y++) {
+        if(
+          !(x == block.coordinate.x && y == block.coordinate.y) && 
+          Block.getCoordinateAsString({x, y}) in this._blocks
+        ) {
+          surroundingBlocks.push(this._blocks[Block.getCoordinateAsString({x, y})])
+        }
+      }
+    }
+
+    return surroundingBlocks;
+  }
+
 
   /**
     move()

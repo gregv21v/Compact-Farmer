@@ -17,43 +17,11 @@ export class DirtBlockItem extends CompostableItem {
       Iron: 20
     }
     this._compostValue = 50
-
+    this._imageURL = "images/dirtBlock.png"
     this._description = "Placable on the plus marks"
     this._displayName = "Dirt Block"
     this.updateToolTip()
   }
-
-
-
-
-  /**
-    createGraphic()
-    @description override this function to draw the graphics for the
-      block.
-      Each svg should be added to this._svg
-    @param group the svg group to create the graphics on
-  */
-  createGraphic(group) {
-    // draw the blade of grass
-    this._svg.image = group.append("image")
-    this._svg.label = group.append("text")
-  }
-
-  /**
-    render()
-    @description initialize the values for the svg
-  */
-  render() {
-    super.render();
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
-      .attr("width", this.size)
-      .attr("height", this.size)
-      .attr("href", "images/dirtBlock.png")
-  }
-
 
 
 
@@ -64,10 +32,6 @@ export class DirtBlockItem extends CompostableItem {
   */
   set position(position) {
     super.position = position;
-
-    this._svg.image
-      .attr("x", this._position.x)
-      .attr("y", this._position.y)
   }
 
   /**

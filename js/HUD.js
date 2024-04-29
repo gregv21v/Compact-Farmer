@@ -7,6 +7,7 @@ import {
   Button
 } from "./gui/buttons/buttons.js"
 import { RecipeSideTab } from "./gui/tabs/RecipeSideTab.js";
+import Dialog from "./gui/Dialog.js";
 
 
 export class HUD {
@@ -18,7 +19,6 @@ export class HUD {
     this._sideTabManager = new SideTabManager()
 
     this._inventoryTab = new InventorySideTab()
-    console.log(this._player._inventory);
     this._inventoryTab.inventory = this._player.inventory
     this._inventoryTab.inventoryManager = this._player.inventoryManager;
 
@@ -42,6 +42,18 @@ export class HUD {
 
   
     let self = this;
+
+    this._menuBtn = new Button(
+      {x: 0, y: 0},
+      60, 30,
+      "Menu",
+      () => {
+        console.log("Open Main Menu Dialog");
+        let dialog = new Dialog(this._game);
+      }
+    )
+
+
     this.saveBtn = new Button(
       {x: 0, y: this._game.height - 50}, // position
       50, 50, // width, height
@@ -97,6 +109,8 @@ export class HUD {
     this.saveBtn.render()
 
     this.exitBtn.render()
+
+    this._menuBtn.render()
   }
 
   /**
@@ -130,5 +144,7 @@ export class HUD {
     this.saveBtn.attach(mainLayer)
 
     this.exitBtn.attach(mainLayer)
+
+    this._menuBtn.attach(mainLayer)
   }
 }

@@ -17,7 +17,7 @@ contextBridge.exposeInMainWorld('api', {
     if(!savedWorld) {
       return db.insertAsync({name, world})
     } else {
-      return db.updateAsync(world, {name, world})
+      return db.updateAsync({name}, {name, world})
     }
   },
   loadWorld: async function(name) {

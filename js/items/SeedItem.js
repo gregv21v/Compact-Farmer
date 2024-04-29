@@ -16,7 +16,7 @@ export class SeedItem extends CompostableItem {
     this._description = "Placable in tilled dirt block"
     this._displayName = "Seed"
     this._imageURL = "images/seed.png"
-    this._compostable = true;
+    this._compostValue = 1;
   }
 
   /**

@@ -6,7 +6,7 @@ import {
 } from "../items/items.js"
 
 import { Block } from "./Block.js"
-import { Crop, GrassCrop } from "../crops/crops.js"
+import { Crop, GrassCrop, SpinachCrop, ArugulaCrop } from "../crops/crops.js"
 import { PlantRecipeRegistry } from "../recipes/recipes.js"
 
 export class DirtBlock extends Block {
@@ -61,15 +61,20 @@ export class DirtBlock extends Block {
     static fromJSON(player, world, json) {
       var newDirtBlock = new DirtBlock(player, world, json.coordinate)
       newDirtBlock._progress = json.progress;
-      newDirtBlock.crop = null;
+      
       if(json.crop !== null) {
         if(json.crop.name === "GrassCrop") {
-          newDirtBlock.crop = GrassCrop.fromJSON(json)
+          newDirtBlock._crop = GrassCrop.fromJSON(json)
+        } else if(json.crop.name === "ArugulaCrop") {
+          newDirtBlock._crop = ArugulaCrop.fromJSON(json)
+        } else if(json.crop.name === "SpinachCrop") {
+          newDirtBlock._crop = SpinachCrop.fromJSON(json)
         } else {
-          newDirtBlock.crop = Crop.fromJSON(json)
+          newDirtBlock._crop = Crop.fromJSON(json)
         }
-        newDirtBlock.crop.setBlock(newDirtBlock);
+        newDirtBlock._crop.setBlock(newDirtBlock);
         newDirtBlock.setGrowthTimer()
+        
       }
       newDirtBlock.isCropFullyGrown = json.isCropFullyGrown;
       newDirtBlock.isHydrated = json.isHydrated;
@@ -157,6 +162,17 @@ export class DirtBlock extends Block {
     }
 
     /**
+     * attach()
+     * @description attaches the crop to the block dom
+     */
+    attach(tooltipsLayer, blocksLayer) {
+      super.attach(tooltipsLayer, blocksLayer)
+      if(this._crop !== null) {
+        this._crop.attach(this._svg.cropGroup)
+      }
+    }
+
+    /**
       unrender()
       @description removes the block from the canvas
     */
@@ -238,6 +254,7 @@ export class DirtBlock extends Block {
       this._crop = crop
       this._crop.render()
       this._progress = 0;
+      this._crop.attach(this._svg.cropGroup)
       this.setGrowthTimer()
     }
 
@@ -251,6 +268,16 @@ export class DirtBlock extends Block {
       function frame() {
         if (self._progress >= Block.size) {
           self.isCropFullyGrown = true;
+          // propagate the crop to adjacent blocks
+          self._world.getSurroundingBlocks(self).forEach((block) => {
+            if(block instanceof DirtBlock && block.isPlowed) {
+              if(block._crop === null) {
+                var crop = self._crop.clone()
+                crop.setBlock(block);
+                block.plantCrop(crop);
+              }
+            }
+          })
           clearInterval(id);
         } else {
           self._progress++;

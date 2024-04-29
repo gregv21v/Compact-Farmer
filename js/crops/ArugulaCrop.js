@@ -2,16 +2,16 @@
   Item
 */
 
-import { Crop } from "./crops.js"
-export class SpinachCrop extends Crop {
+import { Crop } from "./Crop.js"
+export class ArugulaCrop extends Crop {
   /**
     constructor()
     @description constructs the crop
   */
   constructor() {
     super()
-    this.name = "SpinachCrop"
-    this._svg.image.attr("href", "images/spinachPlant.png")
+    this.name = "ArugulaCrop"
+    this._svg.image.attr("href", "images/arugula.png")
   }
 
   /**
@@ -29,7 +29,7 @@ export class SpinachCrop extends Crop {
     @description converts a json object into this world
   */
   static fromJSON(player, json) {
-    return new SpinachCrop();
+    return new ArugulaCrop();
   }
 
   /**
@@ -37,7 +37,7 @@ export class SpinachCrop extends Crop {
     @description get the time it takes to grow the crop in miliseconds
   */
   getGrowTime() {
-    return 40;
+    return 60;
   }
 
 
@@ -46,6 +46,6 @@ export class SpinachCrop extends Crop {
     @description make a copy of this crop
   */
   clone() {
-    return new SpinachCrop();
+    return new ArugulaCrop();
   }
 }

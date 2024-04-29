@@ -16,6 +16,8 @@ import {
   ShovelItem, ItemRegistry
 } from "./items/items.js"
 import { BlockRegistry } from "./blocks/BlockRegistry.js";
+import { ArugulaLeafItem } from "./items/ArugulaLeafItem.js";
+import { ArugulaSeedItem } from "./items/ArugulaSeedItem.js";
 
 export class Player {
   /**
@@ -183,11 +185,14 @@ export class Player {
     */
     onMouseMove(event) {
       let pos = d3.pointer(event)
-      if(this.hand)
+      if(this.hand) {
         this.hand.position = {
           x: pos[0],
           y: pos[1]
-        }      
+        } 
+        
+        this.hand.update() 
+      }    
     }
 
 
@@ -198,11 +203,18 @@ export class Player {
     registerItems() {
       ItemRegistry.registerItem(new GrassSeedItem())
       ItemRegistry.registerItem(new SpinachSeedItem())
+      ItemRegistry.registerItem(new SpinachItem())
       ItemRegistry.registerItem(new GrassBladeItem())
       ItemRegistry.registerItem(new GrassSieveItem())
       ItemRegistry.registerItem(new HoeItem())
       ItemRegistry.registerItem(new ShovelItem())
       ItemRegistry.registerItem(new DirtBlockItem())
+      ItemRegistry.registerItem(new FullLeafBucketItem())
+      ItemRegistry.registerItem(new EmptyLeafBucketItem())
+      ItemRegistry.registerItem(new EmptyItem())
+      ItemRegistry.registerItem(new ArugulaLeafItem())
+      ItemRegistry.registerItem(new ArugulaSeedItem())
+    
     }
 
 
@@ -279,7 +291,28 @@ export class Player {
             new PlantOutput(
               new SpinachSeedItem(),
               1, 3
-            )
+            ),
+            new PlantOutput( 
+              new ArugulaSeedItem(),
+              1, 3
+            )  
+          ]
+        )
+      )
+
+
+      PlantRecipeRegistry.add(
+        new PlantRecipe(
+          "ArugulaCrop",
+          [
+            new PlantOutput(
+              new ArugulaLeafItem(),
+              3, 5
+            ),
+            new PlantOutput( 
+              new ArugulaSeedItem(),
+              1, 3
+            )  
           ]
         )
       )

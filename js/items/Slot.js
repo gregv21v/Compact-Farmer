@@ -118,6 +118,8 @@ export class Slot {
         x: position.x + 5,
         y: position.y + 5
       }
+
+      this._item.update()
     }
 
     this._svg.clickArea
@@ -172,6 +174,7 @@ export class Slot {
 
       // initialize the unit and add it to the svg layer
       this._item.render()
+      this._item.update()
       //console.log(this._inventory)
       this._item.attach(this._inventory.layers.items)
       this._item.initTooltip(this._inventory.layers.tooltips)

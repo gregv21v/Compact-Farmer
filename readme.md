@@ -1,6 +1,6 @@
 # Compact Survival
 
-## A game about build up from nothing.
+## Farming Game
 
 You start off with one block of space then you build up from there.
 
@@ -55,6 +55,9 @@ You start off with a grass seeds and a hoe. With the hoe, you can till the soil 
 * Add diseases to the game.
 * Create a button that when clicked, centers the map on its center tile
 * Make it so that you can load a Block or Item from a file
+* Add autosave
+* Add more content
+* Work on centering buttons on main page
 
 
 

@@ -2,8 +2,10 @@ import Scene from "../scenes/Scene.js";
 import { Player } from "../Player.js";
 import { World } from "../World.js";
 import { HUD } from "../HUD.js";
-import { GrassBladeItem, GrassSeedItem, DirtBlockItem, HoeItem, ShovelItem } from "../items/items.js";
+import { GrassBladeItem, GrassSeedItem, DirtBlockItem, HoeItem, ShovelItem, GrassSieveItem, SpinachItem } from "../items/items.js";
 import { WaterBlock, ComposterBlock, ExpansionBlock } from "../blocks/blocks.js";
+import { ArugulaLeafItem } from "../items/ArugulaLeafItem.js";
+import { ArugulaSeedItem } from "../items/ArugulaSeedItem.js";
 
 /**
  * PlayScene - This is the scene that is displayed when the game is played.
@@ -120,20 +122,20 @@ export default class PlayScene extends Scene {
      * @description loads a world from a JSON representation
      */
     loadWorld(json) {
-        console.log(json);
+        //console.log(json);
 
         // remove all content from the tabs and mouse layers
         this._svg.layers.tabs.selectAll("*").remove()
         this._svg.layers.mouse.selectAll("*").remove()
 
-        this._player = Player.fromJSON(json, {
+        this._player = Player.fromJSON(json.world, {
             inventoryLayer: this._svg.layers.tabs,
             mouseLayer: this._svg.layers.mouse,
         })
 
 
         //console.log({x: this._game.width/2, y: this._game.height/2});
-        this._world = World.fromJSON(json.blocks, {
+        this._world = World.fromJSON(json.world.blocks, {
             player: this._player,
             position: {x: this._game.width/2, y: this._game.height/2}
         })
@@ -150,6 +152,8 @@ export default class PlayScene extends Scene {
         this._world.render()
         this._hud.render()
 
+        
+        this._world.name = json.name
         this._world.update()
 
         this._hud.attach(this._svg.layers.tabs) 
@@ -171,18 +175,8 @@ export default class PlayScene extends Scene {
         this._world.name = name;
 
         //this._player.createInventories()
-
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-        this._player.inventory.add(new GrassBladeItem())
-
         this._player.toolbar.add(new GrassSeedItem())
+        this._player.toolbar.add(new DirtBlockItem())
         this._player.toolbar.add(new DirtBlockItem())
         this._player.toolbar.add(new HoeItem())
         this._player.toolbar.add(new ShovelItem())
