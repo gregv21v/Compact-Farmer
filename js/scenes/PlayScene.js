@@ -6,6 +6,7 @@ import { GrassBladeItem, GrassSeedItem, DirtBlockItem, HoeItem, ShovelItem, Gras
 import { WaterBlock, ComposterBlock, ExpansionBlock } from "../blocks/blocks.js";
 import { ArugulaLeafItem } from "../items/ArugulaLeafItem.js";
 import { ArugulaSeedItem } from "../items/ArugulaSeedItem.js";
+import { IronChunksItem } from "../items/IronChunksItem.js";
 
 /**
  * PlayScene - This is the scene that is displayed when the game is played.
@@ -23,7 +24,8 @@ export default class PlayScene extends Scene {
                 "tabs",
                 "mouse",
                 "tooltips",
-                "menu"
+                "menu",
+                "overlay"
             ]
         });
     }
@@ -180,6 +182,7 @@ export default class PlayScene extends Scene {
         this._player.toolbar.add(new DirtBlockItem())
         this._player.toolbar.add(new HoeItem())
         this._player.toolbar.add(new ShovelItem())
+        this._player.toolbar.add(new IronChunksItem())
 
         this._world.addBlock(new WaterBlock(this._player, this._world, {x: 0, y: 0}))// origin block
         this._world.addBlock(new ComposterBlock(this._player, this._world, {x: 0, y: 1}))

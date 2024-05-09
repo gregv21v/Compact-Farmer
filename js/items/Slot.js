@@ -355,6 +355,7 @@ export class Slot {
       } else {
         console.log("Hand empty");
         this._player.addItemToHand(this._item)
+        this._item.inPlayerHand = true;
         this._inventory.removeItemFromSlot(this)
       }
 

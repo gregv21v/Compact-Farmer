@@ -11,23 +11,24 @@ export class Item {
     constructor()
     @description constructs the block
   */
-  constructor(position = {x: 0, y: 0}) {
+  constructor(position = { x: 0, y: 0 }) {
     this.name = "Item"
     this._displayName = "Item";
     this._position = position;
     this.size = 40
     this._quantity = 1;
-    this._imageURL = "chair.png";
+    this._imageURL = "images/chair.png";
     this._elements = {}
     this._description = ""
+    this._inPlayerHand = false;
 
     this.tooltip = new Tooltip(
       this.name,
-      {x: this._position.x - 5, y: this._position.y - 5},
+      { x: this._position.x - 5, y: this._position.y - 5 },
       150, 150
     )
 
-    
+
     this.updateToolTip();
 
     // create the svg elements
@@ -65,7 +66,7 @@ export class Item {
   }
 
 
-   
+
 
   /**
     toJSON()
@@ -149,10 +150,10 @@ export class Item {
       .attr("width", this.size)
       .attr("height", this.size)
       .style("fill-opacity", 0)
-      .on("click", function() {self.onClick()})
-      .on("mousedown", function() {self.onMouseDown()})
-      .on("mouseover", function() {self.onMouseOver()})
-      .on("mouseout", function() {self.onMouseOut()})
+      .on("click", function () { self.onClick() })
+      .on("mousedown", function () { self.onMouseDown() })
+      .on("mouseover", function () { self.onMouseOver() })
+      .on("mouseout", function () { self.onMouseOut() })
 
 
     this._svg.image
@@ -247,7 +248,7 @@ export class Item {
       y: this._position.y - this.tooltip.height
     }
 
-    if(this.tooltip.position.y < 0) {
+    if (this.tooltip.position.y < 0) {
       // put the tooltip below the item
       this.tooltip.position = {
         x: this._position.x,
@@ -260,7 +261,7 @@ export class Item {
       .attr("y", this._position.y)
 
     var textPos = {
-      x: this._position.x + this.size/2,
+      x: this._position.x + this.size / 2,
       y: this._position.y + this.size - 5
     }
 
@@ -269,7 +270,7 @@ export class Item {
       .attr("y", textPos.y)
 
     this._svg.count
-       
+
 
 
     this._svg.clickArea
@@ -298,14 +299,6 @@ export class Item {
     this._elements = value
 
     this.updateToolTip(this._description);
-  }
-
-  /**
-   * get elements
-   * @description gets the elements of this item
-   */
-  get elements() {
-    return this._elements;
   }
 
   /**
@@ -341,7 +334,9 @@ export class Item {
       this item
   */
   onMouseOver() {
-    this.tooltip.show()
+    if (!this._inPlayerHand) {
+      this.tooltip.show()
+    }
   }
 
   /**
@@ -351,5 +346,22 @@ export class Item {
   */
   onMouseOut() {
     this.tooltip.hide()
+  }
+
+
+  /**
+   * get elements
+   * @description gets the elements of this item
+   */
+  get elements() {
+    return this._elements;
+  }
+
+  get inPlayerHand() {
+    return this._inPlayerHand;
+  }
+
+  set inPlayerHand(value) {
+    this._inPlayerHand = value;
   }
 }

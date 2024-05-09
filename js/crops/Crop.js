@@ -10,9 +10,21 @@ export class Crop {
     */
     constructor() {
       this.name = "Crop"
-      this.columns = 4;
-      this._svg = {
-        image: d3.create("svg:image")
+      this._columns = 4;
+      this._rows = 4;
+      this._imageUrl = "images/stick.png";
+      this._images = [];
+    }
+
+
+    _createImages() {
+      for(var i = 0; i < this._columns; i++) {
+        this._images.push([]);
+        for (let j = 0; j < this._rows; j++) {
+          let newImage = d3.create("svg:image");
+          newImage.attr("href", this._imageUrl);
+          this._images[i].push(newImage);
+        }
       }
     }
 
@@ -23,7 +35,7 @@ export class Crop {
      * @returns {SVGImageElement}
     */
     get svg() {
-      return this._svg.image
+      return this._images;
     }
 
     /**
@@ -66,7 +78,12 @@ export class Crop {
      * @description attaches the crop to the block
      */
     attach(parent) {
-      parent.append(() => this._svg.image.node())
+      for(var i = 0; i < this._columns; i++) {
+        this._images.push([]);
+        for (let j = 0; j < this._rows; j++) {
+          parent.append(() => this._images[i][j].node());
+        }
+      }
     }
 
     /**
@@ -83,8 +100,11 @@ export class Crop {
       @description deletes this block
     */
     delete() {
-      for (var svg of Object.values(this._svg)) {
-        svg.remove()
+      for(var i = 0; i < this._columns; i++) {
+        this._images.push([]);
+        for (let j = 0; j < this._rows; j++) {
+          this._images[i][j].remove();
+        }
       }
     }
 
@@ -95,7 +115,8 @@ export class Crop {
     clone() {
       var clone = new Crop();
       clone.name = "Crop"
-      clone.columns = 4;
+      clone._columns = this._columns;
+      clone._rows = this._rows;
       clone.svg = []
       clone.setBlock(this.block);
       clone.styles = {
@@ -109,11 +130,16 @@ export class Crop {
     */
     render() {
       let worldPosition = this.block.getWorldPosition();
-      this._svg.image
-        .attr("x", worldPosition.x)
-        .attr("y", worldPosition.y)
-        .attr("width", Block.size)
-        .attr("height", Block.size)
+      for(var i = 0; i < this._columns; i++) {
+        this._images.push([]);
+        for (let j = 0; j < this._rows; j++) {
+          this._images[i][j]
+            .attr("x", worldPosition.x + (i * Block.size / 4))
+            .attr("y", worldPosition.y + (j * Block.size / 4))
+            .attr("width", Block.size / 4)
+            .attr("height", Block.size / 4)
+        }
+      }
     }
 
     /**
@@ -122,11 +148,16 @@ export class Crop {
      */
     update() {
       let worldPosition = this.block.getWorldPosition();
-      this._svg.image
-        .attr("x", worldPosition.x)
-        .attr("y", worldPosition.y)
-        .attr("width", Block.size)
-        .attr("height", Block.size)
+      for(var i = 0; i < this._columns; i++) {
+        this._images.push([]);
+        for (let j = 0; j < this._rows; j++) {
+          this._images[i][j]
+            .attr("x", worldPosition.x + (i * Block.size / 4))
+            .attr("y", worldPosition.y + (j * Block.size / 4))
+            .attr("width", Block.size / 4)
+            .attr("height", Block.size / 4)
+        }
+      }
       
     }
 }

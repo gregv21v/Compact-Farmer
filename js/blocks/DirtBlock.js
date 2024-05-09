@@ -108,7 +108,9 @@ export class DirtBlock extends Block {
       this.rows = 4;
 
       for (var i = 0; i < this.rows; i++) {
-        this._svg.rows.push(group.append("line"))
+        let img = group.append("image");
+        img.attr("href", "images/tilledSoil.png");
+        this._svg.rows.push(img);
       }
       this._svg.cropGroup = group.append("g")
       this._svg.progressBar = group.append("rect")
@@ -144,10 +146,10 @@ export class DirtBlock extends Block {
       if(this.isPlowed)
         for (var i = 0; i < this.rows; i++) {
           this._svg.rows[i]
-            .attr("x1", worldPosition.x + Block.size/10)
-            .attr("y1", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
-            .attr("x2", worldPosition.x + Block.size - Block.size/10)
-            .attr("y2", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
+            .attr("x1", worldPosition.x)
+            .attr("y1", worldPosition.y + (i)*(Block.size/(this.rows)))
+            .attr("width", Block.size)
+            .attr("height", Block.size / 4)
             .style("stroke", "black")
         }
 
@@ -301,11 +303,10 @@ export class DirtBlock extends Block {
 
       for (var i = 0; i < this.rows; i++) {
         this._svg.rows[i]
-          .attr("x1", worldPosition.x + Block.size/10)
-          .attr("y1", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
-          .attr("x2", worldPosition.x + Block.size - Block.size/10)
-          .attr("y2", worldPosition.y + (i+1)*(Block.size/(this.rows+1)))
-          .style("stroke", "black")
+          .attr("x", worldPosition.x)
+          .attr("y", worldPosition.y + (i)*(Block.size/(this.rows)))
+          .attr("width", Block.size)
+          .attr("height", Block.size / 4)
       }
       this.isPlowed = true;
     }

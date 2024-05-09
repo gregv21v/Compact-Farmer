@@ -80,17 +80,18 @@ export class ExpansionBlock extends Block {
   onLeftClick() {
     super.onLeftClick();
     let selectedSlot = this._player.toolbar.currentlySelected
+    if(!selectedSlot) return;
+    
     let selectedItem = selectedSlot.item
-    if(selectedItem) {
-      if(selectedItem instanceof DirtBlockItem) {
-        selectedSlot.consumeOne();  
-        this._world.expand(new DirtBlock(this._player, this._world, this._coordinate))
-      } else if(selectedItem instanceof FullLeafBucketItem) {
-        selectedSlot.consumeOne();
-        this._world.expand(new WaterBlock(this._player, this._world, this._coordinate))
-      }
-    }
+    if(!selectedItem) return; 
 
+    if(selectedItem instanceof DirtBlockItem) {
+      selectedSlot.consumeOne();  
+      this._world.expand(new DirtBlock(this._player, this._world, this._coordinate))
+    } else if(selectedItem instanceof FullLeafBucketItem) {
+      selectedSlot.consumeOne();
+      this._world.expand(new WaterBlock(this._player, this._world, this._coordinate))
+    }
   }
 
   /**

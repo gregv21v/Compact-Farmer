@@ -85,23 +85,7 @@ export class Game {
 
 
 
-  /**
-    get height
-    @description gets the height of the game window
-  */
-  get height() {
-    //console.log("Height: " + window.innerHeight);
-    return window.innerHeight
-  }
-
-  /**
-    get width
-    @description gets the width of the game window
-  */
-  get width() {
-    //console.log("Width: " + window.innerWidth);
-    return window.innerWidth;
-  }
+  
 
 
   /**
@@ -138,5 +122,24 @@ export class Game {
     
   }
 
+
+  /**
+    get height
+    @description gets the height of the game window
+  */
+  get height() {
+    //console.log("Height: " + window.innerHeight);
+    return window.innerHeight
+  }
+
+  /**
+    get width
+    @description gets the width of the game window
+  */
+  get width() {
+    //console.log("Width: " + window.innerWidth);
+    return window.innerWidth;
+  }
   
+  get canvas() { return this._canvas; }
 }

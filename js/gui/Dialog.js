@@ -8,15 +8,15 @@ export default class Dialog {
      * @param {Game} game the game
      */
     constructor(game) {
+        this._hidden = true;
         this._game = game;
-        this._svg = game.svg;
-        this._dialog = this._svg.group.append("foreignObject")
+        this._svg = game.currentScene.layers.overlay;
+        this._dialog = this._svg.append("rect")
             .attr("x", this._game.width/2 - this._game.width/4)
             .attr("y", this._game.height/2 - this._game.height/4)
             .attr("width", this._game.width/2)
             .attr("height", this._game.height/2)
-            .style("display", "none")
-            .style("background-color", "white")
+            .style("color", "grey")
             .style("border", "1px solid black")
             .style("padding", "10px")
             .style("text-align", "center")
@@ -32,5 +32,26 @@ export default class Dialog {
             .style("pointer-events", "none")
             .style("opacity", "0.8")
             .style("transition", "opacity 0.5s")
+    }
+
+    toggle() {
+        if(this._hidden) {
+            this.show();
+        } else {
+            this.hide();
+        }
+
+        this._hidden = !this._hidden;
+    }
+
+
+
+    hide() {
+        this._dialog.style("display", "none");
+    }
+
+
+    show() {
+        this._dialog.style("display", "block");
     }
 }

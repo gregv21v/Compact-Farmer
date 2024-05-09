@@ -3,6 +3,7 @@
 */
 import { Block } from "./blocks.js"
 import { CompostableItem, DirtBlockItem } from "../items/items.js"
+import { getRandomInt } from "../util.js"
 
 export class ComposterBlock extends Block {
 
@@ -20,8 +21,6 @@ export class ComposterBlock extends Block {
 
     this._displayName = "Composter"
     this._description = "Left click with a plant to make compost. Right click to extract dirt blocks"
-
-    this._dirtSpecPositions = [];
 
     this.updateToolTip()
   }
@@ -63,15 +62,42 @@ export class ComposterBlock extends Block {
     this._svg.circle = group.append("circle")
     this._svg.progressBar = group.append("rect")
 
-    this._lineCount = 10;
-    this._svg.randomLines = [];
-    this._svg.randomPoints = [];
+    this._leafCount = 20;
+    this._svg.leaves = [];
+    this._leafProperties = [];
 
-    for (let i = 0; i < this._lineCount; i++) {
-      this._svg.randomLines.push(group.append("path"))
+    //https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
+    let randomRadius = () => radius * Math.sqrt(Math.random())
+    let randomAngle = () => Math.random() * 2 * Math.PI
+
+    let worldPosition = this._world.coordinateToPosition(this._coordinate);
+    let center = {
+      x: worldPosition.x + Block.size / 2,
+      y: worldPosition.y + Block.size / 2
     }
 
+    let radius = (Block.size / 2) - 10 - 1;
 
+    for (let i = 0; i < this._leafCount; i++) {
+      let leaf = this._group.append("image");
+      let x = randomRadius() * Math.cos(randomAngle());
+      let y = randomRadius() * Math.sin(randomAngle());
+      let rotation = getRandomInt(0, 360);
+
+      leaf
+        .attr("x", center.x + x)
+        .attr("y", center.y + y)
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("opacity", 0)
+        .attr("href", "images/orangeLeaf.png")
+        .attr("transform", "rotate(" + rotation + ", " + (center.x + x + 5) + ", " + (center.y + y + 5) + ")")
+
+      this._svg.leaves.push(leaf);
+      this._leafProperties.push(
+        { x, y, rotation }
+      )
+    }
   }
 
   /**
@@ -125,11 +151,19 @@ export class ComposterBlock extends Block {
       y: worldPosition.y + Block.size / 2
     }
 
-    for (let i = 0; i < this._svg.randomPoints.length; i++) {
-      this._svg.randomPoints[i]
-        .attr("cx", center.x + this._dirtSpecPositions[i].x)
-        .attr("cy", center.y + this._dirtSpecPositions[i].y)
+    let lastLeafVisible = Math.round(this._leafCount * this._progress / this._progressMax);
+    console.log(lastLeafVisible);
+
+    for (let i = 0; i < this._svg.leaves.length; i++) {
+      this._svg.leaves[i]
+        .attr("x", center.x + this._leafProperties[i].x)
+        .attr("y", center.y + this._leafProperties[i].y)
+        .style("opacity", (i < lastLeafVisible) ? 1 : 0)
+        .attr(
+          "transform",
+          "rotate(" + this._leafProperties[i].rotation + ", " + (center.x + this._leafProperties[i].x) + ", " + (center.y + this._leafProperties[i].y) + ")")
     }
+
 
     /*for(let i = 0; i < this._svg.randomLines.length; i++) {
       let path = d3.path()
@@ -181,34 +215,7 @@ export class ComposterBlock extends Block {
       this._progress += selectedItem.compostValue;
       this._svg.progressBar.attr("width", this._progress / this._progressMax * Block.size)
 
-      let radius = (Block.size / 2) - 10 - 1;
-
-      //https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
-      let randomRadius = () => radius * Math.sqrt(Math.random())
-      let randomAngle = () => Math.random() * 2 * Math.PI
-
-      let x = randomRadius() * Math.cos(randomAngle());
-      let y = randomRadius() * Math.sin(randomAngle());
-
-      let worldPosition = this._world.coordinateToPosition(this._coordinate);
-      let center = {
-        x: worldPosition.x + Block.size / 2,
-        y: worldPosition.y + Block.size / 2
-      }
-
-      // add more specs to the compost block
-      this._dirtSpecPositions.push(
-        {x, y}
-      )
-
-      let newCircle = this._group.append("circle")
-      newCircle
-        .attr("r", 1)
-        .attr("fill", "brown")
-        .attr("stroke", "brown")
-        .attr("cx", center.x + x)
-        .attr("cy", center.y + y)
-      this._svg.randomPoints.push(newCircle);
+      this.update();
     }
   }
 
@@ -232,6 +239,9 @@ export class ComposterBlock extends Block {
         this._player.inventory.add(new DirtBlockItem())
       }
     }
+
+
+    this.update();
 
     console.log("Right Clicked Composter Block");
   }

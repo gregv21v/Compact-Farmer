@@ -42,6 +42,8 @@ export class HUD {
 
   
     let self = this;
+    this._menuDialog = new Dialog(this._game);
+    this._menuDialog.hide();
 
     this._menuBtn = new Button(
       {x: 0, y: 0},
@@ -49,7 +51,8 @@ export class HUD {
       "Menu",
       () => {
         console.log("Open Main Menu Dialog");
-        let dialog = new Dialog(this._game);
+
+        this._menuDialog.toggle();
       }
     )
 

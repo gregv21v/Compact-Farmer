@@ -13,7 +13,9 @@ export class GrassCrop extends Crop {
   constructor() {
     super()
     this.name = "GrassCrop"
-    this._svg.image.attr("href", "images/grassCrop.png")
+    this._imageUrl = "images/grass.png";
+
+    this._createImages();
   }
 
   /**

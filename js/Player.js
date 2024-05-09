@@ -18,6 +18,7 @@ import {
 import { BlockRegistry } from "./blocks/BlockRegistry.js";
 import { ArugulaLeafItem } from "./items/ArugulaLeafItem.js";
 import { ArugulaSeedItem } from "./items/ArugulaSeedItem.js";
+import { IronChunksItem } from "./items/IronChunksItem.js";
 
 export class Player {
   /**
@@ -173,6 +174,7 @@ export class Player {
      * @param {Item} item the item to remove
      */
     removeItemFromHand() {
+      this.hand.inPlayerHand = false;
       this.hand = null
     }
 
@@ -214,6 +216,7 @@ export class Player {
       ItemRegistry.registerItem(new EmptyItem())
       ItemRegistry.registerItem(new ArugulaLeafItem())
       ItemRegistry.registerItem(new ArugulaSeedItem())
+      ItemRegistry.registerItem(new IronChunksItem())
     
     }
 

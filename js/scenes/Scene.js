@@ -104,4 +104,6 @@ export default class Scene {
 
 
 
+    get layers() { return this._svg.layers; }
+
 }

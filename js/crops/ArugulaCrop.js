@@ -11,7 +11,9 @@ export class ArugulaCrop extends Crop {
   constructor() {
     super()
     this.name = "ArugulaCrop"
-    this._svg.image.attr("href", "images/arugula.png")
+    this._imageUrl = "images/arugula.png";
+
+    this._createImages();
   }
 
   /**
