@@ -39,65 +39,43 @@ export class WaterBlock extends Block {
   */
   createGraphic(group) {
     // make your graphics here add add them to the this._svg object
-    this._svg.waves = []
-    this._waveCount = 5;
+    this._svg.image = group.append("svg:image");
 
-    for (let i = 0; i < this._waveCount; i++) {
-      this._svg.waves.push(group.append("path"))
-    }
+    this._svg.image.attr("href", "images/water.png")
+
   }
 
-  /**
-   * updateWaves()
-   * @description updates the waves
-   */
-  updateWaves() {
-    var worldPosition = this.getWorldPosition();
-
-    for (var i = 0; i < this._waveCount; i++) {
-      var path = d3.path()
-      var count = 6
-      var startX = worldPosition.x
-      var startY = worldPosition.y + (i+1) * Block.size/count
-      path.moveTo(startX, startY)
-
-      for (var j = 0; j < count; j++) {
-        var nextX = (j+1) * Block.size/count
-        if(j%2 === 0) {
-         path.quadraticCurveTo(
-           startX + nextX - Block.size/count/2,
-           startY + Block.size/count,
-           startX + nextX,
-           startY
-         )
-        } else {
-         path.quadraticCurveTo(
-           startX + nextX - Block.size/count/2,
-           startY - Block.size/count,
-           startX + nextX,
-           startY
-         )
-        }
-      }
-      this._svg.waves[i]
-        .style("fill", "none")
-        .style("stroke", "#131354")
-        .attr("d", path)
-    }
-  }
   
   /**
    * update()
    * @description updates the state of the block
    */
   update() {
-    super.update();
+    let worldPosition = this.getWorldPosition();
+      let size = Block.size;
+      let self = this;
+      // render the background
+      this._svg.image
+        .attr("x", worldPosition.x)
+        .attr("y", worldPosition.y)
+        .attr("width", size)
+        .attr("height", size)
 
-    // render the background
-    this._svg.background.style("fill", "blue")
+      this._svg.clickArea
+        .attr("x", worldPosition.x)
+        .attr("y", worldPosition.y)
+        .attr("width", size)
+        .attr("height", size)
+        .style("fill-opacity", 0)
+        .on("click", (event) => {self.onLeftClick(event)})
+        .on("contextmenu", (event) => self.onRightClick(event))
+        .on("mouseover", (event) => {self.onMouseOver(event)})
+        .on("mouseout", (event) => {self.onMouseOut(event)})
 
-    // update the waves
-    this.updateWaves()
+      this._tooltip.position = {
+        x: worldPosition.x,
+        y: worldPosition.y - 90
+      }
   }
 
 

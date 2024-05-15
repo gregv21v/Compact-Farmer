@@ -87,7 +87,8 @@ export class ExpansionBlock extends Block {
 
     if(selectedItem instanceof DirtBlockItem) {
       selectedSlot.consumeOne();  
-      this._world.expand(new DirtBlock(this._player, this._world, this._coordinate))
+      let newDirtBlock = new DirtBlock(this._player, this._world, this._coordinate);
+      this._world.expand(newDirtBlock);
     } else if(selectedItem instanceof FullLeafBucketItem) {
       selectedSlot.consumeOne();
       this._world.expand(new WaterBlock(this._player, this._world, this._coordinate))

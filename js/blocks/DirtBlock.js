@@ -23,6 +23,7 @@ export class DirtBlock extends Block {
       this.isHydrated = false;
       this.isPlowed = false;
       this._progress = 0;
+      this._elements = {};
 
       // elements in the soil that can be extracted by the plant
 
@@ -108,7 +109,7 @@ export class DirtBlock extends Block {
       this.rows = 4;
 
       for (var i = 0; i < this.rows; i++) {
-        let img = group.append("image");
+        let img = group.append("svg:image");
         img.attr("href", "images/tilledSoil.png");
         this._svg.rows.push(img);
       }
@@ -146,8 +147,8 @@ export class DirtBlock extends Block {
       if(this.isPlowed)
         for (var i = 0; i < this.rows; i++) {
           this._svg.rows[i]
-            .attr("x1", worldPosition.x)
-            .attr("y1", worldPosition.y + (i)*(Block.size/(this.rows)))
+            .attr("x", worldPosition.x)
+            .attr("y", worldPosition.y + (i)*(Block.size/(this.rows)))
             .attr("width", Block.size)
             .attr("height", Block.size / 4)
             .style("stroke", "black")
@@ -332,4 +333,13 @@ export class DirtBlock extends Block {
       }
     }
 
+
+
+    get elements() {
+      return this._elements;
+    }
+
+    set elements(value) {
+      this._elements = value;
+    }
 }

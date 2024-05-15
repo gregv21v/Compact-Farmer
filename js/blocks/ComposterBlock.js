@@ -59,8 +59,13 @@ export class ComposterBlock extends Block {
     this._group = group;
 
     // make your graphics here add add them to the this._svg object
-    this._svg.circle = group.append("circle")
-    this._svg.progressBar = group.append("rect")
+    this._svg.image = group.append("svg:image");
+    this._svg.progressBar = group.append("rect");
+
+    this._svg.image
+      .attr("href", "images/compostBin.png")
+      .attr("width", Block.size)
+      .attr("height", Block.size)
 
     this._leafCount = 20;
     this._svg.leaves = [];
@@ -121,13 +126,9 @@ export class ComposterBlock extends Block {
     //this.updateToolTip("Left clicking this block with plants will allow you produce compost")
 
     // render the cross
-    this._svg.circle
-      .attr("cx", worldPosition.x + Block.size / 2)
-      .attr("cy", worldPosition.y + Block.size / 2)
-      .attr("r", (Block.size / 2) - 5)
-      .style("fill", "black")
-      .style("stroke", "black")
-      .style("stroke-width", 1)
+    this._svg.image
+      .attr("x", worldPosition.x)
+      .attr("y", worldPosition.y)
 
     this.renderRandomLines()
 
@@ -152,7 +153,6 @@ export class ComposterBlock extends Block {
     }
 
     let lastLeafVisible = Math.round(this._leafCount * this._progress / this._progressMax);
-    console.log(lastLeafVisible);
 
     for (let i = 0; i < this._svg.leaves.length; i++) {
       this._svg.leaves[i]
@@ -179,7 +179,6 @@ export class ComposterBlock extends Block {
         y: center.y + randomRadius() * Math.sin(randomAngle())
       }
 
-      //console.log(startPoint, endPoint);
 
       path.moveTo(startPoint.x, startPoint.y)
       path.lineTo(endPoint.x, endPoint.y)

@@ -25,6 +25,9 @@ If you get an error that says that there is something wrong with electron then
 install electron with the command ```npm i --save-dev electron```.
 
 
+## Story of the game
+You are a farmer expanding your farm. 
+
 ## Game Progression
 
 ## Goals of the Game
@@ -32,6 +35,8 @@ install electron with the command ```npm i --save-dev electron```.
 
 # Level 1
 You start off with a grass seeds and a hoe. With the hoe, you can till the soil so you can plants seeds. The only seed you have in the beginning is grass.
+
+After you aquire some grass, you can then put that in the crafting grid to aquire a grass sieve. A grass sieve can then be used to harvest other seeds from water.
 
 
 
@@ -58,6 +63,53 @@ You start off with a grass seeds and a hoe. With the hoe, you can till the soil 
 * Add autosave
 * Add more content
 * Work on centering buttons on main page
+
+## Brainstorm Session
+* Bird fly around the map placing seeds on your farm
+* You can automate the process of farming crops
+* Different blocks of dirt have different materials in them. These materials effect the properties of the plants that grow 
+ in them. For instance you could plant grass in soil with a lot of iron, and it would grow shorter but stronger.
+* You can extract materials from plants by breaking down the plants. For instance you if you cook spinach to ashes, and put it in water then run a magnet through it, you can extract the iron from it.
+* Adjacent patches of land cross breed. 
+* Each plant has a list of properties that are averaged together when they cross breed.
+* Properties may include:
+    * Color of petals
+    * Has or doesn't have petals
+    * Leaf type
+    * flowers or doesn't flower
+    * is or isn't a vine
+    * rapid spreading or slow spreading
+    * growth speed
+    * leaf color 
+    * petal type
+    * require iron
+    * doesn't require water 
+    * poisonous 
+    * toxic
+    * ediable
+    * includes elements...
+    * thick stem
+    * bark
+    * isTree
+    * produces berries
+    * produces fruit
+    * seeds can fly (like dandelion seeds) (so they reach larger distances)
+    * isWeed
+
+* Materials might include:
+    * iron, copper, gold, silver, nickel
+    * phosphorus, nitrogen, carbon
+    * potassium
+    * bark, petals, stem, roots, 
+    * berries
+
+* Additional items
+    * Pot for mixing things
+    * Spoon 
+
+* Auto-save
+* Remove expansion blocks when dirt is removed, so that you can only expand adjacently
+
 
 
 

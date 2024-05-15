@@ -185,7 +185,7 @@ export default class PlayScene extends Scene {
         this._player.toolbar.add(new IronChunksItem())
 
         this._world.addBlock(new WaterBlock(this._player, this._world, {x: 0, y: 0}))// origin block
-        this._world.addBlock(new ComposterBlock(this._player, this._world, {x: 0, y: 1}))
+        this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: 0, y: 1}))
         this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: 0, y: -1}))
         this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: -1, y: 0}))
         this._world.addBlock(new ExpansionBlock(this._player, this._world, {x: 1, y: 0}))
