@@ -18,7 +18,7 @@ export default class MainMenuScene extends Scene {
             {x: this._game.width/2 - this._game.width/8, y: this._game.height/2 - 25},
             this._game.width/4,
             50,
-            "New Farm",
+            "New Game",
             () => {self._game.currentScene = "WorldCreationScene";}
         )
         
@@ -26,7 +26,7 @@ export default class MainMenuScene extends Scene {
             {x: this._game.width/2 - this._game.width/8, y: this._game.height/2 + 50},
             this._game.width/4,
             50,
-            "Load Farm",
+            "Load Game",
             () => {self._game.currentScene = "WorldSelectionScene";}
         )
         
@@ -54,7 +54,6 @@ export default class MainMenuScene extends Scene {
             .style("font-family", "Arial")
             .style("fill", "#355223")
             .text("Compact Farmer")
-            .attr("dominant-baseline", "central")
             .style("filter", "drop-shadow(16px 16px 20px black)")
 
         this._newGameBtn.render();

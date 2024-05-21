@@ -37,10 +37,7 @@ export class RecipeSideTab extends SideTab {
       .html(`
         <h2>Recipes</h2>
         
-        <img src="./images/screenshots/Dirt_Block_Recipe.png" width=${this.contentDims.width - 50}>
-
-        <p> 9 grass blades can be placed into a crafting grid to create a dirt block. </p>
-        <p> 4 grass blades in the upper left hand corner of a crafting grid makes a grass sieve. </p>
+        <img src="./images/screenshots/Dirt_Block_Recipe.png" width=${this.contentDims.width - 5} height="170">
 
       `)
       .style("padding", "5px")

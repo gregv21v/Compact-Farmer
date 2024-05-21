@@ -28,7 +28,6 @@ import Scene from "./Scene.js";
                 // add the default settings of the world plus its name
                 self._game.currentScene.addDefaults(this._svg.input.node().value); 
                 self._game.currentScene.saveWorld(this._svg.input.node().value);
-                self._game.currentScene._world.name = this._svg.input.node().value;
             }
         )
 
@@ -76,15 +75,15 @@ import Scene from "./Scene.js";
 
         let div = this._svg.foreignObject.append("xhtml:div")
         this._svg.title = div.append("h1")
-            .text("Create a New Farm")
+            .text("Create a New World")
             .style("text-align", "center")
 
         this._svg.label = div.append("xhtml:p")
-            .text("Farm Name:")
+            .text("World Name:")
             .style("padding-left", "25px")
         this._svg.input = div.append("xhtml:input")
             .attr("type", "text")
-            .attr("placeholder", "Farm Name")
+            .attr("placeholder", "World Name")
             .style("margin-left", "25px")
     }
 

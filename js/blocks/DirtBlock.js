@@ -8,6 +8,8 @@ import {
 import { Block } from "./Block.js"
 import { Crop, GrassCrop, SpinachCrop, ArugulaCrop } from "../crops/crops.js"
 import { PlantRecipeRegistry } from "../recipes/recipes.js"
+import { ExpansionBlock } from "./ExpansionBlock.js"
+import { ComposterBlock } from "./ComposterBlock.js"
 
 export class DirtBlock extends Block {
     /**
@@ -231,6 +233,7 @@ export class DirtBlock extends Block {
         this.plow(selectedItem)
       } else if(selectedItem instanceof ShovelItem) {
         // remove block from world
+        
         this._world.removeBlock(this);
 
         if(!this._player.toolbar.add(new DirtBlockItem())) {
@@ -244,6 +247,20 @@ export class DirtBlock extends Block {
       // harvest crop
       if(this._crop !== null) {
         this.harvest()
+      }
+
+    }
+
+
+    onRightClick() {
+      super.onRightClick();
+
+      var selectedItem = this._player.toolbar.currentlySelected.item
+
+      if(selectedItem instanceof ShovelItem) {
+        this._world.replaceBlock(new ComposterBlock(
+          this._player, this._world, this._coordinate
+        ))
       }
 
     }

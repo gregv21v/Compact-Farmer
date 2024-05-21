@@ -15,21 +15,6 @@ export class CompostableItem extends Item {
 
 
   /**
-   * updateToolTip()
-   * updates the information on the tooltip
-   */
-  updateToolTip() {
-    this.tooltip.html = `<strong>${this._displayName}</strong> 
-    <br/>${this._description}
-    <br/>Compost Value: ${this._compostValue}
-    <br /><strong>Elements:</strong><br/>`
-    for (var element of Object.keys(this._elements)) {
-      this.tooltip.html += `<strong>${element}:</strong> ${this._elements[element]}<br/>`
-    }
-  }
-
-
-  /**
    * get compostValue()
    * @description get the compost value of this item
    */

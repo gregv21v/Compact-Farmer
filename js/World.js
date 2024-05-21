@@ -139,6 +139,22 @@ export class World {
 
 
   /**
+   * 
+   * @param {*} block 
+   * @returns 
+   */
+  getAdjacentBlocks(block) {
+    let self = this;
+    return [
+      block.coordinate.x + "_" + (block.coordinate.y + 1),
+      block.coordinate.x + "_" + (block.coordinate.y - 1),
+      (block.coordinate.x - 1) + "_" + block.coordinate.y,
+      (block.coordinate.x + 1) + "_" + block.coordinate.y
+    ]
+  }
+
+
+  /**
     remove()
     @description removes a given block from the world.
     @param block the block to remove
@@ -146,11 +162,23 @@ export class World {
   removeBlock(block) {
     var coordAsString = block.getCoordinateAsString()
     if(coordAsString in this._blocks) {
-      // remove it
-      this._blocks[coordAsString].remove();
-      delete this._blocks[coordAsString]
+      // remove the expansion blocks around this block
+      let adjacentBlocks = this.getAdjacentBlocks(block);
+
+      for (const blockCoordinate of adjacentBlocks) {
+        if(this._blocks[blockCoordinate] instanceof ExpansionBlock) {
+          this._blocks[blockCoordinate].remove();
+          delete this._blocks[blockCoordinate];
+        }
+      }
+
+      this.replaceBlock(new ExpansionBlock(this.player, this, {
+        x: block.coordinate.x,
+        y: block.coordinate.y
+      }))
 
       // add the new block
+      /*
       this._blocks[coordAsString] = new ExpansionBlock(
         this.player, this,
         block.coordinate
@@ -158,6 +186,7 @@ export class World {
       this._blocks[coordAsString].render()
       this._blocks[coordAsString].attach(this._svg.layers.tooltips, this._svg.layers.blocks);
       this.updateBlocks();
+      */
     }
   }
 

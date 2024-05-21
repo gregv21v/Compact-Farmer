@@ -248,6 +248,29 @@ export class Player {
         ),
         new DirtBlockItem()
       ))
+
+      CraftingRegistry.register(new CraftingRecipe(
+        new CraftingInput(
+          [
+            [new ArugulaLeafItem(), new ArugulaLeafItem(), new ArugulaLeafItem()],
+            [new ArugulaLeafItem(), new ArugulaLeafItem(), new ArugulaLeafItem()],
+            [new ArugulaLeafItem(), new ArugulaLeafItem(), new ArugulaLeafItem()]
+          ]
+        ),
+        new DirtBlockItem()
+      ))
+
+
+      CraftingRegistry.register(new CraftingRecipe(
+        new CraftingInput(
+          [
+            [new SpinachItem(), new SpinachItem(), new SpinachItem()],
+            [new SpinachItem(), new SpinachItem(), new SpinachItem()],
+            [new SpinachItem(), new SpinachItem(), new SpinachItem()]
+          ]
+        ),
+        new DirtBlockItem()
+      ))
     }
 
     /**
